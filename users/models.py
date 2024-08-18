@@ -1,9 +1,8 @@
-from django.db import models
-
-# Create your models here.
-
+# users/models.py
 from django.contrib.auth.models import AbstractUser
 
+
 class CustomUser(AbstractUser):
-    # Agrega campos personalizados aquí si es necesario
+    # edit as necessary
+    # bio = models.TextField(blank=True, null=True)
     pass

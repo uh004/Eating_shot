@@ -1,0 +1,30 @@
+{% extends "users/base.html" %}
+{% load static %}
+
+{% block title %}로그인 페이지{% endblock %}
+
+{% block content %}
+    <div class="main_container">
+        <div class="fade-out-box">
+            <img src="{% static 'img/main_page.png' %}" width="480px" height="900px" id="main_page">
+        </div>
+
+        <div class="banner" id="forms">
+            <img src="{% static 'img/chara1.png' %}" width="150px" alt="">
+            <p style="font-size: 30px; margin-top: 20px; margin-bottom: 50px;">로그인</p>
+            <div class="forms">
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    <h5>{{form.username.label}}</h5>
+                    {{form.username}}
+                    <h5>{{form.email.label}}</h5>
+                    {{form.email}}
+                    <h5>{{form.password.label}}</h5>
+                    {{form.password}}
+                    <input type="submit" value="로그인">
+                </form>
+            </div>
+            <p>계정이 없다면 <a href="{% url 'register' %}"><span style="color: #00BCD4;">회원가입 하러가기</span></a></p>
+        </div>
+    </div>
+{% endblock %}

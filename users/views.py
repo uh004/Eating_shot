@@ -1,28 +1,36 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
-from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView
-from django.contrib.auth.views import LoginView
+from django.shortcuts import render, redirect
+from django.contrib.auth import login
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
-from rest_framework import generics
-from .serializers import UserSerializer
 
 
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+def index(request):
+    return render(request, "users/home.html")
 
 
-class RegisterView(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'users/register.html'
+def register_view(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("login")
+    else:
+        form = CustomUserCreationForm()
+    return render(request, "users/register.html", {"form": form})
 
-class CustomLoginView(LoginView):
-    authentication_form = CustomAuthenticationForm
-    template_name = 'users/login.html'
 
+def login_view(request):
+    if request.method == "POST":
+        form = CustomAuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return redirect("info")
+    else:
+        form = CustomAuthenticationForm()
+    return render(request, "users/login.html", {"form": form})
+
+
+def info_view(request):
+    # TODO:
+    return render(request, "users/info.html")
