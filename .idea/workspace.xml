@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8e610d9a-7aec-4dc5-ad47-e0a6f0cb6a10" name="Changes" comment="creating another form">
+      <change afterPath="$PROJECT_DIR$/static/img/Check circle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/dumbbell.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/food.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/logo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/plus-sign.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/user.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/users/migrations/0002_customuser_age_customuser_birthdate_and_more.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/base.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/blood.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/blood.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/female.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/female.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/male.png" beforeDir="false" afterPath="$PROJECT_DIR$/static/img/male.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/users/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/users/info.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/info.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/users/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/users/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/users/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" module-name="deejeiango" is-module-sdk="true">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+    <option name="myUseModuleSdk" value="true" />
+    <option name="myModuleName" value="deejeiango" />
+  </component>
+  <component name="DjangoStructureOptions">
+    <option name="groupVisibilityStates">
+      <map>
+        <entry key="ADMIN" value="true" />
+        <entry key="MODEL" value="true" />
+        <entry key="VIEW" value="true" />
+      </map>
+    </option>
+    <option name="version" value="1" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Python Script" />
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myFormatOnlyChangedLines" value="true" />
+    <option name="myRunOnSave" value="true" />
+  </component>
+  <component name="Git.Pull.Settings">
+    <option name="OPTIONS">
+      <set>
+        <option value="REBASE" />
+      </set>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nipistek&quot;
+  }
+}</component>
+  <component name="GitRewordedCommitMessages">
+    <option name="commitMessagesMapping">
+      <RewordedCommitMessageMapping>
+        <option name="originalMessage" value="README" />
+        <option name="rewordedMessage" value="README" />
+      </RewordedCommitMessageMapping>
+    </option>
+    <option name="currentCommit" value="1" />
+    <option name="onto" value="1c5df577be53ea0807b5fd5b0c9b80e137784fe9" />
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nipistek/Eating_shot.git&quot;,
+    &quot;accountId&quot;: &quot;d0032aac-1cc2-42e8-8efc-1ea3c99a115f&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2ko0L6U8YmVmTrkbEjFN2R5og33" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Django Server.core.executor&quot;: &quot;Run&quot;,
+    &quot;Django Server.deejeiango.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenDjangoStructureViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;django.template.preview.state&quot;: &quot;SHOW_EDITOR&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/jonggwan/Documents/Jetbrains2024/deejeiango/static/css&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.intellij.python.django.customization.DjangoModulesConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;sqlite&quot;
+    ]
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/css" />
+      <recent name="$PROJECT_DIR$/templates" />
+      <recent name="$PROJECT_DIR$/static/img" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static" />
+      <recent name="$PROJECT_DIR$/static/css" />
+      <recent name="$PROJECT_DIR$/users" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="core" type="Python.DjangoServer" factoryName="Django server">
+      <module name="deejeiango" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="core.settings" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Poetry (deejeiango)" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8000" />
+      <option name="host" value="localhost" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-PY-242.20224.347" />
+        <option value="bundled-python-sdk-c2d6afa66fbe-39cff9de6eef-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.20224.347" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8e610d9a-7aec-4dc5-ad47-e0a6f0cb6a10" name="Changes" comment="" />
+      <created>1723934563379</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1723934563379</updated>
+      <workItem from="1723934567643" duration="4718000" />
+      <workItem from="1723939742859" duration="1415000" />
+      <workItem from="1723942974635" duration="600000" />
+      <workItem from="1723943585184" duration="41000" />
+      <workItem from="1723943632539" duration="103000" />
+      <workItem from="1723943741833" duration="538000" />
+      <workItem from="1723944287417" duration="108000" />
+      <workItem from="1723944401332" duration="305000" />
+      <workItem from="1723944719191" duration="218000" />
+      <workItem from="1723944944310" duration="145000" />
+      <workItem from="1723945094700" duration="166000" />
+      <workItem from="1723945266118" duration="61000" />
+      <workItem from="1723945336097" duration="344000" />
+      <workItem from="1723945693380" duration="808000" />
+      <workItem from="1723946507766" duration="424000" />
+      <workItem from="1723946938469" duration="11951000" />
+      <workItem from="1724244820625" duration="5997000" />
+      <workItem from="1724250833300" duration="1819000" />
+    </task>
+    <task id="LOCAL-00001" summary="inital commit">
+      <option name="closed" value="true" />
+      <created>1723943367609</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1723943367609</updated>
+    </task>
+    <task id="LOCAL-00002" summary="inital commit">
+      <option name="closed" value="true" />
+      <created>1723943374892</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1723943374892</updated>
+    </task>
+    <task id="LOCAL-00003" summary="inital commit">
+      <option name="closed" value="true" />
+      <created>1723943534782</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1723943534782</updated>
+    </task>
+    <task id="LOCAL-00004" summary="inital commit">
+      <option name="closed" value="true" />
+      <created>1723943716265</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1723943716265</updated>
+    </task>
+    <task id="LOCAL-00005" summary="implemented user login and registeration">
+      <option name="closed" value="true" />
+      <created>1723954358268</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1723954358268</updated>
+    </task>
+    <task id="LOCAL-00006" summary="implemented user login and registeration">
+      <option name="closed" value="true" />
+      <created>1723954590392</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1723954590392</updated>
+    </task>
+    <task id="LOCAL-00007" summary="implemented user login and registeration">
+      <option name="closed" value="true" />
+      <created>1723954607808</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1723954607808</updated>
+    </task>
+    <task id="LOCAL-00008" summary="implemented user login and registeration">
+      <option name="closed" value="true" />
+      <created>1723954972510</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1723954972510</updated>
+    </task>
+    <task id="LOCAL-00009" summary="implemented user login and registeration">
+      <option name="closed" value="true" />
+      <created>1723955085934</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955085934</updated>
+    </task>
+    <task id="LOCAL-00010" summary="implemented user login and registeration">
+      <option name="closed" value="true" />
+      <created>1723955117327</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955117327</updated>
+    </task>
+    <task id="LOCAL-00011" summary="implemented user login and registeration">
+      <option name="closed" value="true" />
+      <created>1723955146809</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955146809</updated>
+    </task>
+    <task id="LOCAL-00012" summary="fastapi">
+      <option name="closed" value="true" />
+      <created>1723955151570</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955151570</updated>
+    </task>
+    <task id="LOCAL-00013" summary="README">
+      <option name="closed" value="true" />
+      <created>1723955341667</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955341668</updated>
+    </task>
+    <task id="LOCAL-00014" summary="README">
+      <option name="closed" value="true" />
+      <created>1723955728578</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955728578</updated>
+    </task>
+    <task id="LOCAL-00015" summary="README">
+      <option name="closed" value="true" />
+      <created>1723955733419</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955733419</updated>
+    </task>
+    <task id="LOCAL-00016" summary="clean files from rebase">
+      <option name="closed" value="true" />
+      <created>1723955813725</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1723955813725</updated>
+    </task>
+    <task id="LOCAL-00017" summary="creating another form">
+      <option name="closed" value="true" />
+      <created>1723956770576</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1723956770576</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="inital commit" />
+    <MESSAGE value="implemented user login and registeration" />
+    <MESSAGE value="fastapi" />
+    <MESSAGE value="README" />
+    <MESSAGE value="clean files from rebase" />
+    <MESSAGE value="creating another form" />
+    <option name="LAST_COMMIT_MESSAGE" value="creating another form" />
+  </component>
+</project>
