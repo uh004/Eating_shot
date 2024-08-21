@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block title %}로그인 페이지{% endblock %}
-
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+{% endblock %}
 {% block content %}
     <div class="main_container">
         <div class="fade-out-box">
@@ -15,11 +17,11 @@
             <div class="forms">
                 <form action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
-                    <h5>{{form.username.label}}</h5>
+                    <h3>{{form.username.label}}</h3>
                     {{form.username}}
-                    <h5>{{form.email.label}}</h5>
+                    <h3>{{form.email.label}}</h3>
                     {{form.email}}
-                    <h5>{{form.password.label}}</h5>
+                    <h3>{{form.password.label}}</h3>
                     {{form.password}}
                     <input type="submit" value="로그인">
                 </form>

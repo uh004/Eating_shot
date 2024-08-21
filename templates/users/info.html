@@ -2,115 +2,137 @@
 {% load static %}
 
 {% block title %}Info Page{% endblock %}
-
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/info.css' %}">
+{% endblock %}
 {% block content %}
     <div class="main_container">
         <div class="banner">
             <img src="{% static 'img/chara1.png' %}" width="100px" style="margin: 0 auto;" id="chara" alt="">
 
             <div class="forms">
-                <form id="multi-step-form" style="display: flex;" action="{% url 'info' %}" method="POST">
+                <form style="display: flex;" method="POST" action="{% url 'info' %}">
                     {% csrf_token %}
                     <div class="slide" id="form1">
-                        <label>키를 입력해주세요</label>
-                        <input type="number" placeholder="cm" required>
+                        <label>키와 체중을 입력해주세요</label>
+                        <div style="display: flex;" class="kgcm">
+                            <label>
+                                <input type="number" name="{{ form.height.name }}" placeholder="cm"
+                                       style="margin-right: 18px;">
+                            </label>
+                            <label>
+                                <input type="number" name="{{ form.weight.name }}" placeholder="kg">
+                            </label>
+                        </div>
 
-                        <label>체중을 입력해주세요</label>
-                        <input type="number" placeholder="kg" required>
+                        <label>나이를 입력해주세요
+                            <input type="number" name="{{ form.age.name }}" placeholder="세">
+                        </label>
 
-                        <label>생년월일을 입력해주세요</label>
-                        <input type="date" required>
+                        <label>생년월일을 입력해주세요
+                            <input type="date" name="{{ form.birthdate.name }}">
+                        </label>
 
                         <label>성별을 선택해주세요</label>
+
                         <div style="display: flex; margin-top: 15px;" class="choose_gender">
-                            <input id="radio1" type="radio" name="gender" required>
+                            <input id="radio1" type="radio" name="{{ form.gender.name }}" value="male">
                             <label for="radio1" class="radio_label" style="margin-right: 20px;">
-                                <img src="{% static 'img/male.png' %}" width="100px" style="margin: 12px auto;">
-                                <p style="margin: 0 auto;">남자</p>
+                                <img src="{% static 'img/male.png' %}" width="80px" height="90px"
+                                     style="margin: 12px auto;" alt="">
+                                남자
                             </label>
 
-                            <input id="radio2" type="radio" name="gender" required>
+                            <input id="radio2" type="radio" name="{{ form.gender.name }}" value="female">
                             <label for="radio2" class="radio_label">
-                                <img src="{% static 'img/female.png' %}" width="100px" style="margin: 12px auto;">
-                                <p style="margin: 0 auto;">여자</p>
+                                <img src="{% static 'img/female.png' %}" width="80px" style="margin: 12px auto;" alt="">
+                                여자
                             </label>
+
                         </div>
                     </div>
 
                     <div class="slide" id="form2">
                         <label style="margin-bottom: 10px;">당신의 목표는?</label>
                         <div style="display: flex; margin-top:15px;" class="goal">
-                            <input id="radio3" type="radio" name="goal">
+                            <input id="radio3" type="radio" name="{{ form.goal.name }}" value="chronic_disease">
                             <label for="radio3" class="radio_label1">만성질환</label>
                         </div>
 
                         <div style="display: flex; margin-bottom: 15px;" class="goal">
-                            <input id="radio4" type="radio" name="goal">
+                            <input id="radio4" type="radio" name="{{ form.goal.name }}" value="healthy_diet">
                             <label for="radio4" class="radio_label1">건강한 식습관, 체중 감량</label>
                         </div>
 
                         <label>관리가 필요한 질환을 선택해주세요.</label>
+
                         <p style="color: gray; margin-bottom: 5px;">당뇨</p>
                         <div style="display: flex; margin-bottom: 15px;" class="choose_status">
-                            <input id="check1" type="checkbox" name="diabetes">
+                            <input id="check1" type="checkbox" name="{{ form.health_conditions.name }}" value="type1">
                             <label for="check1" class="radio_label2" style="margin-right: 20px;">1형 당뇨</label>
 
-                            <input id="check2" type="checkbox" name="diabetes">
+                            <input id="check2" type="checkbox" name="{{ form.health_conditions.name }}" value="type2">
                             <label for="check2" class="radio_label2">2형 당뇨</label>
                         </div>
 
                         <div style="display: flex; margin-bottom: 15px;" class="choose_status">
-                            <input id="check3" type="checkbox" name="diabetes">
+                            <input id="check3" type="checkbox" name="{{ form.health_conditions.name }}"
+                                   value="gestational">
                             <label for="check3" class="radio_label2" style="margin-right: 20px;">임신성 당뇨</label>
 
-                            <input id="check4" type="checkbox" name="diabetes">
+                            <input id="check4" type="checkbox" name="{{ form.health_conditions.name }}"
+                                   value="prediabetes">
                             <label for="check4" class="radio_label2">내당증</label>
                         </div>
 
                         <p style="color: gray; margin-bottom: 5px;">혈압</p>
                         <div style="display: flex; margin-bottom: 15px;" class="choose_status">
-                            <input id="check5" type="checkbox" name="blood_pressure">
+                            <input id="check5" type="checkbox" name="{{ form.health_conditions.name }}" value="high">
                             <label for="check5" class="radio_label2" style="margin-right: 20px;">고혈압</label>
 
-                            <input id="check6" type="checkbox" name="blood_pressure">
+                            <input id="check6" type="checkbox" name="{{ form.health_conditions.name }}" value="low">
                             <label for="check6" class="radio_label2">저혈압</label>
                         </div>
 
                         <p style="color: gray; margin-bottom: 5px;">기타 질환</p>
                         <div style="display: flex; margin-bottom: 15px;" class="choose_status">
-                            <input id="check7" type="checkbox" name="other_conditions">
+                            <input id="check7" type="checkbox" name="{{ form.health_conditions.name }}"
+                                   value="hyperlipidemia">
                             <label for="check7" class="radio_label2" style="margin-right: 20px;">고지혈증</label>
 
-                            <input id="check8" type="checkbox" name="other_conditions">
+                            <input id="check8" type="checkbox" name="{{ form.health_conditions.name }}" value="obesity">
                             <label for="check8" class="radio_label2">비만</label>
                         </div>
                     </div>
 
                     <div class="slide" id="form3">
-                        <img src="{% static 'img/chara.png' %}" width="200px" style="margin-top: 100px;">
-                        <input type="submit">
+                        <img src="{% static 'img/chara1.png' %}" width="200px" style="margin: 20px 110px;" alt="">
+                        <p style="text-align: center; font-size: 20px;">매일의 작은 변화가 큰 건강을 만듭니다.<br>당뇨병 관리, 저희가 도와드릴게요.
+                        </p>
+                        <input type="submit" value="앱 시작하기">
                     </div>
                 </form>
-                <button type="button" class="btn" id="btn" style="width: 150px; margin-left: 320px;"> > NEXT </button>
+                <button type="button" class="btn" id="btn" style="width: 150px; margin-left: 320px;"> > NEXT</button>
             </div>
         </div>
     </div>
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'js/slide.js' %}"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             let now = 1;
-    
-            $('.btn').on('click', function() {
-                if (now < 3) {
+            const totalSteps = 3;
+
+            $('.btn').on('click', function () {
+                if (now < totalSteps) {
                     $('form').css('transform', `translateX(-${480 * now}px)`);
                     now++;
                 }
 
-                if (now == 3) {
+                if (now === totalSteps) {
                     $('.btn').css('display', 'none');
                     $('#chara').css('visibility', 'hidden');
                 }
@@ -118,4 +140,3 @@
         });
     </script>
 {% endblock %}
-
