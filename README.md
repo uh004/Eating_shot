@@ -4,6 +4,7 @@
 
 ## 명령어
 
+- `poetry install` : 프로젝트 요구사항 설치
 - `python manage.py runserver` : 서버 실행
 - `docker compose up -d` : 카프카
 - `python -m run_consumer` : 카프카 먹기 시작
