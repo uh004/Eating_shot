@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import uvicorn
 
 app = FastAPI()
 
@@ -19,4 +20,7 @@ async def dummy_inference():
     return {
         "prediction": "This is a dummy prediction",
         "probability": 0.99,
-    }, 200
+    }
+
+if __name__ == "__main__":
+    uvicorn.run(app, port=8099)
