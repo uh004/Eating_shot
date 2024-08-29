@@ -44,33 +44,3 @@ class CustomUserSerializer(serializers.ModelSerializer):
             password = validated_data.pop("password")
             instance.set_password(password)
         return super().update(instance, validated_data)
-
-
-class ChangePasswordSerializer(serializers.Serializer):
-    old_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
-
-    def validate_old_password(self, value):
-        user = self.context["request"].user
-        if not user.check_password(value):
-            raise serializers.ValidationError("Old password is not correct")
-        return value
-
-
-class RequestPasswordResetSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-
-    def validate_email(self, value):
-        if not CustomUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("No user found with this email address")
-        return value
-
-
-class ResetPasswordSerializer(serializers.Serializer):
-    new_password = serializers.CharField(required=True)
-    confirm_password = serializers.CharField(required=True)
-
-    def validate(self, data):
-        if data["new_password"] != data["confirm_password"]:
-            raise serializers.ValidationError("The two password fields didn't match.")
-        return data

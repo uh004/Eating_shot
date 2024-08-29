@@ -57,3 +57,44 @@ def info_view(request):
 # def get_auth_token(request):
 #     token, created = Token.objects.get_or_create(user=request.user)
 #     return JsonResponse({'token': token.key})
+
+
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+
+# from django.contrib.auth.decorators import login_required
+# from .models import UploadedImage
+# from ai_workload.tasks import queue_inference_task
+#
+#
+# @login_required
+# def upload_image(request):
+#     if request.method == "POST":
+#         image = request.FILES.get("image")
+#         if image:
+#             # Save the uploaded image
+#             uploaded_image = UploadedImage.objects.create(
+#                 user=request.user, image=image
+#             )
+#
+#             # Queue the inference task
+#             queue_inference_task.delay(uploaded_image.id)
+#
+#             return redirect("image_status", image_id=uploaded_image.id)
+#
+#     return render(request, "webapp/upload.html")
+#
+#
+# @login_required
+# def image_status(request, image_id):
+#     image = UploadedImage.objects.get(id=image_id)
+#     return render(request, "webapp/status.html", {"image": image})

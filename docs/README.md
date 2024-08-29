@@ -19,16 +19,18 @@
 3. dockerize (with cuda enabled)
 4. ???
 
-## changes
+## plan 1.5
 
 1. separated api, users, ai_workload and webapp
 
 ## plan 2
 
 2. create app 'ai_workload'
-    1. create model for ai workload queue. yes
-    1. Kafka.
-    2. separate server from app ai_workload. yes
+    1. create model for ai workload queue. done
+    1. Kafka. done
+    2. separate server from app ai_workload. done
+
+used djangorestframework_simplejwt instead of just pyjwt and the large amount of work
 
 ## plan 3
 
@@ -42,4 +44,3 @@
 =??uQq9qEjChT?8
 ```
 
-used djangorestframework_simplejwt instead of just pyjwt and the large amount of work
