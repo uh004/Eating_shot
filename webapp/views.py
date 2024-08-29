@@ -50,3 +50,10 @@ def info_view(request):
     else:
         form = HealthInfoForm()
     return render(request, "users/info.html", {"form": form})
+
+
+# # TODO: regenerate?, logout, change password, etc.
+# @login_required
+# def get_auth_token(request):
+#     token, created = Token.objects.get_or_create(user=request.user)
+#     return JsonResponse({'token': token.key})
