@@ -8,4 +8,4 @@ graph TD
     A -->|Check Result| E
 ```
 
-TODO: Celery??
+TODO: Celery?? Django Channels?? (tasks.py, inference_client.py)
