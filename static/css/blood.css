@@ -1,10 +1,6 @@
 @font-face {
     font-family: 'pretendard';
-    src: url('Pretendard-Bold.ttf');
-}
-
-* {
-    font-family: 'pretendard';
+    src: url('../Pretendard-Bold.ttf');
 }
 
 .main_container {
@@ -111,7 +107,7 @@
     background-color: white;
     padding: 8px 12px;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
 }
 
@@ -178,21 +174,21 @@ select {
 }
 
 .blood_sugar {
-    display: flex; 
-    background-color: #F2F4F5; 
-    height: 100px; 
-    border-radius: 15px; 
+    display: flex;
+    background-color: #F2F4F5;
+    height: 100px;
+    border-radius: 15px;
     margin-bottom: 20px;
     padding: 20px;
 }
 
 .blood_sugar p {
-    width: 120px; 
-    height: 80px; 
-    font-size: 26px; 
-    padding: 11px; 
-    margin: 0px; 
-    line-height: 80px; 
+    width: 120px;
+    height: 80px;
+    font-size: 26px;
+    padding: 11px;
+    margin: 0px;
+    line-height: 80px;
     color: #979CA9;
 }
 

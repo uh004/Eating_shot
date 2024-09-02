@@ -1,10 +1,6 @@
 @font-face {
     font-family: 'pretendard';
-    src: url('Pretendard-Bold.ttf');
-}
-
-* {
-    font-family: 'pretendard';
+    src: url('../Pretendard-Bold.ttf');
 }
 
 .main_container {
@@ -70,58 +66,58 @@
 }
 
 
-.tab{
-    float:left; 
-    width:600px; 
-    height:290px;
+.tab {
+    float: left;
+    width: 600px;
+    height: 290px;
 }
 
-.tabnav{
-    font-size:0; 
-    width:480px; 
+.tabnav {
+    font-size: 0;
+    width: 480px;
     padding: 0px;
     border: 0px;
 }
 
-.tabnav li{
-    display: inline-block;  
-    height:50px; 
-    text-align:center; 
+.tabnav li {
+    display: inline-block;
+    height: 50px;
+    text-align: center;
     width: 240px;
 }
 
-.tabnav li a:before{
-    content:""; 
-    position:absolute; 
-    left:0; 
-    top:0px; 
-    width:100%; 
-    height:3px; 
+.tabnav li a:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 3px;
 }
 
-.tabnav li a.active:before{
-    background:#7ea21e;
+.tabnav li a.active:before {
+    background: #7ea21e;
 }
 
 
-.tabnav li a{ 
-    position:relative; 
-    display:block; 
-    background: #f8f8f8; 
+.tabnav li a {
+    position: relative;
+    display: block;
+    background: #f8f8f8;
     color: #000;
-    padding:0px; 
-    line-height:46px; 
-    text-decoration:none; 
-    font-size:16px;
+    padding: 0px;
+    line-height: 46px;
+    text-decoration: none;
+    font-size: 16px;
 }
 
-.tabnav li a:hover, .tabnav li a.active{
-    background:#fff; 
-    color:#7ea21e; 
+.tabnav li a:hover, .tabnav li a.active {
+    background: #fff;
+    color: #7ea21e;
 }
 
-.tabcontent{
-    border:none;
+.tabcontent {
+    border: none;
     margin: 10px 20px;
     max-height: 677px;
     overflow: scroll;
@@ -131,8 +127,8 @@
     display: none;
 }
 
-.diet_report{
-    height:420px;
+.diet_report {
+    height: 420px;
     padding: 20px;
     background-color: #82C8D2;
     border-radius: 30px;
@@ -161,8 +157,8 @@
     padding: 3px 7px;
 }
 
-.exercise_report{
-    height:420px;
+.exercise_report {
+    height: 420px;
     padding: 20px;
     background-color: #78B7D0;
     border-radius: 30px;
@@ -174,8 +170,8 @@
     text-align: center;
 }
 
-.blood_report{
-    height:420px;
+.blood_report {
+    height: 420px;
     padding: 20px;
     background-color: #FF6969;
     border-radius: 30px;

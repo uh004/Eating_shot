@@ -1,10 +1,6 @@
 @font-face {
     font-family: 'pretendard';
-    src: url('Pretendard-Bold.ttf');
-}
-
-* {
-    font-family: 'pretendard';
+    src: url('../Pretendard-Bold.ttf');
 }
 
 .main_container {
@@ -60,14 +56,14 @@
     background-color: white;
     padding: 8px;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
 }
 
 .all_kcal progress {
     appearance: none;
     width: 428px;
 }
-  
+
 .all_kcal progress::-webkit-progress-bar {
     background: #f0f0f0;
     border-radius: 12px;
@@ -95,14 +91,14 @@
     font-size: 16px;
     border-radius: 10px;
     margin: 14px 0px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
     background-color: #00bbd49b;
     color: white;
     border: none;
 }
 
 .meals {
-    overflow:scroll;
+    overflow: scroll;
     height: 420px;
 }
 

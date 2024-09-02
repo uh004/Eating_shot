@@ -1,10 +1,6 @@
 @font-face {
     font-family: 'pretendard';
-    src: url('Pretendard-Bold.ttf');
-}
-
-* {
-    font-family: 'pretendard';
+    src: url('../Pretendard-Bold.ttf');
 }
 
 .main_container {
@@ -60,14 +56,14 @@
     background-color: white;
     padding: 8px;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
 }
 
 .all_kcal progress {
     appearance: none;
     width: 428px;
 }
-  
+
 .all_kcal progress::-webkit-progress-bar {
     background: #f0f0f0;
     border-radius: 12px;
@@ -95,14 +91,14 @@
     font-size: 16px;
     border-radius: 10px;
     margin: 14px 0px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
     background-color: #00bbd49b;
     color: white;
     border: none;
 }
 
 .meals {
-    overflow:scroll;
+    overflow: scroll;
     height: 420px;
 }
 
@@ -216,8 +212,8 @@ select {
 /* 운동  */
 
 .for_list {
-    display: flex; 
-    padding: 10px; 
+    display: flex;
+    padding: 10px;
     height: 55px;
 }
 
@@ -315,13 +311,13 @@ input[type="submit"] {
     padding: 10px;
     border-radius: 10px;
     margin: 15px 0px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
     background-color: white;
     border: none;
     height: 40px;
 }
 
-.ex p{
+.ex p {
     margin: auto 0px;
     font-size: 22px;
 }
@@ -348,7 +344,6 @@ input[type=radio]:checked + label {
     background-color: #4E7854;
     color: white;
 }
-
 
 
 /* 당뇨 지표 버튼 리스트 */
@@ -397,62 +392,62 @@ input[type=radio]:checked + label {
     background-color: white;
     padding: 8px 12px;
     border-radius: 10px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
 }
 
-.tab{
-    float:left; 
-    width:600px; 
-    height:290px;
+.tab {
+    float: left;
+    width: 600px;
+    height: 290px;
 }
 
-.tabnav{
-    font-size:0; 
-    width:480px; 
+.tabnav {
+    font-size: 0;
+    width: 480px;
     padding: 0px;
     border: 0px;
 }
 
-.tabnav li{
-    display: inline-block;  
-    height:50px; 
-    text-align:center; 
+.tabnav li {
+    display: inline-block;
+    height: 50px;
+    text-align: center;
     width: 240px;
 }
 
-.tabnav li a:before{
-    content:""; 
-    position:absolute; 
-    left:0; 
-    top:0px; 
-    width:100%; 
-    height:3px; 
+.tabnav li a:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0px;
+    width: 100%;
+    height: 3px;
 }
 
-.tabnav li a.active:before{
-    background:#7ea21e;
+.tabnav li a.active:before {
+    background: #7ea21e;
 }
 
 
-.tabnav li a{ 
-    position:relative; 
-    display:block; 
-    background: #f8f8f8; 
+.tabnav li a {
+    position: relative;
+    display: block;
+    background: #f8f8f8;
     color: #000;
-    padding:0px; 
-    line-height:46px; 
-    text-decoration:none; 
-    font-size:16px;
+    padding: 0px;
+    line-height: 46px;
+    text-decoration: none;
+    font-size: 16px;
 }
 
-.tabnav li a:hover, .tabnav li a.active{
-    background:#fff; 
-    color:#7ea21e; 
+.tabnav li a:hover, .tabnav li a.active {
+    background: #fff;
+    color: #7ea21e;
 }
 
-.tabcontent{
-    border:none;
+.tabcontent {
+    border: none;
     margin: 10px 20px;
     max-height: 677px;
     overflow: scroll;
@@ -462,8 +457,8 @@ input[type=radio]:checked + label {
     display: none;
 }
 
-.diet_report{
-    height:420px;
+.diet_report {
+    height: 420px;
     padding: 20px;
     background-color: #82C8D2;
     border-radius: 30px;
@@ -492,8 +487,8 @@ input[type=radio]:checked + label {
     padding: 3px 7px;
 }
 
-.exercise_report{
-    height:420px;
+.exercise_report {
+    height: 420px;
     padding: 20px;
     background-color: #78B7D0;
     border-radius: 30px;
@@ -505,8 +500,8 @@ input[type=radio]:checked + label {
     text-align: center;
 }
 
-.blood_report{
-    height:420px;
+.blood_report {
+    height: 420px;
     padding: 20px;
     background-color: #FF6969;
     border-radius: 30px;
