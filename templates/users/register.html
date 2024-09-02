@@ -3,7 +3,7 @@
 
 {% block title %}회원가입 페이지{% endblock %}
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock %}
 {% block content %}
     <div class="main_container">
@@ -13,14 +13,14 @@
             <div class="forms">
                 <form action="{% url 'register' %}" method="POST">
                     {% csrf_token %}
-                    <h3>{{form.username.label}}</h3>
-                    {{form.username}}
-                    <h3>{{form.email.label}}</h3>
-                    {{form.email}}
-                    <h3>{{form.password1.label}}</h3>
-                    {{form.password1}}
-                    <h3>{{form.password2.label}}</h3>
-                    {{form.password2}}
+                    <h3>{{ form.username.label }}</h3>
+                    {{ form.username }}
+                    <h3>{{ form.email.label }}</h3>
+                    {{ form.email }}
+                    <h3>{{ form.password1.label }}</h3>
+                    {{ form.password1 }}
+                    <h3>{{ form.password2.label }}</h3>
+                    {{ form.password2 }}
                     <input type="submit" value="회원가입">
                 </form>
             </div>

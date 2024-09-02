@@ -1,12 +1,98 @@
 {% extends "users/base.html" %}
-{% load static %}
 
+{% load static %}
 {% block title %}메인 페이지{% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/report.css' %}">
+{% endblock %}
+
 {% block content %}
-    <div class="main_container">
-        <div class="banner">
-            <img src="{% static 'img/chara1.png' %}" width="100px" style="margin: 0 auto;" id="chara" alt="">
+    <div class="main_container" id="main">
+        <div class="menu">
+            <img src="{% static 'img/logo.jpg' %}" style="margin: 10px 190px;" width="100px" alt="">
+            <ul>
+                <li id="menu1"><img src="{% static 'img/rice.png' %}" width="40px" alt="">식단</li>
+                <li id="menu2"><img src="{% static 'img/dumbbell.png' %}" width="40px" alt="">운동</li>
+                <li id="menu3"><img src="{% static 'img/blood.png' %}" width="40px" alt="">당뇨 지표</li>
+                <li id="menu4"><img src="{% static 'img/report.png' %}" width="40px" alt="">보고서</li>
+                <li id="menu5"><img src="{% static 'img/user.png' %}" width="40px" alt="">마이</li>
+            </ul>
         </div>
+
+
+        <div style="display: flex; overflow: hidden;" class="for_record">
+            <!-- 식단 -->
+
+            <div id="insert"></div>
+
+        </div>
+
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        // dummy code
+        $(document).ready(function () {
+            let now = 0;
+
+            $('.meals_btn').on('click', function () {
+                now++;
+                let info;
+                if (now % 2 === 1) {
+                    info = document.getElementById('meal_info')
+                    info.style.display = "block";
+                } else {
+                    info = document.getElementById('meal_info')
+                    info.style.display = "none";
+                }
+            });
+        });
+
+
+        // 메뉴 클릭 시 해당 내용을 불러오는 ajax
+        $(document).ready(function () {
+            let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
+            const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
+
+            $(`#menu${now}`).css('background-color', '#00BCD4'); // 이전 메뉴의 배경색 초기화
+
+            $.ajax({
+                url: `/load_content/${arr[now]}/`,
+                success: function (data) {
+                    $('#insert').html(data);
+                }
+            });
+
+            $('ul li').on('click', function () {
+                $(`#menu${now}`).css('background-color', '');
+                now = $(this).attr('id').replace('menu', '');
+                localStorage.setItem('currentTab', now);  // Save the current tab index
+                $(`#menu${now}`).css('background-color', '#00BCD4');
+
+                $.ajax({
+                    url: `/load_content/${arr[now]}/`,
+                    success: function (data) {
+                        $('#insert').html(data);
+                    }
+                });
+            });
+        });
+
+        $(function () {
+            $('.tabcontent > div').hide();
+            $('.tabnav a').click(function () {
+                $('.tabcontent > div').hide().filter(this.hash).fadeIn();
+                $('.tabnav a').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            }).filter(':eq(0)').click();
+        });
+
+    </script>
 {% endblock %}

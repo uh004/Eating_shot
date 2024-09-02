@@ -1,0 +1,36 @@
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/blood.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+{% endblock %}
+<div class="main_container" id="main">
+
+    <div class="deco">
+        <h2>혈압 기록하기</h2>
+        <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
+    </div>
+
+    {# TODO: form #}
+    <form action="home.html">
+
+        <input type="date">
+
+        <div class="blood_sugar">
+            <p>수축기</p>
+            <input type="number" id="blood_2" placeholder="120">
+            <p style="width: 110px;">mmHg</p>
+        </div>
+
+        <div class="blood_sugar">
+            <p>이완기</p>
+            <input type="number" id="blood_3" placeholder="80">
+            <p style="width: 110px;">mmHg</p>
+        </div>
+
+        <p style="font-size: 20px; padding: 40px 0px; text-align: center;">혈압 수치는 <span
+                style="color: #ff5757; font-size: 25px;">주의</span>입니다.</p>
+
+        <input type="submit" value="기록하기"/>
+    </form>
+
+</div>

@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, HealthInfoForm
 
 
+@login_required
 def index(request):
     return render(request, "users/home.html")
 
@@ -27,6 +28,9 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             return redirect("info")
+        else:
+            # TODO: show error message
+            return render(request, "users/login.html", {"form": form})
     else:
         form = CustomAuthenticationForm()
     return render(request, "users/login.html", {"form": form})
@@ -71,6 +75,7 @@ def info_view(request):
 #
 #
 
+
 # from django.contrib.auth.decorators import login_required
 # from .models import UploadedImage
 # from ai_workload.tasks import queue_inference_task
@@ -98,3 +103,33 @@ def info_view(request):
 # def image_status(request, image_id):
 #     image = UploadedImage.objects.get(id=image_id)
 #     return render(request, "webapp/status.html", {"image": image})
+
+
+#
+def load_content(request, menu):
+    template_name = f"users/{menu}.html"
+    return render(request, template_name)
+
+
+def diet_form(request):
+    return render(request, "users/diet_form.html")
+
+
+def blood_1(request):
+    return render(request, "users/blood_form1.html")
+
+
+def blood_2(request):
+    return render(request, "users/blood_form2.html")
+
+
+def blood_3(request):
+    return render(request, "users/blood_form3.html")
+
+
+def exercise_form(request):
+    return render(request, "users/exercise_form.html")
+
+
+def exercise_list(request):
+    return render(request, "users/exercise_list.html")

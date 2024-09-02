@@ -1,0 +1,39 @@
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/blood.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+{% endblock %}
+<div class="main_container" id="main">
+    
+    <div class="deco">
+        <h2>혈당 기록하기</h2>
+        <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
+    </div>
+    
+    {# TODO: form #} 
+    <form action="home.html">
+        <select>
+            <option>아침 식전</option>
+            <option>점심 식전</option>
+            <option>저녁 식전</option>
+            <option>아침 식후</option>
+            <option>점심 식후</option>
+            <option>저녁 식후</option>
+            <option>공복</option>
+        </select>
+        
+        <input type="date">
+        
+        <div class="blood_sugar">
+            <p>혈당 수치</p>
+            <input type="number" id="blood_1" placeholder="100">
+            <p style="width: 110px;">mg / dL</p>
+        </div>
+        
+        <p style="font-size: 20px; padding: 60px 0px; text-align: center;">혈당 수치는 <span
+                style="color: #ff5757; font-size: 25px;">정상</span>입니다.</p>
+        
+        <input type="submit" value="기록하기"/>
+    </form>
+
+</div>

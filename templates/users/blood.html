@@ -1,0 +1,48 @@
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/blood.css' %}">
+{% endblock %}
+
+
+<div id="blood">
+        <!-- 당뇨 지표 -->
+    {# TODO: 당뇨 지표 #}
+        <div class="banner" id="indicator">
+            <div class="slide" id="indicator_info">
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">혈당</p>
+                    <p style="font-size: 20px; margin: 14px 0;">자기 전 | <span style="color: red;">120</span>mg/DL</p>
+                </div>
+
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">혈압</p>
+                    <p style="font-size: 20px; margin: 14px 0;"><span style="color: red;">120</span>/<span style="color: red;">80</span>mmHg</p>
+                </div>
+            </div>
+
+            <button type="button" class="plus">
+                <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="openPopup3()" alt="">
+            </button>
+        </div>
+
+    <div id="popup3" class="popup-overlay3">
+        <div class="popup-content3">
+            <ul>
+                <li style="display: flex;" onclick="window.location.href = {% url 'blood1' %}"><img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈당</li>
+                <li style="display: flex;" onclick="window.location.href = {% url 'blood2' %}"><img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈압</li>
+                <li style="display: flex;" onclick="window.location.href = {% url 'blood3' %}"><img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">당화혈색소</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %} 
+<script>
+    function openPopup3() {
+        const popup = document.getElementById("popup3");
+        popup.style.visibility = "visible";
+        popup.style.opacity = "1";
+    }
+</script>
+{% endblock %}
