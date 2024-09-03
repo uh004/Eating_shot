@@ -51,6 +51,17 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
 3. ???
 4. Profit
 
+## plan 2.1.1
+
+1. create the databases from plan 2.1
+2. gomin on 'webapp'
+    1. import the functions and classes from 'ai_workload'
+    2. separate module for shared functions
+    3. diango signals
+    4. a service layer
+    5. ???
+    6. i should experiment by using git branches i guess
+
 ## plan 3
 
 1. implement ai related stuff
