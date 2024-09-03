@@ -62,6 +62,12 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     5. ???
     6. i should experiment by using git branches i guess
 
+went for approach number 1: import the functions and classes from 'ai_workload'
+
+## plan 2.2
+
+1. what should i do next?
+
 ## plan 3
 
 1. implement ai related stuff
