@@ -13,7 +13,7 @@
     <form method="post" action="">
         {% csrf_token %}
         
-        <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
+        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
         
         <div class="blood_sugar">
             <p style="width: 140px;">{{ form.hba1c.label }}</p>
@@ -30,6 +30,11 @@
 </div>
 {% block script %}
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('date_input');
+            dateInput.value = new Date().toISOString().split('T')[0];
+        });
+        
         document.querySelector('form').addEventListener('change', function (event) {
             event.preventDefault(); // Prevent form submission
 

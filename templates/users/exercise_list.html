@@ -7,24 +7,26 @@
 {% endblock %}
 
 {% block content %}
-<div class="main_container" id="main">
-<div class="for_list">
-    <img src="{% static 'img/back.png' %}" width="36px" height="36px" style="padding: 10px 0;" onclick="window.location.href = {% url 'index' %}" alt="">
-    <h2>운동 목록</h2>
-    
-    <button type="button" class="plus">
-        <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="window.location.href = {% url 'exercise_form' %}" alt="">
-    </button>
-</div>
-
-<div class="list">
-    <p style="font-size: 20px; color: #89909C;">총 20개</p>
-    <ul>
-        <li onclick="window.location.href = {% url 'index' %}">
-            <p style="font-size: 20px;">걷기</p>
-            <p style="color: #9096A3; margin: 0 auto;">유산소</p>
-        </li>
-    </ul>
-</div>
-</div>
+    <div class="main_container" id="main">
+        <div class="for_list">
+            <img src="{% static 'img/back.png' %}" width="36px" height="36px" style="padding: 10px 0;"
+                 onclick="window.location.href = {% url 'index' %}" alt="">
+            <h2>운동 목록</h2>
+            
+            <button type="button" class="plus">
+                <img src="{% static 'img/plus-sign.png' %}" width="50px"
+                     onclick="window.location.href = {% url 'exercise_form' %}" alt="">
+            </button>
+        </div>
+        
+        <div class="list">
+            <p style="font-size: 20px; color: #89909C;">총 20개</p>
+            <ul>
+                <li onclick="window.location.href = {% url 'index' %}">
+                    <p style="font-size: 20px;">걷기</p>
+                    <p style="color: #9096A3; margin: 0 auto;">유산소</p>
+                </li>
+            </ul>
+        </div>
+    </div>
 {% endblock %}

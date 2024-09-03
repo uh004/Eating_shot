@@ -19,7 +19,7 @@
             {% endfor %}
         </select>
         
-        <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
+        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
         
         <div class="blood_sugar">
             <p>{{ form.blood_sugar.label }}</p>
@@ -31,13 +31,18 @@
         <p style="font-size: 20px; padding: 60px 0; text-align: center;">혈당 수치는 <span class="danger-message"
                                                                                       style="color: greenyellow; font-size: 
 25px;">정상</span>입니다.</p>
-
+        
         <input type="submit" value="기록하기"/>
     </form>
 
 </div>
 {% block script %}
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('date_input');
+            dateInput.value = new Date().toISOString().split('T')[0];
+        });
+
         document.querySelector('form').addEventListener('change', function (event) {
             event.preventDefault(); // Prevent form submission
 

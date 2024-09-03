@@ -2,25 +2,26 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
 {% endblock %}
-        
+
 <div id="exercise">
     <div class="banner">
         <div class="slide" id="exercise_info">
             <div class="ex" style="display: flex; margin-top: 0;">
                 <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>
             </div>
-
+            
             <div class="ex" style="display: flex;">
                 <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>
             </div>
-
+            
             <div class="ex" style="display: flex;">
                 <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>
             </div>
         </div>
     </div>
-
+    
     <button type="button" class="plus">
-        <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="window.location.href = {% url 'exercise_list' %}" alt="">
+        <img src="{% static 'img/plus-sign.png' %}" width="50px"
+             onclick="window.location.href = {% url 'exercise_list' %}" alt="">
     </button>
 </div>

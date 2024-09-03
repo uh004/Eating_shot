@@ -6,34 +6,47 @@
 {% endblock %}
 
 <div class="main_container" id="main">
-<div class="deco">
-    <h2>걷기</h2>
-    <p style="margin: 10px;">유산소</p>
-    <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;" alt="">
-</div>
-
-<form method="post" action="">
-    {% csrf_token %}
-    <div style="display: flex; background-color: #F2F4F5; height: 60px; border-radius: 15px; margin-bottom: 20px;">
-        {{ form.exercise_time }}
+    <div class="deco">
+        <h2>걷기</h2>
+        <p style="margin: 10px;">유산소</p>
+        <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;"
+             alt="">
     </div>
-    {{ form.date }}
-
-    <div class="strengths" style="display: flex; justify-content: space-between;">
-        <p style="margin: 15px 1px; color: #979CA9;">운동 강도</p>
-
-        <div style="display: flex; justify-content: space-between; width: 230px;" class="check_strength">
-            {% for value, label in form.intensity.field.choices %}
-                <div style="display: flex;" class="strength">
-                    <input id="strength{{ forloop.counter }}" type="radio" name="{{ form.intensity.name }}" value="{{ value }}" {% if form.intensity.value == value %}checked{% endif %}>
-                    <label for="strength{{ forloop.counter }}" class="for_strength">{{ label }}</label>
-                </div>
-            {% endfor %}
+    
+    <form method="post" action="">
+        {% csrf_token %}
+        <div style="display: flex; background-color: #F2F4F5; height: 60px; border-radius: 15px; margin-bottom: 20px;">
+            {{ form.exercise_time }}
         </div>
-    </div>
-
-    <p style="font-size: 20px; padding: 60px 0; text-align: center;">예상 소모 칼로리는 <span style="color: #4E7854; font-size: 25px;">352kcal</span>입니다.</p>
-    <input type="submit" value="기록하기"/>
-</form>
+        
+        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
+        {#    {{ form.date }}#}
+        
+        <div class="strengths" style="display: flex; justify-content: space-between;">
+            <p style="margin: 15px 1px; color: #979CA9;">운동 강도</p>
+            
+            <div style="display: flex; justify-content: space-between; width: 230px;" class="check_strength">
+                {% for value, label in form.intensity.field.choices %}
+                    <div style="display: flex;" class="strength">
+                        <input id="strength{{ forloop.counter }}" type="radio" name="{{ form.intensity.name }}"
+                               value="{{ value }}" {% if form.intensity.value == value %}checked{% endif %}>
+                        <label for="strength{{ forloop.counter }}" class="for_strength">{{ label }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <p style="font-size: 20px; padding: 60px 0; text-align: center;">예상 소모 칼로리는 <span
+                style="color: #4E7854; font-size: 25px;">352kcal</span>입니다.</p>
+        <input type="submit" value="기록하기"/>
+    </form>
 
 </div>
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('date_input');
+            dateInput.value = new Date().toISOString().split('T')[0];
+        });
+    </script>
+{% endblock %}

@@ -4,53 +4,55 @@
 {% endblock %}
 <!-- 보고서 -->
 <div class="banner" id="report">
-
+    
     <ul class="tabnav">
         <li><a href="#tab01">일일보고서</a></li>
         <li><a href="#tab02">주간보고서</a></li>
     </ul>
-
+    
     <div class="tabcontent">
         <div id="tab01">
             <div class="diet_report">
                 <h3 style="margin-top: 0;">오늘 하루 식단</h3>
                 
-                <p style="font-size: 30px; text-align: center;">총 섭취 <span style="font-size: 35px; color: white;">1200 </span>kcal</p>
-
+                <p style="font-size: 30px; text-align: center;">총 섭취 <span
+                        style="font-size: 35px; color: white;">1200 </span>kcal</p>
+                
                 <div class="nutrient">
-                    <p><span style="background-color: #F2F597;">탄</span> 46g</p> 
-                    <p><span>단</span> 26g</p> 
-                    <p><span style="background-color: #AAD9BB;">지</span> 36g</p> 
+                    <p><span style="background-color: #F2F597;">탄</span> 46g</p>
+                    <p><span>단</span> 26g</p>
+                    <p><span style="background-color: #AAD9BB;">지</span> 36g</p>
                 </div>
-
+                
                 <div style="text-align: center;">
                     <img src="{% static 'img/report_chara.png' %}" style="padding: 0 10px;" alt="">
                 </div>
                 
-
+                
                 <p style="font-size: 20px;">300kcal 더 먹을 수 있어요!</p>
-
+            
             </div>
-
+            
             <div class="exercise_report">
                 <h3 style="margin-top: 0;">오늘 하루 운동량</h3>
-            
-                <p style="font-size: 30px; text-align: center; margin: 10px;">총 소모 칼로리 <span style="font-size: 35px; color: white;">300 </span>kcal</p>
-                <p style="font-size: 30px; text-align: center; margin: 10px;">총 운동 시간 <span style="font-size: 35px; color: white;">40 </span>분</p>
-
+                
+                <p style="font-size: 30px; text-align: center; margin: 10px;">총 소모 칼로리 <span
+                        style="font-size: 35px; color: white;">300 </span>kcal</p>
+                <p style="font-size: 30px; text-align: center; margin: 10px;">총 운동 시간 <span
+                        style="font-size: 35px; color: white;">40 </span>분</p>
+                
                 <div style="text-align: center;">
                     <img src="{% static 'img/report_chara.png' %}" style="padding: 0 10px;" alt="">
                 </div>
-
+                
                 <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
-
+            
             </div>
-
+            
             <div class="blood_report">
                 <h3 style="margin-top: 0;">오늘 하루 당뇨 지표</h3>
             
-                
-
+            
             </div>
         </div>
         
@@ -60,20 +62,20 @@
 </div>
 
 {% block scripts %}
-<script>
-    // fade in/out
-    $(function(){
-        $('.tabcontent > div').hide();
-        $('.tabnav a').click(function () {
-        $('.tabcontent > div').hide().filter(this.hash).fadeIn();
-        $('.tabnav a').removeClass('active');
-        $(this).addClass('active');
-        return false;
-        }).filter(':eq(0)').click();
-    });
-    
-    // document.getElementById('forms').onsubmit = function() {
-    //     document.getElementById('loading').style.display = 'block';
-    // };
-</script>
+    <script>
+        // fade in/out
+        $(function () {
+            $('.tabcontent > div').hide();
+            $('.tabnav a').click(function () {
+                $('.tabcontent > div').hide().filter(this.hash).fadeIn();
+                $('.tabnav a').removeClass('active');
+                $(this).addClass('active');
+                return false;
+            }).filter(':eq(0)').click();
+        });
+
+        // document.getElementById('forms').onsubmit = function() {
+        //     document.getElementById('loading').style.display = 'block';
+        // };
+    </script>
 {% endblock %}

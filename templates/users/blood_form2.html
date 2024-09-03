@@ -4,61 +4,68 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 {% endblock %}
 <div class="main_container" id="main">
-
+    
     <div class="deco">
         <h2>혈압 기록하기</h2>
         <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
     </div>
-
+    
     <form method="post" action="">
         {% csrf_token %}
-
-        <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
-
+        
+        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
+        
         <div class="blood_sugar">
             <p>{{ form.systolic.label }}</p>
-            <input type="number" name="{{ form.systolic.name }}" id="blood_2" placeholder="120" value="{{ form.systolic.value }}">
+            <input type="number" name="{{ form.systolic.name }}" id="blood_2" placeholder="120"
+                   value="{{ form.systolic.value }}">
             <p style="width: 110px;">mmHg</p>
         </div>
-
+        
         <div class="blood_sugar">
             <p>{{ form.diastolic.label }}</p>
-            <input type="number" name="{{ form.diastolic.name }}" id="blood_3" placeholder="80" value="{{ form.diastolic.value }}">
+            <input type="number" name="{{ form.diastolic.name }}" id="blood_3" placeholder="80"
+                   value="{{ form.diastolic.value }}">
             <p style="width: 110px;">mmHg</p>
         </div>
-
+        
         <p style="font-size: 20px; padding: 40px 0; text-align: center;">혈압 수치는 <span class="danger-message" style="color: greenyellow; 
         font-size: 25px;">주의</span>입니다.</p>
-
+        
         <input type="submit" value="기록하기"/>
     </form>
 
 </div>
 {% block script %}
-<script>
-    document.querySelector('form').addEventListener('change', function(event) {
-        event.preventDefault(); // Prevent form submission
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('date_input');
+            dateInput.value = new Date().toISOString().split('T')[0];
+        });
 
-        const systolic = document.getElementById('blood_2').value;
-        const diastolic = document.getElementById('blood_3').value;
-        const dangerMessage = document.querySelector('.danger-message');
+        document.querySelector('form').addEventListener('change', function (event) {
+            event.preventDefault(); // Prevent form submission
 
-        let dangerLevel = '정상'; // Default to normal
-        let color = 'greenyellow'; // Default color
+            const systolic = document.getElementById('blood_2').value;
+            const diastolic = document.getElementById('blood_3').value;
+            const dangerMessage = document.querySelector('.danger-message');
 
-        if (systolic >= 180 || diastolic >= 120) {
-            dangerLevel = '위험';
-            color = 'red';
-        } else if (systolic >= 140 || diastolic >= 90) {
-            dangerLevel = '주의';
-            color = 'maroon';
-        } else if (systolic >= 120 || diastolic >= 80) {
-            dangerLevel = '경계';
-            color = 'orange';
-        }
+            let dangerLevel = '정상'; // Default to normal
+            let color = 'greenyellow'; // Default color
 
-        dangerMessage.textContent = dangerLevel;
-        dangerMessage.style.color = color;
-    });
-</script>
+            if (systolic >= 180 || diastolic >= 120) {
+                dangerLevel = '위험';
+                color = 'red';
+            } else if (systolic >= 140 || diastolic >= 90) {
+                dangerLevel = '주의';
+                color = 'maroon';
+            } else if (systolic >= 120 || diastolic >= 80) {
+                dangerLevel = '경계';
+                color = 'orange';
+            }
+
+            dangerMessage.textContent = dangerLevel;
+            dangerMessage.style.color = color;
+        });
+    </script>
 {% endblock %}
