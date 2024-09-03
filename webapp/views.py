@@ -27,7 +27,12 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect("info")
+            if (
+                user.height is None
+            ):  # check for any required fields present in the user model (e.g. height)
+                return redirect("info")
+            else:
+                return redirect("index")
         else:
             # TODO: show error message
             return render(request, "users/login.html", {"form": form})
