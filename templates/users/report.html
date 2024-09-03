@@ -13,7 +13,7 @@
     <div class="tabcontent">
         <div id="tab01">
             <div class="diet_report">
-                <h3 style="margin-top: 0px;">오늘 하루 식단</h3>
+                <h3 style="margin-top: 0;">오늘 하루 식단</h3>
                 
                 <p style="font-size: 30px; text-align: center;">총 섭취 <span style="font-size: 35px; color: white;">1200 </span>kcal</p>
 
@@ -24,7 +24,7 @@
                 </div>
 
                 <div style="text-align: center;">
-                    <img src="img/report_chara.png" style="padding: 0px 10px;">
+                    <img src="{% static 'img/report_chara.png' %}" style="padding: 0 10px;" alt="">
                 </div>
                 
 
@@ -33,13 +33,13 @@
             </div>
 
             <div class="exercise_report">
-                <h3 style="margin-top: 0px;">오늘 하루 운동량</h3>
+                <h3 style="margin-top: 0;">오늘 하루 운동량</h3>
             
                 <p style="font-size: 30px; text-align: center; margin: 10px;">총 소모 칼로리 <span style="font-size: 35px; color: white;">300 </span>kcal</p>
                 <p style="font-size: 30px; text-align: center; margin: 10px;">총 운동 시간 <span style="font-size: 35px; color: white;">40 </span>분</p>
 
                 <div style="text-align: center;">
-                    <img src="img/report_chara.png" style="padding: 0px 10px;">
+                    <img src="{% static 'img/report_chara.png' %}" style="padding: 0 10px;" alt="">
                 </div>
 
                 <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
@@ -47,7 +47,7 @@
             </div>
 
             <div class="blood_report">
-                <h3 style="margin-top: 0px;">오늘 하루 당뇨 지표</h3>
+                <h3 style="margin-top: 0;">오늘 하루 당뇨 지표</h3>
             
                 
 
@@ -61,6 +61,7 @@
 
 {% block scripts %}
 <script>
+    // fade in/out
     $(function(){
         $('.tabcontent > div').hide();
         $('.tabnav a').click(function () {

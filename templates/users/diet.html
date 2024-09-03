@@ -17,7 +17,7 @@
 
             <div class="meals">
                 <button type="button" style="display: flex;" class="meals_btn">
-                    <img src="{% static 'img/check_circle.png' %}" style="margin: 0px 5px;" alt="">
+                    <img src="{% static 'img/check_circle.png' %}" style="margin: 0 5px;" alt="">
                     아침
                 </button>
 
@@ -32,3 +32,25 @@
         </button>
         
     </div>
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    let now = 0;
+
+    $('.meals_btn').on('click', function() {
+        let info;
+        now++;
+        if (now % 2 === 1) {
+            info = document.getElementById('meal_info');
+            info.style.display = "block";
+        }
+
+        else {
+            info = document.getElementById('meal_info');
+            info.style.display = "none";
+        }
+    });
+});
+</script>
+{% endblock %}
