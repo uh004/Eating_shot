@@ -10,25 +10,24 @@
         <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
     </div>
 
-    {# TODO: form #}
-    <form action="home.html">
+    <form method="post" action="">
+        {% csrf_token %}
 
-        <input type="date">
+        <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
 
         <div class="blood_sugar">
-            <p>수축기</p>
-            <input type="number" id="blood_2" placeholder="120">
+            <p>{{ form.systolic.label }}</p>
+            <input type="number" name="{{ form.systolic.name }}" id="blood_2" placeholder="120" value="{{ form.systolic.value }}">
             <p style="width: 110px;">mmHg</p>
         </div>
 
         <div class="blood_sugar">
-            <p>이완기</p>
-            <input type="number" id="blood_3" placeholder="80">
+            <p>{{ form.diastolic.label }}</p>
+            <input type="number" name="{{ form.diastolic.name }}" id="blood_3" placeholder="80" value="{{ form.diastolic.value }}">
             <p style="width: 110px;">mmHg</p>
         </div>
 
-        <p style="font-size: 20px; padding: 40px 0px; text-align: center;">혈압 수치는 <span
-                style="color: #ff5757; font-size: 25px;">주의</span>입니다.</p>
+        <p style="font-size: 20px; padding: 40px 0; text-align: center;">혈압 수치는 <span style="color: #ff5757; font-size: 25px;">주의</span>입니다.</p>
 
         <input type="submit" value="기록하기"/>
     </form>

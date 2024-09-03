@@ -136,29 +136,29 @@ form {
 input {
     background-color: #F2F4F5;
     border: none;
-    width: 400px;
-    height: 40px;
+    width: 420px;
+    height: 60px;
     border-radius: 15px;
-    padding: 10px;
     font-size: 16px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    padding: 10px;
 }
 
 input#blood_1 {
-    height: 80px;
-    width: 120px;
+    height: 100px;
+    width: 140px;
     font-size: 50px;
 }
 
 input#blood_2 {
-    height: 80px;
-    width: 120px;
+    height: 100px;
+    width: 140px;
     font-size: 50px;
 }
 
 input#blood_3 {
-    height: 80px;
-    width: 120px;
+    height: 100px;
+    width: 140px;
     font-size: 50px;
 }
 

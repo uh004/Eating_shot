@@ -1,54 +1,39 @@
 {% load static %}
-{% block title %}운동 기록하기{% endblock %}
+{#{% block title %}운동 기록하기{% endblock %}#}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 {% endblock %}
 
 <div class="main_container" id="main">
-    <div id="exercise">
-    
-        <div class="deco">
-            <h2>걷기</h2>
-            <p style="margin: 10px;">유산소</p>
-            <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
-        </div>
-    
-        <form action="home.html">
-    
-            <div style="display: flex; background-color: #F2F4F5; height: 60px; border-radius: 15px; margin-bottom: 20px;">
-                <p style="width: 75px; height: 40px; padding: 11px; margin: 0; line-height: 40px; color: #979CA9;">운동 시간</p>
-                <input type="number" id="exercise_time" placeholder="0분">
-            </div>
-            
-    
-            <input type="date">
-            
-            <div class="strengths" style="display: flex; justify-content: space-between;">
-                <p style="margin: 15px 1px; color: #979CA9;">운동 강도</p>
-    
-                <div style="display: flex; justify-content: space-between; width: 230px;" class="check_strength">
-                    <div style="display: flex;" class="strength">
-                        <input id="strength1" type="radio" name="ex">
-                        <label for="strength1" class="for_strength">가볍게</label>
-                    </div>
-    
-                    <div style="display: flex;" class="strength">
-                        <input id="strength2" type="radio" name="ex">
-                        <label for="strength2" class="for_strength">적당히</label>
-                    </div>
-    
-                    <div style="display: flex;" class="strength">
-                        <input id="strength3" type="radio" name="ex">
-                        <label for="strength3" class="for_strength">격하게</label>
-                    </div>
-                </div>
-            </div>
-    
-            <p style="font-size: 20px; padding: 60px 0; text-align: center;">예상 소모 칼로리는 <span style="color: #4E7854; font-size: 25px;">352kcal</span>입니다.</p>
-    
-            <input type="submit" value="기록하기"/>
-        </form>
-    
+<div class="deco">
+    <h2>걷기</h2>
+    <p style="margin: 10px;">유산소</p>
+    <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;" alt="">
+</div>
+
+<form method="post" action="">
+    {% csrf_token %}
+    <div style="display: flex; background-color: #F2F4F5; height: 60px; border-radius: 15px; margin-bottom: 20px;">
+        {{ form.exercise_time }}
     </div>
+    {{ form.date }}
+
+    <div class="strengths" style="display: flex; justify-content: space-between;">
+        <p style="margin: 15px 1px; color: #979CA9;">운동 강도</p>
+
+        <div style="display: flex; justify-content: space-between; width: 230px;" class="check_strength">
+            {% for value, label in form.intensity.field.choices %}
+                <div style="display: flex;" class="strength">
+                    <input id="strength{{ forloop.counter }}" type="radio" name="{{ form.intensity.name }}" value="{{ value }}" {% if form.intensity.value == value %}checked{% endif %}>
+                    <label for="strength{{ forloop.counter }}" class="for_strength">{{ label }}</label>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <p style="font-size: 20px; padding: 60px 0; text-align: center;">예상 소모 칼로리는 <span style="color: #4E7854; font-size: 25px;">352kcal</span>입니다.</p>
+    <input type="submit" value="기록하기"/>
+</form>
+
 </div>

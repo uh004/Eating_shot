@@ -11,27 +11,42 @@
         <p style="margin: 10px;">오늘의 식탁을 분석해드립니다!</p>
         <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
     </div>
-    
-    <form action="home.html">
-    
-        <select>
-            <option>아침</option>
-            <option>점심</option>
-            <option>저녁</option>
-            <option>간식</option>
-        </select>
-    
-        <input type="date">
-    
-        <div class="upload-box">
+
+    <form method="post" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+        {{ form.meal_type.label_tag }} {{ form.meal_type }}
+        {{ form.date.label_tag }} {{ form.date }}
+
+        <div class="upload-box" onclick="document.getElementById('chooseFile').click();">
             <div id="drop-file" class="drag-file">
                 <img src="{% static 'img/salad.png' %}" width="40px" height="40px" alt="">
-            <label class="file-label" for="chooseFile" style="margin-top: 0;">식단 사진을 업로드해주세요.</label>
-            <img src="" alt="미리보기 이미지" class="preview" id="image_preview">
+                <label class="file-label" for="chooseFile" style="margin-top: 0;">식단 사진을 업로드해주세요.</label>
+                <img src="" alt="미리보기 이미지" class="preview" id="image_preview">
             </div>
-            <input class="file" id="chooseFile" type="file" onchange="dropFile.handleFiles(this.files)" accept="image/*">
+            <input class="file" id="chooseFile" type="file" name="{{ form.image.name }}" accept="image/*">
         </div>
-    
+
         <input type="submit" value="기록하기"/>
     </form>
 </div>
+{% block script %}
+<script>
+document.getElementById('chooseFile').addEventListener('change', function(event) {
+    const input = event.target;
+    const label = document.querySelector('.file-label');
+    const imgPreview = document.getElementById('image_preview');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            imgPreview.src = e.target.result;
+            imgPreview.style.display = 'block';
+            label.style.display = 'none';
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+});
+</script>
+{% endblock %}

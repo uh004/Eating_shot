@@ -9,22 +9,20 @@
         <h2>당화혈색소 기록하기</h2>
         <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
     </div>
-    
-{# TODO: form #}
-    <form action="home.html">
 
-        <input type="date">
+    <form method="post" action="">
+        {% csrf_token %}
+
+        <input type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
 
         <div class="blood_sugar">
-            <p style="width: 140px;">당화혈색소</p>
-            <input type="number" id="blood_1" placeholder="6.5">
+            <p style="width: 140px;">{{ form.hba1c.label }}</p>
+            <input type="number" name="{{ form.hba1c.name }}" id="blood_1" placeholder="6.5" value="{{ form.hba1c.value }}">
             <p style="width: 60px;">%</p>
         </div>
 
-        <p style="font-size: 20px; padding: 60px 0; text-align: center;">당화혈색소 수치는 <span
-                style="color: #ff5757; font-size: 25px;">정상</span>입니다.</p>
+        <p style="font-size: 20px; padding: 60px 0; text-align: center;">당화혈색소 수치는 <span style="color: #ff5757; font-size: 25px;">정상</span>입니다.</p>
 
         <input type="submit" value="기록하기"/>
     </form>
-
 </div>

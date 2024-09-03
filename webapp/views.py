@@ -1,7 +1,20 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm, CustomAuthenticationForm, HealthInfoForm
+
+from ai_workload.kafka.producer import send_inference_task
+from ai_workload.models import InferenceTask
+from users.models import Exercise
+from .forms import (
+    CustomUserCreationForm,
+    CustomAuthenticationForm,
+    HealthInfoForm,
+    BloodSugarForm,
+    BloodPressureForm,
+    HbA1cForm,
+    ExerciseForm,
+    DietForm,
+)
 
 
 @login_required
@@ -116,25 +129,86 @@ def load_content(request, menu):
     return render(request, template_name)
 
 
+@login_required
 def diet_form(request):
-    return render(request, "users/diet_form.html")
+    if request.method == "POST":
+        form = DietForm(request.POST, request.FILES)
+        if form.is_valid():
+            diet = form.save(commit=False)
+            diet.user = request.user
+            diet.save()
+
+            # Create an InferenceTask instance
+            inference_task = InferenceTask.objects.create(
+                user=request.user, photo=diet.image, status="PENDING"
+            )
+
+            # Queue the inference task
+            send_inference_task(inference_task.id)
+
+            return redirect("index")
+    else:
+        form = DietForm()
+    return render(request, "users/diet_form.html", {"form": form})
 
 
+@login_required
 def blood_1(request):
-    return render(request, "users/blood_form1.html")
+    if request.method == "POST":
+        form = BloodSugarForm(request.POST)
+        if form.is_valid():
+            blood_sugar = form.save(commit=False)
+            blood_sugar.user = request.user
+            blood_sugar.save()
+            return redirect("index")
+    else:
+        form = BloodSugarForm()
+    return render(request, "users/blood_form1.html", {"form": form})
 
 
+@login_required
 def blood_2(request):
-    return render(request, "users/blood_form2.html")
+    if request.method == "POST":
+        form = BloodPressureForm(request.POST)
+        if form.is_valid():
+            blood_pressure = form.save(commit=False)
+            blood_pressure.user = request.user
+            blood_pressure.save()
+            return redirect("index")
+    else:
+        form = BloodPressureForm()
+    return render(request, "users/blood_form2.html", {"form": form})
 
 
+@login_required
 def blood_3(request):
-    return render(request, "users/blood_form3.html")
+    if request.method == "POST":
+        form = HbA1cForm(request.POST)
+        if form.is_valid():
+            hba1c = form.save(commit=False)
+            hba1c.user = request.user
+            hba1c.save()
+            return redirect("index")
+    else:
+        form = HbA1cForm()
+    return render(request, "users/blood_form3.html", {"form": form})
 
 
+@login_required
 def exercise_form(request):
-    return render(request, "users/exercise_form.html")
+    if request.method == "POST":
+        form = ExerciseForm(request.POST)
+        if form.is_valid():
+            exercise = form.save(commit=False)
+            exercise.user = request.user
+            exercise.save()
+            return redirect("index")
+    else:
+        form = ExerciseForm()
+    return render(request, "users/exercise_form.html", {"form": form})
 
 
+@login_required
 def exercise_list(request):
-    return render(request, "users/exercise_list.html")
+    exercises = Exercise.objects.filter(user=request.user)
+    return render(request, "users/exercise_list.html", {"exercises": exercises})
