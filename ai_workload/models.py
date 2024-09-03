@@ -1,9 +1,11 @@
+from django.conf import settings
 from django.db import models
 
-# from django.conf import settings
-from django.contrib.auth import get_user_model
 
-User = get_user_model()
+# from django.conf import settings
+# from django.contrib.auth import get_user_model
+
+# User = get_user_model()
 
 
 class InferenceTask(models.Model):
@@ -13,8 +15,8 @@ class InferenceTask(models.Model):
         ("COMPLETED", "Completed"),
         ("FAILED", "Failed"),
     )
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="inference_photos/")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -30,7 +32,7 @@ class InferenceTask(models.Model):
 
 class InferenceResult(models.Model):
     # task = models.OneToOneField(
-    #     InferenceTask, on_delete=models.CASCADE, related_name="result"
+    #     "InferenceTask", on_delete=models.CASCADE, related_name="result"
     # )
     result_data = models.JSONField()
     created_at = models.DateTimeField(auto_now_add=True)
