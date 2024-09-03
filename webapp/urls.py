@@ -15,4 +15,4 @@ urlpatterns = [
     path("excercise-form/", views.exercise_form, name="exercise_form"),
     path("exercise-list/", views.exercise_list, name="exercise_list"),
 ]
-# TODO: seek better way to handle the views
+# TODO: add logout

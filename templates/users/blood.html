@@ -21,7 +21,7 @@
             </div>
 
             <button type="button" class="plus">
-                <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="openPopup3()" alt="">
+                <img src="{% static 'img/plus-sign.png' %}" width="50px" alt="" id="target_popup_button">
             </button>
         </div>
 
@@ -39,10 +39,21 @@
 
 {% block scripts %} 
 <script>
-    function openPopup3() {
+    document.getElementById("target_popup_button").addEventListener('click' , (e) => {
+        e.stopPropagation(); // Prevent the event from bubbling up the DOM tree
         const popup = document.getElementById("popup3");
         popup.style.visibility = "visible";
         popup.style.opacity = "1";
-    }
+    })
+
+    // Close popup when clicking outside of it
+    document.getElementsByClassName("for_record")[0].addEventListener('click', (e) => {
+        const popup = document.getElementById("popup3");
+        const popupContent = document.querySelector(".popup-content3");
+        if (popup.style.visibility === "visible" && !popupContent.contains(e.target)) {
+            popup.style.visibility = "hidden";
+            popup.style.opacity = "0";
+        }
+    });
 </script>
 {% endblock %}

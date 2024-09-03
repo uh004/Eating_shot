@@ -44,7 +44,7 @@ class BloodPressure(models.Model):
 class HbA1c(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     hba1c = models.FloatField()
-    hba1c_time = models.DateField()
+    date = models.DateField()
 
 
 class Diet(models.Model):

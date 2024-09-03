@@ -147,10 +147,10 @@ class HbA1cForm(forms.ModelForm):
         label="당화혈색소",
         required=True,
     )
-    hba1c_time = forms.DateField(
+    date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}), label="날짜", required=True
     )
 
     class Meta:
         model = HbA1c
-        fields = ["hba1c", "hba1c_time"]
+        fields = ["hba1c", "date"]
