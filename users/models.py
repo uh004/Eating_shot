@@ -1,4 +1,5 @@
 # users/models.py
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -26,6 +27,38 @@ class CustomUser(AbstractUser):
     health_conditions = models.CharField(max_length=255, null=True, blank=True)
 
 
-# class SomeModel(models.Model)
-#     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-#     pass
+class BloodSugar(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    time = models.CharField(max_length=20)
+    date = models.DateField()
+    blood_sugar = models.IntegerField()
+
+
+class BloodPressure(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    date = models.DateField()
+    systolic = models.IntegerField()
+    diastolic = models.IntegerField()
+
+
+class HbA1c(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    hba1c = models.FloatField()
+    hba1c_time = models.DateField()
+
+
+class Diet(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    meal_type = models.CharField(max_length=10)
+    date = models.DateField()
+    image = models.ImageField(upload_to="inference_photos/")
+    result = models.ForeignKey(
+        "ai_workload.InferenceResult", on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+
+class Exercise(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    exercise_time = models.IntegerField()
+    date = models.DateField()
+    intensity = models.CharField(max_length=10)

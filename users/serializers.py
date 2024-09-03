@@ -44,3 +44,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
             password = validated_data.pop("password")
             instance.set_password(password)
         return super().update(instance, validated_data)
+
+
+# TODO: API 가 웹앱을 따라잡아야 해요
