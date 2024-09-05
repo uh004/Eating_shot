@@ -1,3 +1,4 @@
+
 .main_container {
     width: 480px;
     height: 900px;
@@ -11,11 +12,13 @@
     align-items: center;
     justify-content: center;
     margin-top: 60px;
+    overflow: hidden;
 }
 
 .banner img {
     display: flex;
-    margin: auto auto 40px;
+    margin: auto;
+    margin-bottom: 40px;
 }
 
 .forms .slide {
@@ -24,6 +27,7 @@
     width: 420px;
 }
 
+
 .slide input {
     width: 400px;
     height: 40px;
@@ -31,7 +35,7 @@
     border-radius: 10px;
     font-size: 20px;
     padding: 10px;
-    margin: 15px 0;
+    margin: 15px 0px;
 }
 
 .slide .kgcm input {
@@ -41,7 +45,7 @@
     border-radius: 10px;
     font-size: 20px;
     padding: 10px;
-    margin: 15px 0;
+    margin: 15px 0px;
 }
 
 .slide input[type=submit] {
@@ -50,7 +54,7 @@
     border-radius: 10px;
     font-size: 20px;
     padding: 10px;
-    margin: 15px 0;
+    margin: 15px 0px;
     background-color: #00BCD4;
     border: none;
     color: white;
@@ -98,18 +102,20 @@ button {
     background: transparent;
     font-size: 25px;
     border: none;
-    margin-left: 370px;
     margin-top: 10px;
     font-style: italic;
+    position: absolute;
+    width: 150px;
+    margin-left: 320px;
 }
 
 button:active {
     color: #00BCD4;
 }
 
-.forms {
+/* .forms {
     overflow: hidden;
-}
+} */
 
 .choose_gender input[type=radio]:checked + label {
     border: 3px solid #00BCD4;

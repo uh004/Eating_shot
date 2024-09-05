@@ -62,7 +62,6 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     5. ???
     6. i should experiment by using git branches i guess
     7. no wait just do what i planned in keep
- 
 
 went for approach number 1: import the functions and classes from 'ai_workload'
 
@@ -70,10 +69,19 @@ went for approach number 1: import the functions and classes from 'ai_workload'
 
 1. what should i do next?
 2. hardening the website!
-   1. [x] edit and delete 운동 기록 
-   2. edit and delete 혈압
-   3. edit and delete 혈당
-   4. HOW???
+    1. [x] edit and delete 운동 기록
+    2. edit and delete 혈압
+    3. edit and delete 혈당
+    4. HOW???
+
+#### plan 2.2.1
+
+1. hardening the webapp
+    2. [ ] edit and delete 운동 기록
+    3. [ ] edit and delete 혈압
+    4. [ ] edit and delete 혈당
+    5. [ ] edit and delete 당화혈색소
+    6. ...
 
 ## plan 3
 
