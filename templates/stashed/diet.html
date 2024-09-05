@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="diet.css">
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="diet.js"></script>
+</head>
+<body>
+
+
+    <div class="banner" id="food">
+        <div class="slide" id="food_detail">
+            <div class="all_kcal">
+                <p style="font-size: 20px; margin: 10px 0px;">누적 칼로리 <span style="float: right;"><span style="color: #00BCD4;">800</span> / 1,416 kcal</span></p>
+                <progress value="800" min="0" max="1416"></progress>
+                <p>탄수화물 <span style="float: right;"><span style="color: #00BCD4;">0</span> / 195 g</span></p>
+                <p>단백질 <span style="float: right;"><span style="color: #00BCD4;">19</span> / 71 g</span></p>
+                <p>지방 <span style="float: right;"><span style="color: #00BCD4;">13</span> / 39 g</span></p>
+            </div>
+
+            <div class="meals">
+                <button type="button" style="display: flex;" class="meals_btn">
+                    <img src="img/Check circle.png" style="margin: 0px 5px;">
+                    아침
+                </button>
+
+                <div class="meal_info" id="meal_info">
+                    <p>식단 나타내기</p>
+                </div>
+            </div>
+        </div>
+
+        <button type="button" class="plus">
+            <img src="img/plus-sign.png" width="50px" onclick="openPopup()">
+        </button>
+        
+    </div>
+
+</body>
+</html>
