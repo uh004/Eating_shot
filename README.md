@@ -2,15 +2,17 @@
 
 당뇨병 환자를 대상으로 한 건강 관리 서비스
 
-## 명령어
+## 명령어 (윈도 리눅스 맥 모두)
 
-- `poetry install` : 프로젝트 요구사항 설치
-- `./manage.py makemigrations ai_workload users` : 마이그레이션 파일 생성
-- `./manage.py migrate` : 마이그레이션 적용
+젯브레인계열에서 프로젝트 파일이 안 뜨면 invalidate cache and restart 하면 해결됨 왜 그런지 모르겠음
+
+- `poetry install` : 프로젝트 요구사항 설치 (3.12로는 안되는 듯 하고, 3.11, 3.10 로는 잘 되는 것을 확인)
+- `python manage.py makemigrations ai_workload users` : (없으면) 마이그레이션 생성
+- `python manage.py migrate` : 마이그레이션 적용
 - `python manage.py runserver` : 서버 실행
 - `docker compose up -d` : 카프카
 - `python -m run_consumer` : 카프카 먹기 시작
-- `python -m inference_dummy_fastapi.main` : fastapi 서버 시작하기
+- `python -m inference_dummy_fastapi.main` : 간이 서버 시작
 
 ### ~~(fastapi 서버 디렉토리에서)~~
 
