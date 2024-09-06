@@ -12,7 +12,7 @@ urlpatterns = [
     path("blood2/", views.blood_2, name="blood2"),
     path("blood3/", views.blood_3, name="blood3"),
     path("diet-form/", views.diet_form, name="diet_form"),
-    path("excercise-form/", views.exercise_form, name="exercise_form"),
+    path("exercise_form/<int:exercise_id>/", views.exercise_form, name="exercise_form"),
     path("exercise-list/", views.exercise_list, name="exercise_list"),
+    path("logout/", views.logout_view, name="logout"),
 ]
-# TODO: add logout

@@ -1,10 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 from ai_workload.kafka.producer import send_inference_task
 from ai_workload.models import InferenceTask
-from users.models import Exercise
+from users.models import Exercise, Diet, ExerciseType
 from .forms import (
     CustomUserCreationForm,
     CustomAuthenticationForm,
@@ -74,59 +75,50 @@ def info_view(request):
     return render(request, "users/info.html", {"form": form})
 
 
-# # TODO: regenerate?, logout, change password, etc.
-# @login_required
-# def get_auth_token(request):
-#     token, created = Token.objects.get_or_create(user=request.user)
-#     return JsonResponse({'token': token.key})
+def logout_view(request):
+    logout(request)
+    return redirect("login")
 
 
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-#
-
-
-# from django.contrib.auth.decorators import login_required
-# from .models import UploadedImage
-# from ai_workload.tasks import queue_inference_task
-#
-#
-# @login_required
-# def upload_image(request):
-#     if request.method == "POST":
-#         image = request.FILES.get("image")
-#         if image:
-#             # Save the uploaded image
-#             uploaded_image = UploadedImage.objects.create(
-#                 user=request.user, image=image
-#             )
-#
-#             # Queue the inference task
-#             queue_inference_task.delay(uploaded_image.id)
-#
-#             return redirect("image_status", image_id=uploaded_image.id)
-#
-#     return render(request, "webapp/upload.html")
-#
-#
-# @login_required
-# def image_status(request, image_id):
-#     image = UploadedImage.objects.get(id=image_id)
-#     return render(request, "webapp/status.html", {"image": image})
+# TODO: change password
 
 
 #
 def load_content(request, menu):
+    pages = ["diet", "exercise", "blood", "report", "mypage"]
     template_name = f"users/{menu}.html"
-    return render(request, template_name)
+
+    context = {}
+
+    match menu:
+        case "diet":
+            context["diets"] = Diet.objects.filter(user=request.user)
+        case "exercise":
+            context["exercises"] = Exercise.objects.filter(user=request.user)
+        case "blood":
+            # context['blood_related_data'] =
+            pass
+        case "report":
+            pass
+        case "mypage":
+            print("mypage")
+        case _:
+            pass
+
+    return render(request, template_name, context)
+
+
+@login_required
+def exercise_list(request):
+    exercises_by_type = ExerciseType.objects.annotate(exercise_count=Count("exercise"))
+
+    print(exercises_by_type.values())
+
+    return render(
+        request,
+        "users/exercise_list.html",
+        {"exercises_by_type": exercises_by_type},
+    )
 
 
 @login_required
@@ -195,20 +187,19 @@ def blood_3(request):
 
 
 @login_required
-def exercise_form(request):
+def exercise_form(request, exercise_id):
     if request.method == "POST":
         form = ExerciseForm(request.POST)
         if form.is_valid():
             exercise = form.save(commit=False)
             exercise.user = request.user
+            exercise.exercise_type = ExerciseType.objects.get(id=exercise_id)
             exercise.save()
             return redirect("index")
     else:
         form = ExerciseForm()
-    return render(request, "users/exercise_form.html", {"form": form})
-
-
-@login_required
-def exercise_list(request):
-    exercises = Exercise.objects.filter(user=request.user)
-    return render(request, "users/exercise_list.html", {"exercises": exercises})
+    return render(
+        request,
+        "users/exercise_form.html",
+        {"form": form, "exercise_name": ExerciseType.objects.get(id=exercise_id).name},
+    )
