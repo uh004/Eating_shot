@@ -1,3 +1,5 @@
+{% load custom_tags %}
+
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
@@ -19,26 +21,29 @@
                     <h2 style="margin-top: 0;">내 정보</h2>
                     <li>
                         <p>이메일</p>
-                        <p>health@naver.com</p>
+                        <p>{{ user_info.email }}</p>
                     </li>
 
                     <li>
                         <p>키</p>
-                        <p>170cm</p>
+                        <p>{{ user_info.height }}kg</p>
                     </li>
 
                     <li>
                         <p>몸무게</p>
-                        <p>75kg</p>
+                        <p>{{ user_info.weight }}cm</p>
                     </li>
 
                     <li>
                         <p style="line-height: 41px;">질병</p>
-                        <div id="disease">
-                            <p>1형 당뇨</p>
-                            <p>고혈압</p>
-                            <p>비만</p>
-                        </div>
+{#                        {% with user_info.health_conditions|split_by_comma as split_list %}#}
+                            <div id="disease">
+{#                            {% for item in split_list %}#}
+                                {% for item in health_conditions %}
+                                <p>{{ item }}</p>
+                            {% endfor %}
+                            </div>
+{#                        {% endwith %}#}
                     </li>
                 </ul>
 

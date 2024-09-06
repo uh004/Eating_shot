@@ -14,17 +14,20 @@
                 <p>단백질 <span style="float: right;"><span style="color: #00BCD4;">19</span> / 71 g</span></p>
                 <p>지방 <span style="float: right;"><span style="color: #00BCD4;">13</span> / 39 g</span></p>
             </div>
+{#        TODO: all kcal #}
 
+            {% for meal in meals %}
             <div class="meals">
                 <button type="button" style="display: flex;" class="meals_btn">
                     <img src="{% static 'img/check_circle.png' %}" style="margin: 0 5px;" alt="">
-                    아침
+                    {{ meal.meal_type }} - {{ meal.result.result_data.prediction }}
                 </button>
 
                 <div class="meal_info" id="meal_info">
                     <p>식단 나타내기</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
 
         <button type="button" class="plus">

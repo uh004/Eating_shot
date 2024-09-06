@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout
 
 from ai_workload.kafka.producer import send_inference_task
 from ai_workload.models import InferenceTask
-from users.models import Exercise, Diet, ExerciseType
+from users.models import Exercise, Diet, ExerciseType, BloodSugar, BloodPressure, HbA1c
 from .forms import (
     CustomUserCreationForm,
     CustomAuthenticationForm,
@@ -92,16 +92,44 @@ def load_content(request, menu):
 
     match menu:
         case "diet":
-            context["diets"] = Diet.objects.filter(user=request.user)
+            context["meals"] = Diet.objects.filter(user=request.user)
         case "exercise":
             context["exercises"] = Exercise.objects.filter(user=request.user)
         case "blood":
-            # context['blood_related_data'] =
-            pass
+            # get all blood related data(blood sugar, blood pressure, hba1c) and align all in one list
+
+            blood_sugar = BloodSugar.objects.filter(user=request.user)
+            blood_pressure = BloodPressure.objects.filter(user=request.user)
+            hba1c = HbA1c.objects.filter(user=request.user)
+
+            context["blood1_data"] = blood_sugar
+            context["blood2_data"] = blood_pressure
+            context["blood3_data"] = hba1c
         case "report":
             pass
+            # 주간, 일간
+
+            # 총 섭취 n kcal(탄, 단, 지)
+            # 총 소모 n kcal
+            # 총 운동시간 n 분
+            # 당뇨지표(top 3가 혈당이 가장 높아요!) -> 혈압, 당화혈색소, 현재 당신의 상태는 <> 입니다.
         case "mypage":
-            print("mypage")
+            user_info = request.user
+            context["user_info"] = user_info
+            conversion_table = {  # TODO: use i18n instead of hardcoding
+                "type1": "1형 당뇨",
+                "type2": "2형 당뇨",
+                "gestational": "임신성 당뇨",
+                "prediabetes": "내당증",
+                "high": "고혈압",
+                "low": "저혈압",
+                "hyperlipidemia": "고지혈증",
+                "obesity": "비만",
+            }
+            health_conditions = user_info.health_conditions.split(",")
+            context["health_conditions"] = [
+                conversion_table[condition] for condition in health_conditions
+            ]
         case _:
             pass
 

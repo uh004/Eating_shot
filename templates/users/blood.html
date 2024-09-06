@@ -5,21 +5,36 @@
 
 
 <div id="blood">
-    <!-- 당뇨 지표 -->
-    {# TODO: 당뇨 지표 #}
     <div class="banner" id="indicator">
-        <div class="slide" id="indicator_info">
-            <div class="blood" style="display: flex; justify-content: space-between;">
-                <p style="font-size: 24px; margin: 12px 5px;">혈당</p>
-                <p style="font-size: 20px; margin: 14px 0;">자기 전 | <span style="color: red;">120</span>mg/DL</p>
+        {% for data in blood1_data %}
+            <div class="slide" id="indicator_info">
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">혈당</p>
+                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span style="color: red;">
+                    {{ data.blood_sugar }}</span>mg/DL</p>
+                </div>
             </div>
-            
-            <div class="blood" style="display: flex; justify-content: space-between;">
-                <p style="font-size: 24px; margin: 12px 5px;">혈압</p>
-                <p style="font-size: 20px; margin: 14px 0;"><span style="color: red;">120</span>/<span
-                        style="color: red;">80</span>mmHg</p>
+        {% endfor %}
+        
+        {% for data in blood2_data %}
+            <div class="slide" id="indicator_info">
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">혈압</p>
+                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span style="color: red;">
+                    {{ data.systolic }}</span>/<span style="color: red;">{{ data.diastolic }}</span>mmHg</p>
+                </div>
             </div>
-        </div>
+        {% endfor %}
+        
+        {% for data in blood3_data %}
+            <div class="slide" id="indicator_info">
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">당화혈색소</p>
+                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span
+                            style="color: red;">{{ data.hba1c }}</span>%</p>
+                </div>
+            </div>
+        {% endfor %}
         
         <button type="button" class="plus">
             <img src="{% static 'img/plus-sign.png' %}" width="50px" alt="" id="target_popup_button">
