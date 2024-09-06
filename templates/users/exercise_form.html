@@ -36,17 +36,29 @@
             </div>
         </div>
         
-        <p style="font-size: 20px; padding: 60px 0; text-align: center;">예상 소모 칼로리는 <span
-                style="color: #4E7854; font-size: 25px;">352kcal</span>입니다.</p>
+        <p style="font-size: 20px; padding: 60px 0; text-align: center;">예상 소모 칼로리는 <span id="calories"
+                                                                                          style="color: #4E7854; 
+                                                                                          font-size: 25px;
+">0kcal</span>입니다.
+        </p>
         <input type="submit" value="기록하기"/>
     </form>
-
 </div>
 {% block script %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
+        });
+
+        document.querySelector('form').addEventListener('change', function (event) {
+            event.preventDefault();
+            // calculate the calories automatically
+            const exerciseTime = document.querySelector('input[name="exercise_time"]').value;
+            const caloriesPerHour = {{ calories_per_hour }} / 60;
+            const calories = Math.round(caloriesPerHour * exerciseTime);
+
+            document.getElementById('calories').textContent = `${calories}kcal`;
         });
     </script>
 {% endblock %}
