@@ -6,17 +6,22 @@
 <div id="exercise">
     <div class="banner">
         <div class="slide" id="exercise_info">
-            <div class="ex" style="display: flex; margin-top: 0;">
-                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>
-            </div>
-            
+            {% for exercise in exercises %}
             <div class="ex" style="display: flex;">
-                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>
+                <p>{{ exercise.exercise_name }} <span style="margin-left: 237px;"><span style="color: #00BCD4;">{{ exercise.calorie }} </span> kcal / {{ exercise.time }} 분</span></p>
             </div>
-            
-            <div class="ex" style="display: flex;">
-                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>
-            </div>
+            {% endfor %}
+{#            <div class="ex" style="display: flex; margin-top: 0;">#}
+{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
+{#            </div>#}
+{#            #}
+{#            <div class="ex" style="display: flex;">#}
+{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
+{#            </div>#}
+{#            #}
+{#            <div class="ex" style="display: flex;">#}
+{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
+{#            </div>#}
         </div>
     </div>
     

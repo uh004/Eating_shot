@@ -119,7 +119,7 @@ label {
 .fade-out-box {
     position: absolute;
     display: inline-block;
-    animation: fadeout 3s forwards; /* Shortened property */
+    animation: fadeout 1s forwards; /* Shortened property */
     z-index: 999;
 }
 
