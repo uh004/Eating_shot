@@ -71,10 +71,13 @@
 #disease {
     display: flex;
     justify-content: space-between;
+    overflow: scroll;
 }
 
 #disease p {
     padding: 10px;
+    font-size: 10pt;
+    align-content: center;
     background-color: #00BCD4;
     border-radius: 20px;
     margin-left: 10px;

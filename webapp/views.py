@@ -229,5 +229,11 @@ def exercise_form(request, exercise_id):
     return render(
         request,
         "users/exercise_form.html",
-        {"form": form, "exercise_name": ExerciseType.objects.get(id=exercise_id).name},
+        {
+            "form": form,
+            "exercise_name": ExerciseType.objects.get(id=exercise_id).name,
+            "calories_per_hour": ExerciseType.objects.get(
+                id=exercise_id
+            ).calories_per_hour,
+        },
     )
