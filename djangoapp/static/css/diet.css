@@ -50,6 +50,7 @@
     padding: 15px;
     width: 450px;
     /* background-color: rgb(250, 250, 250); */
+    overflow: scroll;
 }
 
 .all_kcal {
@@ -98,8 +99,8 @@
 }
 
 .meals {
-    overflow: scroll;
-    height: 420px;
+    /*overflow: scroll;*/
+    height: 120px;
 }
 
 .meals::-webkit-scrollbar {
