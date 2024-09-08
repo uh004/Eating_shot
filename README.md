@@ -41,6 +41,7 @@
 
 최신버전으로 업데이트하니 토큰방식 로그인같은걸 요구함. 절차를 잘 따라주면 됨 배포할때 참고...
 
+elasticsearch 컨테이너로 가서 `bin/ elasticsearch-reset-password -a -u <유저네임>` 입력해서 비밀번호 설정 해야함..
 
 #### query dsl
 
