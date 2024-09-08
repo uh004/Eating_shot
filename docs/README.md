@@ -89,15 +89,14 @@ went for approach number 1: import the functions and classes from 'ai_workload'
     1. ???
 2. dockerize stuff
     1. add service and build to 2 folders: django app and api server for ai
-3. ???
+    2. added logging stack (elk)
+    3. ~~added monitoring stack (prometheus, grafana)~~
+    4. ???
+    5. TODO: SSL everything
 
 ## plan 개입.1
 
 ### deploying
-
-#### ci/cd
-
-- github actions
 
 ### storage and database
 
@@ -116,7 +115,21 @@ thinking of supabase, it actually is a firebase alternative. and it provides stu
 instead of boto3, i can use the supabase python sdk.
 django-storage?
 
-### deployment destination
+#### monitoring(not enabled yet)
+
+- prometheus
+- grafana
+
+#### logging
+
+- elk stack
+- ???
+
+#### ci/cd
+
+- github actions
+
+##### deployment destination
 
 - aws ec2 (https://aws.amazon.com/ec2/instance-types/)
     - instance type: arm64 or x86?
@@ -124,7 +137,7 @@ django-storage?
 
 may be better off sticking with one cloud provider.
 
-## plan 3.2
+## plan 3.2 (do this before doing all the money involving stuff in plan 3.1)
 
 0. use environment variables for secrets
 1. vulnerabilities (thinking about something to exploit when money is applied)
