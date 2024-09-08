@@ -101,7 +101,7 @@ services:
       - internal
 
   logstash:
-    image: logstash:7.17.1
+    image: elastic/logstash:8.15.1
     container_name: logstash
     volumes:
       - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf:ro
@@ -114,7 +114,7 @@ services:
       - elk
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat:7.10.0
+    image: elastic/filebeat:8.15.1
     container_name: filebeat
     user: root
     volumes:
@@ -127,7 +127,7 @@ services:
       - elk
 
   metricbeat:
-    image: docker.elastic.co/beats/metricbeat:7.10.0
+    image: elastic/metricbeat:8.15.1
     container_name: metricbeat
     user: root
     volumes:
@@ -157,7 +157,7 @@ services:
   #      - elasticsearch
 
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    image: elastic/elasticsearch:8.15.1
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
@@ -174,7 +174,7 @@ services:
       - elk
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.10.0
+    image: elastic/kibana:8.15.1
     container_name: kibana
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
