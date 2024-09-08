@@ -1,0 +1,11 @@
+django
+djangorestframework
+pyjwt
+djangorestframework-simplejwt
+kafka-python
+requests
+drf-spectacular
+celery
+pillow
+python-logstash
+uvicorn

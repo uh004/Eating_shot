@@ -10,8 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
+
+if not os.environ.get("DJANGO_ENV") == "production":
+    from dotenv import load_dotenv
+
+    load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,13 +26,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5#!jd2*wr&zqd27777h2$x38uha4nfs6thf4+h+dq@cb(($2o)"
-# TODO: use .env file for secret key
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+if os.environ.get("DJANGO_ENV") == "production":
+    DEBUG = False
+    ALLOWED_HOSTS = [
+        "localhost",
+    ]
+else:
+    DEBUG = True
+    ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -55,6 +65,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    #
+    "core.middleware.ActivityLoggingMiddleware",
 ]
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
@@ -146,6 +158,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -156,4 +169,44 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
+# KAFKA_BOOTSTRAP_SERVERS = "kafka:29092" # for host
+KAFKA_BOOTSTRAP_SERVERS = "kafka:9092"  # for docker
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": "DEBUG",
+    },
+}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "file": {
+#             "level": "INFO",
+#             "class": "logging.FileHandler",
+#             "filename": "/var/log/django/django.log",
+#         },
+#         "logstash": {
+#             "level": "INFO",
+#             "class": "logstash.TCPLogstashHandler",
+#             "host": "logstash",  # Logstash container name
+#             "port": 5000,  # Port Logstash is listening on
+#             "version": 1,
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["file", "logstash"],
+#             "level": "INFO",
+#             "propagate": True,
+#         },
+#     },
+# }

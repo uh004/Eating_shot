@@ -1,6 +1,6 @@
 import requests
 
-INFERENCE_SERVER_URL = "http://localhost:8099/predict"  # the dummy fastapi server
+INFERENCE_SERVER_URL = "http://inferenceapp:8099/predict"  # the dummy fastapi server
 
 
 def run_inference(image_path):

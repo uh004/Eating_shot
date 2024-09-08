@@ -1,0 +1,15 @@
+packetbeat.interfaces.device: any
+
+packetbeat.flows:
+  timeout: 30s
+  period: 10s
+
+packetbeat.protocols:
+- type: http
+  ports: [80]
+
+- type: dns
+  ports: [53]
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]

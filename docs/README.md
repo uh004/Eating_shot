@@ -88,6 +88,52 @@ went for approach number 1: import the functions and classes from 'ai_workload'
 1. implement ai related stuff
     1. ???
 2. dockerize stuff
+    1. add service and build to 2 folders: django app and api server for ai
+3. ???
+
+## plan 개입.1
+
+### deploying
+
+#### ci/cd
+
+- github actions
+
+### storage and database
+
+#### firebase
+
+oh crap. not supported.
+
+I think it is better to use a cloud service for this.
+
+since cloud service is expensive, it may be better off to use a local storage and sqlite3.
+
+no wait i can do free postgresql with supabase!
+
+thinking of supabase, it actually is a firebase alternative. and it provides stuff for storage and database.
+
+instead of boto3, i can use the supabase python sdk.
+django-storage?
+
+### deployment destination
+
+- aws ec2 (https://aws.amazon.com/ec2/instance-types/)
+    - instance type: arm64 or x86?
+- gcp compute engine ($300 free credit)
+
+may be better off sticking with one cloud provider.
+
+## plan 3.2
+
+0. use environment variables for secrets
+1. vulnerabilities (thinking about something to exploit when money is applied)
+    1. image upload
+        1. (excluding the malware scanning and the like)
+        2. infinitity problem
+            1. upload size
+            2. upload count
+    2. ???
 
 ### passwords to copy yada yada
 
