@@ -2,6 +2,13 @@ filebeat.inputs:
   - type: docker
     containers.ids:
       - "*"
+#    containers.names:
+#      - "djangoapp"
+#      - "nginx"
+#      - "inferenceapp"
+#      - "kafka-consumer"
+#      - "kafka"
+#      - "zookeeper"
     processors:
       - add_docker_metadata: ~
       - add_host_metadata: ~
@@ -17,10 +24,10 @@ setup.template.settings:
   index.codec: best_compression
 
 logging.level: info
-logging.to_files: true
-logging.files:
-  path: /var/log/filebeat
-  name: filebeat
-  keepfiles: 7
-  permissions: 0644
+#logging.to_files: true
+#logging.files:
+#  path: /var/log/filebeat
+#  name: filebeat
+#  keepfiles: 7
+#  permissions: 0644
 
