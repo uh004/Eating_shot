@@ -137,6 +137,8 @@ django-storage?
 
 may be better off sticking with one cloud provider.
 
+TODO: prune some ports in docker-compose.yml if needed
+
 ## plan 3.2 (do this before doing all the money involving stuff in plan 3.1)
 
 0. use environment variables for secrets

@@ -33,6 +33,8 @@
 - `http://localhost:8000/redoc` : redoc 페이지
 - `http://localhost:8000/schema` : schema 파일
 
+- `http://localhost:5601` : kibana
+
 #### query dsl
 
 ```json
