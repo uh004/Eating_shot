@@ -35,7 +35,7 @@
 - `http://localhost:8000/redoc` : redoc 페이지
 - `http://localhost:8000/schema` : schema 파일
 
-- `http://localhost:5601` : kibana
+- `https://localhost:5601` : kibana
 
 ^ 8기가 램으론부족한듯 함
 
