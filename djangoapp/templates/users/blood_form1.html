@@ -1,0 +1,70 @@
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/blood.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+{% endblock %}
+<div class="banner2">
+    
+    <div class="deco">
+        <h2>혈당 기록하기</h2>
+        <img src="{% static 'img/chara1.png' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
+    </div>
+    
+    <form method="post" action="">
+        {% csrf_token %}
+        
+        <select name="{{ form.time.name }}">
+            {% for value, label in form.time.field.choices %}
+                <option value="{{ value }}" {% if form.time.value == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        
+        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
+        
+        <div class="blood_sugar">
+            <p>{{ form.blood_sugar.label }}</p>
+            <input type="number" name="{{ form.blood_sugar.name }}" id="blood_1" placeholder="100"
+                   value="{{ form.blood_sugar.value }}">
+            <p style="width: 110px;">mg / dL</p>
+        </div>
+        
+        <p style="font-size: 20px; padding: 60px 0; text-align: center;">혈당 수치는 <span class="danger-message"
+                                                                                      style="color: greenyellow; font-size: 
+25px;">정상</span>입니다.</p>
+        
+        <input type="submit" value="기록하기"/>
+    </form>
+
+</div>
+{% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('date_input');
+            dateInput.value = new Date().toISOString().split('T')[0];
+        });
+
+        document.querySelector('form').addEventListener('change', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const bloodSugar = document.getElementById('blood_1').value;
+            const dangerMessage = document.querySelector('.danger-message');
+
+            let dangerLevel = '정상'; // Default to normal
+            let color = 'greenyellow'; // Default color
+
+            if (bloodSugar >= 200) {
+                dangerLevel = '위험';
+                color = 'red';
+            } else if (bloodSugar >= 140) {
+                dangerLevel = '주의';
+                color = 'maroon';
+            } else if (bloodSugar >= 100) {
+                dangerLevel = '경계';
+                color = 'orange';
+            }
+
+            dangerMessage.textContent = dangerLevel;
+            dangerMessage.style.color = color;
+        });
+    </script>
+{% endblock %}

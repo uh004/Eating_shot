@@ -1,0 +1,81 @@
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/blood.css' %}">
+{% endblock %}
+
+
+<div id="blood">
+    <div class="banner" id="indicator">
+        {% for data in blood1_data %}
+            <div class="slide" id="indicator_info">
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">혈당</p>
+                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span style="color: red;">
+                    {{ data.blood_sugar }}</span>mg/DL</p>
+                </div>
+            </div>
+        {% endfor %}
+        
+        {% for data in blood2_data %}
+            <div class="slide" id="indicator_info">
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">혈압</p>
+                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span style="color: red;">
+                    {{ data.systolic }}</span>/<span style="color: red;">{{ data.diastolic }}</span>mmHg</p>
+                </div>
+            </div>
+        {% endfor %}
+        
+        {% for data in blood3_data %}
+            <div class="slide" id="indicator_info">
+                <div class="blood" style="display: flex; justify-content: space-between;">
+                    <p style="font-size: 24px; margin: 12px 5px;">당화혈색소</p>
+                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span
+                            style="color: red;">{{ data.hba1c }}</span>%</p>
+                </div>
+            </div>
+        {% endfor %}
+        
+        <button type="button" class="plus">
+            <img src="{% static 'img/plus-sign.png' %}" width="50px" alt="" id="target_popup_button">
+        </button>
+    </div>
+    
+    <div id="popup3" class="popup-overlay3">
+        <div class="popup-content3">
+            <ul>
+                <li style="display: flex;" onclick="window.location.href = {% url 'blood1' %}"><img
+                        src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈당
+                </li>
+                <li style="display: flex;" onclick="window.location.href = {% url 'blood2' %}"><img
+                        src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈압
+                </li>
+                <li style="display: flex;" onclick="window.location.href = {% url 'blood3' %}"><img
+                        src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">당화혈색소
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+{% block scripts %}
+    <script>
+        document.getElementById("target_popup_button").addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the event from bubbling up the DOM tree
+            const popup = document.getElementById("popup3");
+            popup.style.visibility = "visible";
+            popup.style.opacity = "1";
+        })
+
+        // Close popup when clicking outside of it
+        document.getElementsByClassName("for_record")[0].addEventListener('click', (e) => {
+            const popup = document.getElementById("popup3");
+            const popupContent = document.querySelector(".popup-content3");
+            if (popup.style.visibility === "visible" && !popupContent.contains(e.target)) {
+                popup.style.visibility = "hidden";
+                popup.style.opacity = "0";
+            }
+        });
+    </script>
+{% endblock %}

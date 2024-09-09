@@ -1,0 +1,20 @@
+packetbeat.interfaces.device: any
+
+packetbeat.flows:
+  timeout: 30s
+  period: 10s
+
+packetbeat.protocols:
+- type: http
+  ports: [80]
+
+- type: dns
+  ports: [53]
+
+output.elasticsearch:
+  hosts: ["https://elasticsearch:9200"]
+#  ssl.certificate_authorities:
+#    - /etc/filebeat/config/certs/ca.crt
+
+logging.level: info
+logging.to_stderr: true

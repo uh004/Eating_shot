@@ -1,0 +1,27 @@
+filebeat.inputs:
+- type: container
+  paths:
+    - '/var/lib/docker/containers/*/*.log'
+
+processors:
+  - add_docker_metadata:
+      host: "unix:///var/run/docker.sock"
+  - add_host_metadata: ~
+
+output.logstash:
+  hosts: ["logstash:5044"]
+  ssl.certificate_authorities:
+    - /usr/share/filebeat/config/certs/ca/ca.crt
+
+setup.template.settings:
+  index.number_of_shards: 1
+  index.codec: best_compression
+
+logging.level: info
+logging.to_stderr: true
+# logging.to_files: true
+# logging.files:
+#   path: /var/log/filebeat
+#   name: filebeat
+#   keepfiles: 7
+#   permissions: 0644

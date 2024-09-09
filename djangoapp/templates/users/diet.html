@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/diet.css' %}">
+{% endblock %}
+
+    <div class="banner" id="food">
+        <div class="slide" id="food_detail">
+            <div class="all_kcal">
+                <p style="font-size: 20px; margin: 10px 0;">누적 칼로리 <span style="float: right;"><span style="color: #00BCD4;">800</span> / 1,416 kcal</span></p>
+                <progress value="800" max="1416"></progress>
+                <p>탄수화물 <span style="float: right;"><span style="color: #00BCD4;">0</span> / 195 g</span></p>
+                <p>단백질 <span style="float: right;"><span style="color: #00BCD4;">19</span> / 71 g</span></p>
+                <p>지방 <span style="float: right;"><span style="color: #00BCD4;">13</span> / 39 g</span></p>
+            </div>
+{#        TODO: all kcal #}
+
+            {% for meal in meals %}
+            <div class="meals">
+                <button type="button" style="display: flex;" class="meals_btn">
+                    <img src="{% static 'img/check_circle.png' %}" style="margin: 0 5px;" alt="">
+                    {{ meal.meal_type }} - {{ meal.result.result_data.prediction }}
+                </button>
+
+                <div class="meal_info" id="meal_info">
+                    <p>식단 나타내기</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="button" class="plus">
+            <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="window.location.href = {% url 'diet_form' %}" alt="">
+        </button>
+        
+    </div>
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    let now = 0;
+
+    $('.meals_btn').on('click', function() {
+        let info;
+        now++;
+        if (now % 2 === 1) {
+            info = document.getElementById('meal_info');
+            info.style.display = "block";
+        }
+
+        else {
+            info = document.getElementById('meal_info');
+            info.style.display = "none";
+        }
+    });
+});
+</script>
+{% endblock %}

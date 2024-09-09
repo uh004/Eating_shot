@@ -1,0 +1,40 @@
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
+{% endblock %}
+
+<div id="exercise">
+    <div class="banner">
+        <div class="slide" id="exercise_info">
+            {% for exercise in exercises %}
+            <div class="ex" style="display: flex; margin-top: 0;">
+                <p>{{ exercise.exercise_type }} 
+{#                    <span style="margin-left: 190px;">#}
+                    <span>
+                        <span style="color: #00BCD4;">
+                            {{ exercise.exercise_calories }} 
+                        </span> 
+                        kcal/{{ exercise.exercise_time }}분
+                    </span>
+                </p>
+            </div>
+            {% endfor %}
+{#            <div class="ex" style="display: flex; margin-top: 0;">#}
+{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
+{#            </div>#}
+{#            #}
+{#            <div class="ex" style="display: flex;">#}
+{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
+{#            </div>#}
+{#            #}
+{#            <div class="ex" style="display: flex;">#}
+{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
+{#            </div>#}
+        </div>
+    </div>
+    
+    <button type="button" class="plus">
+        <img src="{% static 'img/plus-sign.png' %}" width="50px"
+             onclick="window.location.href = {% url 'exercise_list' %}" alt="">
+    </button>
+</div>
