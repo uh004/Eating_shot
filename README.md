@@ -41,11 +41,11 @@
 
 최신버전으로 업데이트하니 토큰방식 로그인같은걸 요구함. 절차를 잘 따라주면 됨 배포할때 참고...
 
-elasticsearch 컨테이너로 가서 `bin/ elasticsearch-reset-password -a -u <유저네임>` 입력해서 비밀번호 설정 해야함..
+elasticsearch 컨테이너로 가서 `bin/elasticsearch-reset-password auto [-u <유저네임>]` 입력해서 비밀번호 설정 해야함..
 
-^ 이건 .env에 넣어놓고 지금 셋업으로 사용하는게 좋을듯 
+^ 이걸 다시 .env에 넣어놓고 셋업 완료해야 함.
 
-이제 70초 정도 걸림
+가동될때까지 노트북에서 70초, 성능좋은 데탑에서 30초정도 걸림
 
 #### query dsl
 
