@@ -30,4 +30,9 @@ metricbeat.modules:
     - add_docker_metadata: ~
 
 output.elasticsearch:
-  hosts: ["http://elasticsearch:9200"]
+  hosts: ["elasticsearch:9200"]
+  ssl.certificate_authorities:
+    - /usr/share/metricbeat/config/certs/ca/ca.crt
+
+logging.level: info
+logging.to_stderr: true

@@ -12,4 +12,9 @@ packetbeat.protocols:
   ports: [53]
 
 output.elasticsearch:
-  hosts: ["http://elasticsearch:9200"]
+  hosts: ["/elasticsearch:9200"]
+#  ssl.certificate_authorities:
+#    - /etc/filebeat/config/certs/ca.crt
+
+logging.level: info
+logging.to_stderr: true
