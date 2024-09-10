@@ -355,3 +355,6 @@ pyrightconfig.json
 
 inference_photos
 certs
+models/*.pt
+models/*.h5
+

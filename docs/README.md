@@ -36,7 +36,7 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
 
 1. according to these newly created pages:
     - databases
-        1. 누적 칼로리(탄, 단, 지)
+      ~~1. 누적 칼로리(탄, 단, 지)~~
         2. 누적 운동기록들
             - 운동시간
         3. 당뇨 지표
@@ -45,8 +45,6 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
             6. 당화혈색소: 년월일, 당화혈색소(%)
         4. 식단기록(이미지 업로드): 년월일, (아침,점심,저녁,간식), (칼로리, 탄수화물, 단백질, 지방)
 
-        - 일일 뽑아내기 / 주간 뽑아내기
-        - 전체 유저의 상위 n%입니다 표식
 2. integrate the new databases with the existing ones
 3. ???
 4. Profit
@@ -63,25 +61,7 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     6. i should experiment by using git branches i guess
     7. no wait just do what i planned in keep
 
-went for approach number 1: import the functions and classes from 'ai_workload'
-
-## plan 2.2
-
-1. what should i do next?
-2. hardening the website!
-    1. [x] edit and delete 운동 기록
-    2. edit and delete 혈압
-    3. edit and delete 혈당
-    4. HOW???
-
-#### plan 2.2.1
-
-1. hardening the webapp
-    2. [ ] edit and delete 운동 기록
-    3. [ ] edit and delete 혈압
-    4. [ ] edit and delete 혈당
-    5. [ ] edit and delete 당화혈색소
-    6. ...
+-> went for approach number 1: import the functions and classes from 'ai_workload'
 
 ## plan 3
 
@@ -137,8 +117,6 @@ django-storage?
 
 may be better off sticking with one cloud provider.
 
-TODO: prune some ports in docker-compose.yml if needed
-
 ## plan 3.2 (do this before doing all the money involving stuff in plan 3.1)
 
 0. use environment variables for secrets
@@ -149,6 +127,34 @@ TODO: prune some ports in docker-compose.yml if needed
             1. upload size
             2. upload count
     2. ???
+
+## plan 3.3
+
+0. use environment variables for secrets
+1. implement ai related stuff
+    1. get the model and use it in the fastapi server
+    2. ???
+
+## plan 2.2 (hardening website)
+
+2. hardening the website!
+    1. [x] edit and delete 운동 기록
+    2. edit and delete 혈압
+    3. edit and delete 혈당
+    4. 디자인 나오는거 기달..
+
+#### plan 2.2.1
+
+1. hardening the webapp
+    2. edit and delete 운동 기록
+    3. edit and delete 혈압
+    4. edit and delete 혈당
+    5. edit and delete 당화혈색소
+    6. ...
+7. 누적 칼로리(탄, 단, 지)
+
+- 일일 뽑아내기 / 주간 뽑아내기
+- 전체 유저의 상위 n%입니다 표식
 
 ### passwords to copy yada yada
 

@@ -84,7 +84,6 @@ services:
       - zookeeper
     ports:
       - 29092:29092
-      - 9092:9092
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -187,9 +186,9 @@ services:
       - xpack.security.http.ssl.certificate=certs/logstash/logstash.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.http.ssl.verification_mode=certificate
-    ports:
-      - "5044:5044"
-      - "9600:9600"
+    #    ports:
+    #      - "5044:5044" # test
+    #      - "9600:9600"
     networks:
       - elk
 
@@ -270,9 +269,9 @@ services:
     volumes:
       - certs:/usr/share/elasticsearch/config/certs:ro
       - esdata:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9243:9243"
+    #    ports:
+    #      - "9200:9200"
+    #      - "9243:9243"
     networks:
       - elk
     healthcheck:
@@ -302,8 +301,8 @@ services:
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_CERTIFICATE=/usr/share/kibana/config/certs/kibana/kibana.crt
       - SERVER_SSL_KEY=/usr/share/kibana/config/certs/kibana/kibana.key
-    ports:
-      - "5601:5601"
+    #    ports:
+    #      - "5601:5601"
     networks:
       - elk
 
