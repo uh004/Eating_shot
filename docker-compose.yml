@@ -8,6 +8,7 @@ services:
     volumes:
       #      - static_volume:/app/static
       - ./djangoapp/db.sqlite3:/app/db.sqlite3
+      - ./inference_photos:/app/inference_photos
     expose:
       - "8000"
     depends_on:
@@ -38,8 +39,10 @@ services:
   inferenceapp:
     build: inference
     container_name: inference_app
-    ports:
-      - "8099:8099"
+    volumes:
+      - ./models:/app/models
+    #    ports:
+    #      - "8099:8099"
     logging:
       driver: "json-file"
       options:

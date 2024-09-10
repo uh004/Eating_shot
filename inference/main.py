@@ -1,12 +1,15 @@
-from fastapi import FastAPI
+import io
+
+from fastapi import FastAPI, UploadFile, File
 import uvicorn
 import logging
 import logstash
 
-# import ultralytics
-# from ultralytics import YOLO
+import ultralytics
+from ultralytics import YOLO
+from PIL import Image
 
-# ultralytics.checks()
+ultralytics.checks()
 
 app = FastAPI()
 host = "logstash"
@@ -20,51 +23,37 @@ logger.addHandler(logstash.TCPLogstashHandler(host, 5000, version=1))
 
 
 ## model loading
-# model = YOLO('<filename.pt>')
-
+model = YOLO("models/food3.pt")
 logging.info("Loaded the model.")
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
-    # TODO: return model info here
+    return {"message": str(model)}
 
 
 @app.post("/predict")
-async def inference_YOLO():
-    print("wow")
+async def inference_YOLO(file: UploadFile = File(...)):
     logger.info("Received inference request at /predict")
 
     # hardcoded conversion table
     conv_table = {
         "DotoriMook": "도토리묵",
         "KkakDugi": "깍두기",
+        "TteokGalbi": "떡갈비",
         # ...
     }
 
-    # TODO: mount model folder at ../
-    # results = model.predict(source='/content/do2.jpeg', save=True)
-    ## results format:
-    ## image 1/1 /content/do2.jpeg: 640x640 1 DotoriMook, 11.3ms
-    # Speed: 5.1ms preprocess, 11.3ms inference, 1.4ms postprocess per image at shape (1, 3, 640, 640)
-    # Results saved to runs/detect/predict
-    # TODO: get the most of the result
-    # results[0].tojson() (json with \n)
-    # for result in results:
-    #     boxes = result.boxes  # Boxes object for bounding box outputs
-    #     masks = result.masks  # Masks object for segmentation masks outputs
-    #     keypoints = result.keypoints  # Keypoints object for pose outputs
-    #     probs = result.probs  # Probs object for classification outputs
-    #     obb = result.obb  # Oriented boxes object for OBB outputs
-    #     result.show()  # display to screen
-    #     result.save(filename="result.jpg")  # save to disk
-    # TODO: 모델 부르면 따로 폴더 만드는데 그거 어뜨케 방지하지??
+    image_data = await file.read()
+    image = Image.open(io.BytesIO(image_data))
 
-    return {
-        "prediction": "This is a dummy prediction",
-        "probability": 0.99,
-    }
+    results = model.predict(source=image)
+    logger.info([r.summary() for r in results])
+    predictions = [r.summary() for r in results]
+    for pred in predictions[0]:
+        pred["name"] = conv_table.get(pred["name"], "아무렴뭐어때")
+
+    return predictions[0]  # nested list. escape one level
 
 
 if __name__ == "__main__":
