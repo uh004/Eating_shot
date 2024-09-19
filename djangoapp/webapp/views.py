@@ -171,6 +171,28 @@ def diet_form(request):
         form = DietForm()
     return render(request, "users/diet_form.html", {"form": form})
 
+# 새로 식단 수정 폼 추가함
+@login_required
+def diet_revise_form(request):
+    if request.method == "POST":
+        form = DietForm(request.POST, request.FILES)
+        if form.is_valid():
+            diet = form.save(commit=False)
+            diet.user = request.user
+            diet.save()
+
+            # Create an InferenceTask instance
+            inference_task = InferenceTask.objects.create(
+                user=request.user, photo=diet.image, status="PENDING"
+            )
+
+            # Queue the inference task
+            send_inference_task(inference_task.id)
+
+            return redirect("index")
+    else:
+        form = DietForm()
+    return render(request, "users/diet_revise_form.html", {"form": form})
 
 @login_required
 def blood_1(request):
@@ -237,3 +259,15 @@ def exercise_form(request, exercise_id):
             ).calories_per_hour,
         },
     )
+
+def exercise_revise_form(request):
+    return render(request, "users/exercise_revise_form.html", {})
+
+def blood1_revise_form(request):
+    return render(request, "users/blood1_revise_form.html", {})
+
+def blood2_revise_form(request):
+    return render(request, "users/blood2_revise_form.html", {})
+
+def blood3_revise_form(request):
+    return render(request, "users/blood3_revise_form.html", {})

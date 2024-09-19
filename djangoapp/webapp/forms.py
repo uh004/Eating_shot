@@ -95,7 +95,7 @@ class ExerciseForm(forms.ModelForm):
 
 # 혈당
 class BloodSugarForm(forms.ModelForm):
-    TIME_CHOICES = [
+    CHOICES = [
         ("아침 식전", "아침 식전"),
         ("점심 식전", "점심 식전"),
         ("저녁 식전", "저녁 식전"),
@@ -104,7 +104,7 @@ class BloodSugarForm(forms.ModelForm):
         ("저녁 식후", "저녁 식후"),
         ("공복", "공복"),
     ]
-    time = forms.ChoiceField(choices=TIME_CHOICES, label="시간", required=True)
+    time = forms.ChoiceField(choices=CHOICES, label="시간", required=True)
     date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}), label="날짜", required=True
     )

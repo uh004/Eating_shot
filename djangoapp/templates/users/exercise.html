@@ -1,36 +1,37 @@
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 {% endblock %}
 
 <div id="exercise">
     <div class="banner">
         <div class="slide" id="exercise_info">
             {% for exercise in exercises %}
-            <div class="ex" style="display: flex; margin-top: 0;">
-                <p>{{ exercise.exercise_type }} 
-{#                    <span style="margin-left: 190px;">#}
+            <div class="ex">
+
+                <div style="display: flex; margin-left: 373px;">
+                    <button type="button" onclick="window.location.href = {% url 'exercise_revise_form' %}">수정</button>
+                    <button type="button" onclick="deleteBoard()">삭제</button>
+                </div>
+                
+
+                <div class="exercise_tt">
+
+                    <p>{{ exercise.exercise_type }}</p>
                     <span>
                         <span style="color: #00BCD4;">
                             {{ exercise.exercise_calories }} 
                         </span> 
-                        kcal/{{ exercise.exercise_time }}분
+                        kcal / {{ exercise.exercise_time }}분
                     </span>
-                </p>
+
+                </div>
+
             </div>
+            
+
             {% endfor %}
-{#            <div class="ex" style="display: flex; margin-top: 0;">#}
-{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
-{#            </div>#}
-{#            #}
-{#            <div class="ex" style="display: flex;">#}
-{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
-{#            </div>#}
-{#            #}
-{#            <div class="ex" style="display: flex;">#}
-{#                <p>걷기 <span style="margin-left: 237px;"><span style="color: #00BCD4;">96</span> kcal / 30 분</span></p>#}
-{#            </div>#}
-        </div>
     </div>
     
     <button type="button" class="plus">
@@ -38,3 +39,26 @@
              onclick="window.location.href = {% url 'exercise_list' %}" alt="">
     </button>
 </div>
+
+{% block script %}
+<script>
+
+    function deleteBoard(seq){
+            Swal.fire({
+            title: '<p style="margin: 0px; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
+            text: "삭제하시면 다시 복구시킬 수 없습니다.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#00BCD4',
+            cancelButtonColor: '#e5e2e2',
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소',
+            width:'400px'
+            }).then((result) => {
+            if (result.value) {
+                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
+            }
+        })
+    }
+</script>
+{% endblock %}

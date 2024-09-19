@@ -1,8 +1,7 @@
 .main_container {
     width: 480px;
-    height: 95%;
+    height: 900px;
     margin: 0 auto;
-    padding: 20px;
     background-size: contain;
     background-repeat: no-repeat;
     border: 1px solid;
@@ -13,7 +12,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 130px;
+    margin-top: 80px;
 }
 
 .banner img {
@@ -21,10 +20,10 @@
     margin: auto;
 }
 
-.banner p {
-    text-align: center;
-    font-size: 30px;
-    margin: 20px 0 50px;
+#login_title {
+    font-size: 30px; 
+    margin-top: 20px; 
+    margin-bottom: 50px;
 }
 
 .forms {
@@ -47,8 +46,10 @@
     border-radius: 10px;
     font-size: 20px;
     padding: 10px;
-    margin: 15px 0;
+    margin: 5px 0px 15px 0px;
+    
 }
+
 .banner form input[type="submit"],
 .slide input[type=submit] {
     width: 442px;
@@ -128,4 +129,13 @@ label {
 .goal input[type=radio]:checked + label,
 .choose_status input[type=checkbox]:checked + label {
     background-color: #00BCD4; /* Highlight on check */
+}
+
+.go_join {
+    font-size: 20px;
+}
+
+h3 {
+    margin: 0px 20px;
+    text-align: left;
 }

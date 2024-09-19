@@ -1,44 +1,82 @@
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/blood.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 {% endblock %}
 
 
 <div id="blood">
     <div class="banner" id="indicator">
-        {% for data in blood1_data %}
-            <div class="slide" id="indicator_info">
-                <div class="blood" style="display: flex; justify-content: space-between;">
-                    <p style="font-size: 24px; margin: 12px 5px;">혈당</p>
-                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span style="color: red;">
-                    {{ data.blood_sugar }}</span>mg/DL</p>
-                </div>
-            </div>
-        {% endfor %}
-        
-        {% for data in blood2_data %}
-            <div class="slide" id="indicator_info">
-                <div class="blood" style="display: flex; justify-content: space-between;">
-                    <p style="font-size: 24px; margin: 12px 5px;">혈압</p>
-                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span style="color: red;">
-                    {{ data.systolic }}</span>/<span style="color: red;">{{ data.diastolic }}</span>mmHg</p>
-                </div>
-            </div>
-        {% endfor %}
-        
-        {% for data in blood3_data %}
-            <div class="slide" id="indicator_info">
-                <div class="blood" style="display: flex; justify-content: space-between;">
-                    <p style="font-size: 24px; margin: 12px 5px;">당화혈색소</p>
-                    <p style="font-size: 20px; margin: 14px 0;">{{ data.date }} | <span
-                            style="color: red;">{{ data.hba1c }}</span>%</p>
-                </div>
-            </div>
-        {% endfor %}
-        
-        <button type="button" class="plus">
-            <img src="{% static 'img/plus-sign.png' %}" width="50px" alt="" id="target_popup_button">
+
+        <button type="button" class="blood_btn" id="blood_btn1"> 
+            <img src="{% static 'img/check_circle.png' %}">
+            <p>혈당</p>
         </button>
+
+        <div class="for_indicator">
+            {% for data in blood1_data %}
+            <div class="slide">
+                <div class="blood">
+                    <p style="margin: 14px 0;"> {{ data.time }} |
+                    <span style="color: red;">{{ data.blood_sugar }}</span>mg/DL</p>
+
+                    <div>
+                        <button type="button" onclick="window.location.href = {% url 'blood1_revise_form' %}">수정</button>
+                        <button type="button" onclick="deleteBoard()">삭제</button>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+        
+        <button type="button" class="blood_btn" id="blood_btn2"> 
+            <img src="{% static 'img/check_circle.png' %}">
+            <p>혈압</p>
+        </button>
+
+        <div class="for_indicator">
+            {% for data in blood2_data %}
+                <div class="slide">
+                    <div class="blood" style="display: flex; justify-content: space-between;">
+                        <p style="margin: 14px 0;">
+                        <span style="color: red;">{{ data.systolic }}</span>/<span style="color: red;">{{ data.diastolic }}</span>mmHg</p>
+                    
+                        <div>
+                            <button type="button" onclick="window.location.href = {% url 'blood2_revise_form' %}">수정</button>
+                            <button type="button" onclick="deleteBoard()">삭제</button>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <button type="button" class="blood_btn" id="blood_btn3"> 
+            <img src="{% static 'img/check_circle.png' %}">
+            <p>당화혈색소</p>
+        </button>
+
+        <div class="for_indicator">
+            {% for data in blood3_data %}
+                <div class="slide">
+                    <div class="blood" style="display: flex; justify-content: space-between;">
+                        <p style="margin: 14px 0;">
+                        <span style="color: red;">{{ data.hba1c }}</span>%</p>
+
+                        <div>
+                            <button type="button" onclick="window.location.href = {% url 'blood3_revise_form' %}">수정</button>
+                            <button type="button" onclick="deleteBoard()">삭제</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+    <button type="button" class="plus">
+        <img src="{% static 'img/plus-sign.png' %}" width="50px" alt="" id="target_popup_button">
+    </button>
+
     </div>
     
     <div id="popup3" class="popup-overlay3">
@@ -77,5 +115,33 @@
                 popup.style.opacity = "0";
             }
         });
+    
+
+        $(document).ready(function() {
+            // 모든 .meals_btn에 클릭 이벤트 설정
+            $('.blood_btn').on('click', function() {
+                let info = $(this).next('.for_indicator'); // 클릭된 버튼의 바로 다음 .meal_info 선택
+                info.toggle(); // .meal_info의 보임/숨김 상태 전환
+            });
+        });
+
+        function deleteBoard(seq){
+            Swal.fire({
+            title: '<p style="margin: 0px; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
+            text: "삭제하시면 다시 복구시킬 수 없습니다.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#00BCD4',
+            cancelButtonColor: '#e5e2e2',
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소',
+            width:'400px'
+            }).then((result) => {
+            if (result.value) {
+                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
+                }
+            })
+        }
+            
     </script>
 {% endblock %}

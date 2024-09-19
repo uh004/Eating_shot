@@ -57,7 +57,7 @@
             let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
             const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
 
-            $(`#menu${now}`).css('background-color', '#00BCD4'); // 이전 메뉴의 배경색 초기화
+            $(`#menu${now}`).css('color', '#00BCD4'); // 이전 메뉴의 배경색 초기화
 
             $.ajax({
                 url: `/load_content/${arr[now]}/`,
@@ -67,10 +67,10 @@
             });
 
             $('ul li').on('click', function () {
-                $(`#menu${now}`).css('background-color', '');
+                $(`#menu${now}`).css('color', '');
                 now = $(this).attr('id').replace('menu', '');
                 localStorage.setItem('currentTab', now);  // Save the current tab index
-                $(`#menu${now}`).css('background-color', '#00BCD4');
+                $(`#menu${now}`).css('color', '#00BCD4');
 
                 $.ajax({
                     url: `/load_content/${arr[now]}/`,
