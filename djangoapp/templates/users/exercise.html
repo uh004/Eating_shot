@@ -7,14 +7,23 @@
 <div id="exercise">
     <div class="banner">
         <div class="slide" id="exercise_info">
+
+            <div class="cal_info">
+                <p>오늘 운동 칼로리 소모량은</p>
+                <img src="{% static 'img/apple.png' %}">
+                <p class="cal_result"><span>사과 한 알</span>(약 96kcal)
+            </div>
+
             {% for exercise in exercises %}
             <div class="ex">
 
-                <div style="display: flex; margin-left: 373px;">
-                    <button type="button" onclick="window.location.href = {% url 'exercise_revise_form' %}">수정</button>
-                    <button type="button" onclick="deleteBoard()">삭제</button>
+                <div class="for_ex">
+                    <img src="{% static 'img/exercise_logo.png' %}">
+                    <div style="display: flex;">
+                        <button type="button" onclick="window.location.href = {% url 'exercise_revise_form' %}">수정</button>
+                        <button type="button" onclick="deleteBoard()">삭제</button>
+                    </div>
                 </div>
-                
 
                 <div class="exercise_tt">
 

@@ -12,6 +12,7 @@ urlpatterns = [
     path("blood1/", views.blood_1, name="blood1"),
     path("blood2/", views.blood_2, name="blood2"),
     path("blood3/", views.blood_3, name="blood3"),
+
     path("diet-form/", views.diet_form, name="diet_form"),
     path("diet-revise-form/", views.diet_revise_form, name="diet_revise_form"),
     path(
@@ -22,5 +23,7 @@ urlpatterns = [
 
     path("blood1-revise-form/", views.blood1_revise_form, name="blood1_revise_form"),
     path("blood2-revise-form/", views.blood2_revise_form, name="blood2_revise_form"),
-    path("blood3-revise-form/", views.blood3_revise_form, name="blood3_revise_form")
+    path("blood3-revise-form/", views.blood3_revise_form, name="blood3_revise_form"),
+
+    path("mypage-revise-form/", views.mypage_revise_form, name="mypage_revise_form")
 ]
