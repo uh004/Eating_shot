@@ -271,3 +271,6 @@ def blood2_revise_form(request):
 
 def blood3_revise_form(request):
     return render(request, "users/blood3_revise_form.html", {})
+
+def mypage_revise_form(request):
+    return render(request, "users/mypage_revise_form.html", {})

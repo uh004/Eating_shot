@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 {% load static %}
 {#{% block title %}운동 기록하기{% endblock %}#}
 {% block extra_css %}
@@ -7,7 +9,6 @@
 
 <div class="main_container" id="main">
     <div class="deco">
-        <!-- <h2>{{ exercise_name }}</h2> -->
         <h2>기존 운동 이름</h2>
         <p>유산소</p>
         <img src="{% static 'img/exercise_form.png' %}">
@@ -15,11 +16,11 @@
     
     <form method="post" action="">
         {% csrf_token %}
-        <div id="exercise_times">
-            <!-- {{ form.exercise_time }} -->
+        <div class="exercise_times">
+            {{ form.exercise_time }}
         </div>
         
-        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
+        <input class="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
         
         <div class="strengths" style="display: flex; justify-content: space-between;">
             <p>운동 강도</p>
@@ -36,7 +37,7 @@
         </div>
         
         <p id="calories_pred">예상 소모 칼로리는 <span>0kcal</span>입니다. </p>
-        <input type="submit" value="수정하기" id="form_submit">
+        <input type="submit" value="기록하기" id="form_submit">
     </form>
 </div>
 

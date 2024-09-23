@@ -70,7 +70,7 @@
         
                             <div class="btns">
                                 <button type="button" class="modify_meal">수정</button>
-                                <button type="button" class="delete_meal">삭제</button>
+                                <button type="button" class="delete_meal" onclick="deleteBoard2()">삭제</button>
                                 <button type="button" class="confirm_meal">확인</button>
                             </div>
                         </li>
@@ -84,7 +84,7 @@
         
                             <div class="btns">
                                 <button type="button" class="modify_meal">수정</button>
-                                <button type="button" class="delete_meal">삭제</button>
+                                <button type="button" class="delete_meal" onclick="deleteBoard2()">삭제</button>
                                 <button type="button" class="confirm_meal">확인</button>
                             </div>
                         </li>
@@ -122,6 +122,7 @@
             let info = $(this).next('.meal_info'); // 클릭된 버튼의 바로 다음 .meal_info 선택
             info.toggle(); // .meal_info의 보임/숨김 상태 전환
         });
+
     });
 
     $(document).ready(function() {
@@ -160,6 +161,23 @@
             Swal.fire({
             title: '<p style="margin: 0px; font-size: 20px;">해당 식단을 삭제하시겠습니까?</p>',
             text: "삭제하시면 다시 복구시킬 수 없습니다.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#00BCD4',
+            cancelButtonColor: '#e5e2e2',
+            confirmButtonText: '삭제',
+            cancelButtonText: '취소',
+            width:'400px'
+            }).then((result) => {
+            if (result.value) {
+                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
+            }
+        })
+    }
+
+    function deleteBoard2(seq){
+            Swal.fire({
+            title: '<p style="margin: 0px; font-size: 20px;">해당 식단을 삭제하시겠습니까?</p>',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#00BCD4',

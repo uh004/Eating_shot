@@ -5,13 +5,12 @@
 
 .banner {
     width: 480px;
-    height: 729px;
+    height: 750px;
     margin: 0 auto;
     background-size: contain;
     background-repeat: no-repeat;
-    background-color: rgb(250, 250, 250);
+    background-color: white;
     zoom: 100%;
-    padding-bottom: 10px;
 }
 
 .slide {
@@ -23,7 +22,7 @@
 
 .contents {
     display: none;
-    max-height: 680px;
+    max-height: 700px;
     overflow: scroll;
 }
 
@@ -64,7 +63,7 @@
 .exercise_report {
     height: 420px;
     padding: 20px;
-    background-color: #6ba674;
+    background-color: #00A1B8;
     border-radius: 30px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 20px;
@@ -77,7 +76,7 @@
 .blood_report1 {
     height: 420px;
     padding: 20px;
-    background-color: #ff5757;
+    background-color: #006D83;
     border-radius: 30px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 20px;
@@ -86,7 +85,7 @@
 .blood_report2 {
     height: 500px;
     padding: 20px;
-    background-color: #ff5757;
+    background-color: #006D83;
     border-radius: 30px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 20px;
@@ -115,7 +114,7 @@
 }
 
 .blood_sugar2 span {
-    color: #ff5757;
+    color: #006D83;
 }
 
 .blood_sugar2 p {
@@ -145,9 +144,9 @@ input[type="radio"] + label {
 }
 
 .tabcontent {
-    margin: 10px 20px;
+    margin: 0px 20px;
     width: 440px;
-    height: 727px;
+    height: 750px;
     color: black;
 }
 

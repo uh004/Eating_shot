@@ -6,98 +6,126 @@
 {% endblock %}
 
     <div class="banner" id="mypage">
-        <div class="slide" id="mypage_detail">
 
-            <div class="profile">
-                <img src="{% static 'img/profile.png' %}" alt="">
-                <div class="profile_detail">
-                    <p class="nickname">마진패딩설정귀찮</p>
-                    <p id="modify_myinfo">내 정보 수정하기</p>
-                </div>
+        <div class="profile">
+            <img src="{% static 'img/profile.png' %}" alt="">
+            <div class="profile_detail">
+                <p class="nickname">마진패딩설정귀찮</p>
+                <p id="modify_myinfo" onclick="window.location.href = {% url 'mypage_revise_form' %}">내 정보 수정하기</p>
             </div>
-
-            <div id="for_personal_info">
-                <ul class="personal_info">
-                    <h2>내 정보</h2>
-                    <hr>
-                    <li>
-                        <p>이메일</p>
-                        <p>{{ user_info.email }}</p>
-                    </li>
-
-                    <li>
-                        <p>키</p>
-                        <p>{{ user_info.height }}cm</p>
-                    </li>
-
-                    <li>
-                        <p>몸무게</p>
-                        <p>{{ user_info.weight }}kg</p>
-                    </li>
-
-                    <li>
-                        <p style="line-height: 41px;">질병</p>
-{#                        {% with user_info.health_conditions|split_by_comma as split_list %}#}
-                            <div id="disease">
-{#                            {% for item in split_list %}#}
-                                {% for item in health_conditions %}
-                                <p>{{ item }}</p>
-                            {% endfor %}
-                            </div>
-{#                        {% endwith %}#}
-                    </li>
-                </ul>
-
-                <ul class="personal_info">
-                    <div class="alarm1">
-                        <img src="{% static 'img/pill.png' %}" width="35px" height="35px" alt="">
-                        <h2>약 알람</h2>
-                    </div>
-
-                    <hr>
-
-                    <li>
-                        <p>오전 9:00</p>
-                    </li>
-
-                    <li>
-                        <p>오후 13:00</p>
-                    </li>
-
-                    <li>
-                        <p>오후 19:00</p>
-                    </li>
-
-                </ul>
-
-                <ul class="personal_info">
-                    <div class="alarm1">
-                        <img src="{% static 'img/hospital.png' %}" width="35px" height="35px">
-                        <h2>병원 출석 알람</h2>
-                    </div>
-
-                    <hr>
-
-                    <li>
-                        <p>연세세브란스병원</p>
-                        <p>6월 9일 오전 9:00</p>
-                    </li>
-
-                    <li>
-                        <p>연세세브란스병원</p>
-                        <p>9월 9일 오전 9:00</p>
-                    </li>
-
-                    <li>
-                        <p>연세세브란스병원</p>
-                        <p>11월 9일 오전 9:00</p>
-                    </li>
-
-                </ul>
-
-            </div>
-            
-    
-            
         </div>
+
+        <div id="for_personal_info">
+            <ul class="personal_info">
+                <h2 class="myinfo">내 정보</h2>
+                <hr>
+                <li>
+                    <p>이메일</p>
+                    <p>{{ user_info.email }}</p>
+                </li>
+
+                <li>
+                    <p>키</p>
+                    <p>{{ user_info.height }}cm</p>
+                </li>
+
+                <li>
+                    <p>몸무게</p>
+                    <p>{{ user_info.weight }}kg</p>
+                </li>
+
+                <li>
+                    <p style="line-height: 41px;">질병</p>
+                    <div id="disease">
+                        {% for item in health_conditions %}
+                            <p>{{ item }}</p>
+                        {% endfor %}
+                    </div>
+                </li>
+            </ul>
+
+            <button type="button" id="for_pill_alarm" class="alarm">
+                <img src="{% static 'img/pill.png' %}" alt="">
+                <p>약 알리미</p>
+            </button>
+
+            <div class="pill_alarm">
+                <ul>
+                    <li>
+                        <p class="time">오전 <span>7:40</span></p>
+                        <div style="display: flex;">
+                            <div class="weekday">
+                                <p>월</p>
+                                <p>화</p>
+                                <p style="color: #00BCD4;">수</p>
+                                <p style="color: #00BCD4;">목</p>
+                                <p style="color: #00BCD4;">금</p>
+                                <p>토</p>
+                                <p>일</p>
+                            </div>
+    
+                            <div class="revise_alarm">
+                                <button>수정</button>
+                                <button>삭제</button>
+                            </div>
+                        </div>
+                
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+
+            <button type="button" class="alarm" id="for_hospital_alarm">
+                <img src="{% static 'img/hospital.png' %}" alt="">
+                <p>병원 알리미</p>
+            </button>
+
+            <div class="hospital_alarm">
+                <ul>
+                    <li>
+                        <div style="display: flex; justify-content: space-between;">
+                            <p>9월 28일(토)</p>
+                        
+                            <div class="revise_alarm">
+                                <button>수정</button>
+                                <button>삭제</button>
+                            </div>
+                        </div>
+
+                        <div style="display: flex;">
+                            <p class="time">오전 <span>7:40</span></p>
+                            <p class="hospital">연세세브란스병원</p>
+                        </div>
+
+                    </li>
+                    <hr>
+                </ul>
+            </div>
+
+        </div>
+            
     </div>
+
+{% block script %}
+<script>
+
+    $(document).ready(function() {
+        // 모든 .meals_btn에 클릭 이벤트 설정
+        $('#for_pill_alarm').on('click', function() {
+            let info = $(this).next('.pill_alarm'); // 클릭된 버튼의 바로 다음 .meal_info 선택
+            info.toggle(); // .meal_info의 보임/숨김 상태 전환
+        });
+
+    });
+
+    $(document).ready(function() {
+        // 모든 .meals_btn에 클릭 이벤트 설정
+        $('#for_hospital_alarm').on('click', function() {
+            let info = $(this).next('.hospital_alarm'); // 클릭된 버튼의 바로 다음 .meal_info 선택
+            info.toggle(); // .meal_info의 보임/숨김 상태 전환
+        });
+
+    });
+
+</script>
+{% endblock %}

@@ -8,8 +8,8 @@
 {% block content %}
     <div class="main_container">
         <div class="banner">
-            <img src="{% static 'img/chara.png' %}" width="150px" alt="">
-            <p style="font-size: 30px; margin-top: 20px; margin-bottom: 50px;">회원가입</p>
+            <img src="{% static 'img/register_form.png' %}" width="250px" height="100px" alt="">
+            <p style="font-size: 30px; margin : 10px auto 30px auto;">회원가입</p>
             <div class="forms">
                 <form action="{% url 'register' %}" method="POST">
                     {% csrf_token %}

@@ -10,7 +10,7 @@
 {% block content %}
     <div class="main_container" id="main">
         <div class="menu">
-            <img src="{% static 'img/logo.jpg' %}" style="margin: 10px 190px;" width="100px" alt="">
+            <img src="{% static 'img/logo.jpg' %}" style="margin: 0px 190px;" width="100px" alt="" id="menu_logo">
             <ul>
                 <li id="menu1"><img src="{% static 'img/rice.png' %}" width="40px" alt="">식단</li>
                 <li id="menu2"><img src="{% static 'img/dumbbell.png' %}" width="40px" alt="">운동</li>
@@ -57,7 +57,7 @@
             let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
             const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
 
-            $(`#menu${now}`).css('color', '#00BCD4'); // 이전 메뉴의 배경색 초기화
+            $(`#menu${now} img`).css('background-color', '#00BCD4'); // 이전 메뉴의 배경색 초기화
 
             $.ajax({
                 url: `/load_content/${arr[now]}/`,
@@ -67,10 +67,10 @@
             });
 
             $('ul li').on('click', function () {
-                $(`#menu${now}`).css('color', '');
+                $(`#menu${now} img`).css('background-color', '');
                 now = $(this).attr('id').replace('menu', '');
                 localStorage.setItem('currentTab', now);  // Save the current tab index
-                $(`#menu${now}`).css('color', '#00BCD4');
+                $(`#menu${now} img`).css('background-color', '#00BCD4');
 
                 $.ajax({
                     url: `/load_content/${arr[now]}/`,

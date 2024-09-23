@@ -16,11 +16,11 @@
     
     <form method="post" action="">
         {% csrf_token %}
-        <div id="exercise_times">
+        <div class="exercise_times">
             {{ form.exercise_time }}
         </div>
         
-        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
+        <input class="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
         
         <div class="strengths" style="display: flex; justify-content: space-between;">
             <p>운동 강도</p>
