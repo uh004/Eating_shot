@@ -1,59 +1,60 @@
-<!DOCTYPE html>
 <html lang="en">
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/diet.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 {% endblock %}
 
-    <div class="banner" id="food">
-        <div class="slide" id="food_detail">
-            <div class="all_kcal">
-                <p style="font-size: 20px; margin: 5px 0;">누적 칼로리 <span style="float: right;"><span style="color: #00BCD4;">800</span> / 1,416 kcal</span></p>
-                <progress value="800" max="1416"></progress>
-                <p>탄수화물 <span style="float: right;"><span style="color: #00BCD4;">0</span> / 195 g</span></p>
-                <p>단백질 <span style="float: right;"><span style="color: #00BCD4;">19</span> / 71 g</span></p>
-                <p style="margin-bottom: 0px;">지방 <span style="float: right;"><span style="color: #00BCD4;">13</span> / 39 g</span></p>
-            </div>
-{#        TODO: all kcal #}
+<div class="banner" id="food">
+    <div class="slide" id="food_detail">
+        <div class="all_kcal">
+            <p style="font-size: 20px; margin: 5px 0;">누적 칼로리 <span style="float: right;"><span style="color: #00BCD4;">800</span> / 1,416 kcal</span>
+            </p>
+            <progress value="800" max="1416"></progress>
+            <p>탄수화물 <span style="float: right;"><span style="color: #00BCD4;">0</span> / 195 g</span></p>
+            <p>단백질 <span style="float: right;"><span style="color: #00BCD4;">19</span> / 71 g</span></p>
+            <p style="margin-bottom: 0px;">지방 <span style="float: right;"><span style="color: #00BCD4;">13</span> / 39 g</span>
+            </p>
+        </div>
+        {#        TODO: all kcal #}
 
-            {% for meal in meals %}
+        {% for meal in meals %}
+            {#            {% if meal.result.status == "PENDING" %}#} {# TODO: inference status check in profile?? #}
             <div class="meals">
                 <button type="button" style="display: flex;" class="meals_btn">
-                    <img src="{% static 'img/sigpan.jpg' %}">
+                    <img src="{{ meal.image }}" alt="">
                     <div class="img_info">
-                        <p id="meal_type">{{ meal.meal_type }} (<span>509</span>kcal)</p> 
-                        <p id="meal_detail" style="font-size: 14px;">설렁탕&소면, 깍두기, 보리밥, 떡갈비, 김치전, 모듬초회</p>
-                        <!-- {{ meal.result.result_data.prediction }} -->
+                        <p id="meal_type">{{ meal.meal_type }} (<span>509</span>kcal)</p>
+                        <p id="meal_detail" style="font-size: 14px;">{{ meal.result.result_data }}</p>
                     </div>
-                    
+
                 </button>
 
                 <div class="meal_info">
                     <div class="meal_revise">
-                        <button type="button" onclick="window.location.href = {% url 'diet_revise_form' %}">수정</button>
-                        <button type="button" onclick="deleteBoard()">삭제</button>
+                        <button type="button" onclick="window.location.href = '{% url 'diet_form_edit' meal.id %}'">수정
+                        </button>
+                        <button type="button" onclick="deleteBoard({{ meal.id }})">삭제</button>
                     </div>
 
-                    <img src="{% static 'img/sigpan.jpg' %}">
-                    <p class="topic">식단 영양소 정보</p>
+                    <img src="{{ meal.image }}" alt="">
+                    <p class=" topic">식단 영양소 정보</p>
                     <hr>
 
                     <ul class="tdj">
-                       <li>
+                        <li>
                             <p class="tandanji">탄수화물</p>
                             <p class="gram">30g</p>
-                       </li>
-                       
-                       <li>
+                        </li>
+
+                        <li>
                             <p class="tandanji">단백질</p>
                             <p class="gram">30g</p>
-                       </li>
+                        </li>
 
-                       <li>
+                        <li>
                             <p class="tandanji">지방</p>
                             <p class="gram">30g</p>
-                       </li>
+                        </li>
                     </ul>
 
                     <hr>
@@ -61,136 +62,55 @@
                     <p class="topic">식단 목록</p>
 
                     <ul class="nutrient_info">
-                        <li>
-                            <div>
-                                <p class="meal_name">보리밥</p>
-                                <input type="text" placeholder="음식명" class="modify_meal_name">
-                                <input type="number" placeholder="kcal" class="modify_meal_kcal">
-                            </div>
-        
-                            <div class="btns">
-                                <button type="button" class="modify_meal">수정</button>
-                                <button type="button" class="delete_meal" onclick="deleteBoard2()">삭제</button>
-                                <button type="button" class="confirm_meal">확인</button>
-                            </div>
-                        </li>
+                        {% for nutrient in meal.result_names_list %}
+                            <li>
+                                <div>
+                                    <p class="meal_name">{{ nutrient }}</p>
+                                    <input type="text" id="toModifyNutrientName" placeholder="음식명"
+                                           class="modify_meal_name">
+                                    <input type="number" id="toModifyKcal" placeholder="kcal"
+                                           class="modify_meal_kcal">
+                                </div>
 
-                        <li>
-                            <div>
-                                <p class="meal_name">떡갈비</p>
-                                <input type="text" placeholder="음식명" class="modify_meal_name">
-                                <input type="number" placeholder="kcal" class="modify_meal_kcal">
-                            </div>
-        
-                            <div class="btns">
-                                <button type="button" class="modify_meal">수정</button>
-                                <button type="button" class="delete_meal" onclick="deleteBoard2()">삭제</button>
-                                <button type="button" class="confirm_meal">확인</button>
-                            </div>
-                        </li>
+                                <div class="btns">
+                                    <button type="button" class="modify_meal">수정</button>
+                                    <button type="button" class="delete_meal" onclick="deleteMealName2({{ meal.id }},
+                                            '{{ nutrient }}')">
+                                        삭제
+                                    </button>
+                                    <button type="button" class="confirm_meal" onclick="modifyMealName2(
+                                            {{ meal.id }}, '{{ nutrient }}') {# TODO: Kcal #}
+                                            ">확인
+                                    </button>
+                                </div>
+                            </li>
+                        {% endfor %}
                     </ul>
 
                     <button type="button" id="add_meal">추가하기</button>
 
+                    {# TODO: django form??? #}
                     <div class="add_meal_form">
                         <p>음식 추가</p>
 
                         <form class="inputs">
-                            <input type="text" placeholder="음식명">
-                            <input type="number" placeholder="kcal">
-                            <input type="submit" value="확인" class="color_btn">
+                            <input type="text" placeholder="음식명" id="newNutrientName">
+                            <input type="number" placeholder="kcal" id="newKcal">
+                            <input type="submit" value="확인" class="color_btn"
+                                   onclick="modifyMealName3({{ meal.id }}, '{{ nutrient }}')">
                         </form>
-                        
+
                     </div>
                 </div>
 
             </div>
-            {% endfor %}
-        </div>
-
-        <button type="button" class="plus">
-            <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="window.location.href = {% url 'diet_form' %}" alt="">
-        </button>
+        {% endfor %}
     </div>
 
-{% block script %}
-<script>
+    <button type=" button" class="plus">
+        <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="window.location.href =
+{% url 'diet_form' %}"
+             alt="">
+    </button>
+</div>
 
-    $(document).ready(function() {
-        // 모든 .meals_btn에 클릭 이벤트 설정
-        $('.meals_btn').on('click', function() {
-            let info = $(this).next('.meal_info'); // 클릭된 버튼의 바로 다음 .meal_info 선택
-            info.toggle(); // .meal_info의 보임/숨김 상태 전환
-        });
-
-    });
-
-    $(document).ready(function() {
-        $('#add_meal').on('click', function() {
-            let add_meal_form = $(this).next('.add_meal_form');
-            add_meal_form.toggle();
-        });
-    });
-
-    $(document).ready(function() {
-        $('.modify_meal').on('click', function() {
-
-            var parent_li = $(this).closest("li") 
-
-            parent_li.find('.modify_meal').hide();
-            parent_li.find('.delete_meal').hide();
-            parent_li.find('.meal_name').hide();
-            parent_li.find('.confirm_meal').show();
-            parent_li.find('.modify_meal_name').show();
-            parent_li.find('.modify_meal_kcal').show();
-        });
-    });
-
-    $(document).ready(function() {
-        $('.confirm_meal').on('click', function() {
-            $('.modify_meal').show();
-            $('.delete_meal').show();
-            $('.meal_name').show();
-            $('.confirm_meal').hide();
-            $('.modify_meal_name').hide();
-            $('.modify_meal_kcal').hide();
-        });
-    });
-
-    function deleteBoard(seq){
-            Swal.fire({
-            title: '<p style="margin: 0px; font-size: 20px;">해당 식단을 삭제하시겠습니까?</p>',
-            text: "삭제하시면 다시 복구시킬 수 없습니다.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#00BCD4',
-            cancelButtonColor: '#e5e2e2',
-            confirmButtonText: '삭제',
-            cancelButtonText: '취소',
-            width:'400px'
-            }).then((result) => {
-            if (result.value) {
-                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
-            }
-        })
-    }
-
-    function deleteBoard2(seq){
-            Swal.fire({
-            title: '<p style="margin: 0px; font-size: 20px;">해당 식단을 삭제하시겠습니까?</p>',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#00BCD4',
-            cancelButtonColor: '#e5e2e2',
-            confirmButtonText: '삭제',
-            cancelButtonText: '취소',
-            width:'400px'
-            }).then((result) => {
-            if (result.value) {
-                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
-            }
-        })
-    }
-
-</script>
-{% endblock %}
