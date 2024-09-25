@@ -3,3 +3,4 @@ python-logstash
 ultralytics
 PyYAML
 python-multipart
+ujson

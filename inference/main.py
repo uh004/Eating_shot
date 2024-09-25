@@ -1,6 +1,10 @@
 import io
 
 from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import UJSONResponse
+
+# TODO: if we were hosting this on a separate server from django...
+
 import uvicorn
 import logging
 import logstash
@@ -11,7 +15,7 @@ from PIL import Image
 
 ultralytics.checks()
 
-app = FastAPI()
+app = FastAPI(default_response_class=UJSONResponse)
 host = "logstash"
 
 logger = logging.getLogger("inference")
@@ -35,7 +39,6 @@ async def root():
 @app.post("/predict")
 async def inference_YOLO(file: UploadFile = File(...)):
     logger.info("Received inference request at /predict")
-
     # hardcoded conversion table
     conv_table = {
         "DotoriMook": "도토리묵",
