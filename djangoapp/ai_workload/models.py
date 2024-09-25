@@ -35,4 +35,6 @@ class InferenceResult(models.Model):
     #     "InferenceTask", on_delete=models.CASCADE, related_name="result"
     # )
     result_data = models.JSONField()
+    result_names_comma_separated = models.TextField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
