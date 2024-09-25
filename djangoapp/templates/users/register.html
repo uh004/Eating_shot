@@ -21,6 +21,10 @@
                     {{ form.password1 }}
                     <h3>{{ form.password2.label }}</h3>
                     {{ form.password2 }}
+
+                    {% if form.errors %}
+                        <div class="error">{{ form.errors }}</div>
+                    {% endif %}
                     <input type="submit" value="회원가입">
                 </form>
             </div>

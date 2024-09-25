@@ -111,6 +111,10 @@
                         </p>
                         <input type="submit" value="앱 시작하기">
                     </div>
+
+                    {% if form.errors %}
+                        <div class="error">{{ form.errors }}</div>
+                    {% endif %}
                 </form>
                 <button type="button" class="btn" id="btn" style="width: 150px; margin-left: 320px;"> > NEXT</button>
             </div>

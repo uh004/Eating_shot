@@ -1,11 +1,22 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
+from django.http import JsonResponse
 
 from ai_workload.kafka.producer import send_inference_task
-from ai_workload.models import InferenceTask
-from users.models import Exercise, Diet, ExerciseType, BloodSugar, BloodPressure, HbA1c
+from ai_workload.models import InferenceTask, InferenceResult
+from users.models import (
+    Exercise,
+    Diet,
+    ExerciseType,
+    BloodSugar,
+    BloodPressure,
+    HbA1c,
+    CustomUser,
+)
 from .forms import (
     CustomUserCreationForm,
     CustomAuthenticationForm,
@@ -15,7 +26,9 @@ from .forms import (
     HbA1cForm,
     ExerciseForm,
     DietForm,
+    MyPageReviseForm,
 )
+from datetime import datetime
 
 
 @login_required
@@ -92,7 +105,12 @@ def load_content(request, menu):
 
     match menu:
         case "diet":
-            context["meals"] = Diet.objects.filter(user=request.user)
+            meals = Diet.objects.filter(user=request.user)
+            for meal in meals:
+                meal.result_names_list = meal.result.result_names_comma_separated.split(
+                    ","
+                )
+            context["meals"] = meals
         case "exercise":
             context["exercises"] = Exercise.objects.filter(user=request.user)
         case "blood":
@@ -107,7 +125,7 @@ def load_content(request, menu):
             context["blood3_data"] = hba1c
         case "report":
             pass
-            # 주간, 일간
+            # 주간, 일간 <- 이건 jquery의 ajax로 처리함.
 
             # 총 섭취 n kcal(탄, 단, 지)
             # 총 소모 n kcal
@@ -116,7 +134,7 @@ def load_content(request, menu):
         case "mypage":
             user_info = request.user
             context["user_info"] = user_info
-            conversion_table = {  # TODO: use i18n instead of hardcoding
+            conversion_table = {
                 "type1": "1형 당뇨",
                 "type2": "2형 당뇨",
                 "gestational": "임신성 당뇨",
@@ -140,7 +158,7 @@ def load_content(request, menu):
 def exercise_list(request):
     exercises_by_type = ExerciseType.objects.annotate(exercise_count=Count("exercise"))
 
-    print(exercises_by_type.values())
+    # print(exercises_by_type.values())
 
     return render(
         request,
@@ -150,9 +168,14 @@ def exercise_list(request):
 
 
 @login_required
-def diet_form(request):
+def diet_form(request, id=None):
+    if id:
+        diet = Diet.objects.get(id=id, user=request.user)
+    else:
+        diet = Diet(user=request.user)
+
     if request.method == "POST":
-        form = DietForm(request.POST, request.FILES)
+        form = DietForm(request.POST, request.FILES, instance=diet)
         if form.is_valid():
             diet = form.save(commit=False)
             diet.user = request.user
@@ -166,111 +189,326 @@ def diet_form(request):
             # Queue the inference task
             send_inference_task(inference_task.id)
 
+            # Wait for the inference result to be ready
+            inference_task.refresh_from_db()
+            while inference_task.status != "COMPLETED":
+                inference_task.refresh_from_db()
+                if inference_task.status == "FAILED":
+                    return JsonResponse({"error": "Inference task failed"}, status=500)
+                else:
+                    pass
+
             return redirect("index")
     else:
-        form = DietForm()
+        form = DietForm(instance=diet)
     return render(request, "users/diet_form.html", {"form": form})
 
-# 새로 식단 수정 폼 추가함
-@login_required
-def diet_revise_form(request):
-    if request.method == "POST":
-        form = DietForm(request.POST, request.FILES)
-        if form.is_valid():
-            diet = form.save(commit=False)
-            diet.user = request.user
-            diet.save()
 
-            # Create an InferenceTask instance
-            inference_task = InferenceTask.objects.create(
-                user=request.user, photo=diet.image, status="PENDING"
+@login_required
+def update_meal(request, meal_id, nutrient_name):
+    """
+
+    :param request:
+    :param meal_id: target meal id
+    :param nutrient_name: target nutrient name
+    :return:
+    """
+    if request.method == "POST":
+        data = json.loads(request.body)
+        name = data.get("name")
+        kcal = data.get("kcal", 0)
+
+        try:
+            target_big = InferenceResult.objects.get(
+                id=Diet.objects.get(id=meal_id).result_id
+            )
+            comma_separated = target_big.result_names_comma_separated
+            if nutrient_name in comma_separated.split(","):
+                comma_separated = comma_separated.replace(nutrient_name, name)
+                target_big.result_names_comma_separated = comma_separated
+                target_big.save()
+                # TODO: Kcal update
+            else:
+                return JsonResponse(
+                    {"success": False, "error": "Already exists"}, status=304
+                )
+            return JsonResponse({"success": True}, status=200)
+        except Diet.DoesNotExist:
+            return JsonResponse(
+                {"success": False, "error": "Meal not found"}, status=404
+            )
+    # TODO: reduce duplicate code
+    elif request.method == "DELETE":
+        data = json.loads(request.body)
+        name = data.get("name")
+        kcal = data.get("kcal", 0)
+
+        try:
+            target_big = InferenceResult.objects.get(
+                id=Diet.objects.get(id=meal_id).result_id
+            )
+            comma_separated = target_big.result_names_comma_separated
+            if nutrient_name in comma_separated.split(","):
+                comma_separated = comma_separated.replace(nutrient_name + ",", "")
+                target_big.result_names_comma_separated = comma_separated
+                target_big.save()
+            else:
+                return JsonResponse(
+                    {"success": False, "error": "Not found"}, status=404
+                )
+            return JsonResponse({"success": True}, status=200)
+        except Diet.DoesNotExist:
+            return JsonResponse(
+                {"success": False, "error": "Meal not found"}, status=404
+            )
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        name = data.get("name")
+        kcal = data.get("kcal", 0)
+
+        try:
+            target_big = InferenceResult.objects.get(
+                id=Diet.objects.get(id=meal_id).result_id
+            )
+            comma_separated = target_big.result_names_comma_separated
+            # if nutrient_name in comma_separated.split(","):
+            comma_separated += f",{name}"
+            target_big.result_names_comma_separated = comma_separated
+            target_big.save()
+            # else:
+            #     return JsonResponse(
+            #         {"success": False, "error": "Not found"}, status=404
+            #     )
+            return JsonResponse({"success": True}, status=200)
+        except Diet.DoesNotExist:
+            return JsonResponse(
+                {"success": False, "error": "Meal not found"}, status=404
             )
 
-            # Queue the inference task
-            send_inference_task(inference_task.id)
+    return JsonResponse(
+        {"success": False, "error": "Invalid request method"}, status=400
+    )
 
-            return redirect("index")
-    else:
-        form = DietForm()
-    return render(request, "users/diet_revise_form.html", {"form": form})
 
 @login_required
-def blood_1(request):
+def blood_1(request, id=None):
+    if id:
+        blood_sugar = BloodSugar.objects.get(id=id, user=request.user)
+    else:
+        blood_sugar = BloodSugar(user=request.user)
+
     if request.method == "POST":
-        form = BloodSugarForm(request.POST)
+        form = BloodSugarForm(request.POST, instance=blood_sugar)
         if form.is_valid():
             blood_sugar = form.save(commit=False)
             blood_sugar.user = request.user
             blood_sugar.save()
             return redirect("index")
     else:
-        form = BloodSugarForm()
+        form = BloodSugarForm(instance=blood_sugar)
     return render(request, "users/blood_form1.html", {"form": form})
 
 
 @login_required
-def blood_2(request):
+def blood_2(request, id=None):
+    if id:
+        blood_pressure = BloodPressure.objects.get(id=id, user=request.user)
+    else:
+        blood_pressure = BloodPressure(user=request.user)
+
     if request.method == "POST":
-        form = BloodPressureForm(request.POST)
+        form = BloodPressureForm(request.POST, instance=blood_pressure)
         if form.is_valid():
             blood_pressure = form.save(commit=False)
             blood_pressure.user = request.user
             blood_pressure.save()
             return redirect("index")
     else:
-        form = BloodPressureForm()
+        form = BloodPressureForm(instance=blood_pressure)
     return render(request, "users/blood_form2.html", {"form": form})
 
 
 @login_required
-def blood_3(request):
+def blood_3(request, id=None):
+    if id:
+        hba1c = HbA1c.objects.get(id=id, user=request.user)
+    else:
+        hba1c = HbA1c(user=request.user)
+
     if request.method == "POST":
-        form = HbA1cForm(request.POST)
+        form = HbA1cForm(request.POST, instance=hba1c)
         if form.is_valid():
             hba1c = form.save(commit=False)
             hba1c.user = request.user
             hba1c.save()
             return redirect("index")
     else:
-        form = HbA1cForm()
+        form = HbA1cForm(instance=hba1c)
     return render(request, "users/blood_form3.html", {"form": form})
 
 
 @login_required
-def exercise_form(request, exercise_id):
+def exercise_form(request, exercise_type_id, exercise_id=None):
+    if exercise_id is None:
+        exercise = Exercise(user=request.user, exercise_type_id=exercise_type_id)
+    else:
+        try:
+            exercise = Exercise.objects.get(
+                id=exercise_id, user=request.user, exercise_type_id=exercise_type_id
+            )
+        except Exercise.DoesNotExist:
+            return redirect("exercise_list")
+
     if request.method == "POST":
-        form = ExerciseForm(request.POST)
+        form = ExerciseForm(request.POST, instance=exercise)
         if form.is_valid():
-            exercise = form.save(commit=False)
-            exercise.user = request.user
-            exercise.exercise_type = ExerciseType.objects.get(id=exercise_id)
-            exercise.save()
+            # exercise = form.save(commit=False)
+            # exercise.user = request.user
+            # exercise.exercise_type = ExerciseType.objects.get(id=exercise_id)
+            # exercise.save()
+            form.save()
             return redirect("index")
     else:
-        form = ExerciseForm()
+        form = ExerciseForm(instance=exercise)
     return render(
         request,
         "users/exercise_form.html",
+        # {
+        #     "form": form,
+        #     "exercise_name": ExerciseType.objects.get(id=exercise_id).name,
+        #     "calories_per_hour": ExerciseType.objects.get(
+        #         id=exercise_id
+        #     ).calories_per_hour,
+        # },
         {
             "form": form,
-            "exercise_name": ExerciseType.objects.get(id=exercise_id).name,
-            "calories_per_hour": ExerciseType.objects.get(
-                id=exercise_id
-            ).calories_per_hour,
+            "exercise_name": exercise.exercise_type.name,
+            "calories_per_hour": exercise.exercise_type.calories_per_hour,
         },
     )
 
-def exercise_revise_form(request):
-    return render(request, "users/exercise_revise_form.html", {})
 
-def blood1_revise_form(request):
-    return render(request, "users/blood1_revise_form.html", {})
-
-def blood2_revise_form(request):
-    return render(request, "users/blood2_revise_form.html", {})
-
-def blood3_revise_form(request):
-    return render(request, "users/blood3_revise_form.html", {})
-
+@login_required
 def mypage_revise_form(request):
-    return render(request, "users/mypage_revise_form.html", {})
+    user = get_object_or_404(CustomUser, pk=request.user.pk)
+
+    if request.method == "POST":
+        form = MyPageReviseForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        initial_data = {
+            "email": user.email,
+            "height": user.height,
+            "weight": user.weight,
+            "health_conditions": user.health_conditions.split(","),
+        }
+        form = MyPageReviseForm(instance=user, initial=initial_data)
+
+    return render(request, "users/mypage_revise_form.html", {"form": form})
+
+
+@login_required
+def get_chart_data(request, chart_type, detail_type):
+    # if request.method != "GET":
+    #     return JsonResponse({"error": "GET method required."}, status=400)
+    """
+    <h3>일주일 당뇨 지표</h3>
+    <select id="options" onchange="showButton()">
+        <option name="options" value="option1">혈당</option>
+        <option name="options" value="option2">혈압</option>
+        <option name="options" value="option3">당화혈색소</option>
+    </select>
+
+    <select class="blood_detail" id="blood1_check" onchange="showButton()">
+        <option>아침 식전</option>
+        <option>점심 식전</option>
+        <option>저녁 식전</option>
+        <option>아침 식후</option>
+        <option>점심 식후</option>
+        <option>저녁 식후</option>
+        <option>공복</option>
+    </select>
+
+    <select class="blood_detail" id="blood2_check" onchange="showButton()">
+        <option>수축기</option>
+        <option>이완기</option>
+    </select>
+
+    <div style="width: 400px; height: 330px; background-color: white; border-radius: 20px;">
+        <canvas id="canvas" width="400px" height="30px"></canvas>
+    </div>
+    """
+    converison_table = {
+        # "option1": "혈당",
+        # "option2": "혈압",
+        # "option3": "당화혈색소",
+        "morning_before": "아침 식전",
+        "lunch_before": "점심 식전",
+        "dinner_before": "저녁 식전",
+        "morning_after": "아침 식후",
+        "lunch_after": "점심 식후",
+        "dinner_after": "저녁 식후",
+        "vacant": "공복",
+    }
+    detail_type = converison_table.get(detail_type, -1)
+    if detail_type == -1:
+        return JsonResponse({"error": "Invalid detail type."}, status=400)
+
+    match (chart_type, detail_type):
+        case "option1", detail_type:
+            blood_sugar = BloodSugar.objects.filter(user=request.user, time=detail_type)
+            print(blood_sugar)
+            labels = [datetime.strftime(data.date, "%Y%m%d") for data in blood_sugar]
+            data = [data.blood_sugar for data in blood_sugar]
+        case "option2", detail_type:
+            blood_pressure = BloodPressure.objects.filter(user=request.user)
+            labels = [datetime.strftime(data.date, "%Y%m%d") for data in blood_pressure]
+            if detail_type == "systolic":
+                data = [data.systolic for data in blood_pressure]
+            elif detail_type == "diastolic":
+                data = [data.diastolic for data in blood_pressure]
+            else:
+                return JsonResponse({"error": "Invalid detail type."}, status=400)
+        case "option3", detail_type:
+            hba1c = HbA1c.objects.filter(user=request.user)
+            labels = [datetime.strftime(data.date, "%Y%m%d") for data in hba1c]
+            data = [data.hba1c for data in hba1c]
+        case _:
+            return JsonResponse({"error": "Invalid chart type."}, status=400)
+
+    fdata = {
+        "labels": labels,
+        "datasets": [
+            {
+                "data": data,
+                "backgroundColor": "rgba(255, 99, 132, 0.2)",
+                "borderColor": "rgba(255, 99, 132, 1)",
+                "borderWidth": 1,
+            }
+        ],
+    }
+    print(fdata)
+    return JsonResponse(fdata)
+
+
+@login_required
+def delete_request(request, menu, id):
+    if request.method == "DELETE":
+        match menu:
+            case "meal":
+                print("deleting diet with id", id)
+                Diet.objects.filter(id=id).delete()
+            case "exercise":
+                Exercise.objects.filter(id=id).delete()
+            case "blood1":
+                BloodSugar.objects.filter(id=id).delete()
+            case "blood2":
+                BloodPressure.objects.filter(id=id).delete()
+            case "blood3":
+                HbA1c.objects.filter(id=id).delete()
+            case _:
+                pass
+        return JsonResponse({"message": "Deleted successfully."}, status=200)
+    return JsonResponse({"error": "Invalid method."}, status=400)
