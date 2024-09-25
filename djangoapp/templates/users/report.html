@@ -5,231 +5,143 @@
 <!-- 보고서 -->
 <div class="banner" id="report">
     
-{#    <ul class="tabnav">#}
-{#        <li><a href="#tab01">일일보고서</a></li>#}
-{#        <li><a href="#tab02">주간보고서</a></li>#}
-{#    </ul>#}
+    {#    <ul class="tabnav">#}
+    {#        <li><a href="#tab01">일일보고서</a></li>#}
+    {#        <li><a href="#tab02">주간보고서</a></li>#}
+    {#    </ul>#}
     
     <div class="tabcontent">
-            <input type="radio" name="tab" id="tabmenu01" checked>
-            <label for="tabmenu01">일일보고서</label>
-            <input type="radio" name="tab" id="tabmenu02">
-            <label for="tabmenu02">주간보고서</label>
+        <input type="radio" name="tab" id="tabmenu01" checked>
+        <label for="tabmenu01">일일보고서</label>
+        <input type="radio" name="tab" id="tabmenu02">
+        <label for="tabmenu02">주간보고서</label>
 
-            <div id="tab01" class="contents">
-                <div class="diet_report">
-                    <h3>오늘 하루 식단</h3>
-                    
-                    <p class="main_info">총 섭취 <span>1200 </span>kcal</p>
+        <div id="tab01" class="contents">
+            <div class="diet_report">
+                <h3>오늘 하루 식단</h3>
 
-                    <div class="nutrient">
-                        <p><span style="background-color: #F2F597;">탄</span> 46g</p> 
-                        <p><span>단</span> 26g</p> 
-                        <p><span style="background-color: #AAD9BB;">지</span> 36g</p> 
-                    </div>
+                <p class="main_info">총 섭취 <span>1200 </span>kcal</p>
 
-                    <div style="text-align: center;">
-                        <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
-                    </div>
-                    
-
-                    <p style="font-size: 20px;"><span style="color: white;">300 </span>kcal 더 먹을 수 있어요!</p>
-
+                <div class="nutrient">
+                    <p><span style="background-color: #F2F597;">탄</span> 46g</p>
+                    <p><span>단</span> 26g</p>
+                    <p><span style="background-color: #AAD9BB;">지</span> 36g</p>
                 </div>
 
-                <div class="exercise_report">
-                    <h3>오늘 하루 운동량</h3>
-                
-                    <p class="main_info">총 소모 칼로리 <span>300 </span>kcal</p>
-                    <p class="main_info">총 운동 시간 <span>40 </span>분</p>
-
-                    <div style="text-align: center;">
-                        <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
-                    </div>
-
-                    <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
-
+                <div style="text-align: center;">
+                    <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
                 </div>
 
-                <div class="blood_report1">
-                    <h3>오늘 하루 당뇨 지표</h3>
-                    
-                    <ul class="blood_sugar2">
-                        <li>
-                            <p class="time">공복</p>
-                            <p><span>100</span>mg / dL</p>
-                        </li>
-                        <li>
-                            <p class="time">점심 직전</p>
-                            <p><span>100</span>mg / dL</p>
-                        </li>
-                        <li style="border: none;">
-                            <p class="time">점심 직후</p>
-                            <p><span>100</span>mg / dL</p>
-                        </li>
-                    </ul>
-                    <p style="font-size: 25px; margin-bottom: 20px;">가 혈당이 가장 높아요!</p>
 
-                    <p class="main_info">혈압 <span>120 </span> - <span>80 </span> mmHg</p>
-                    <p class="main_info">당화혈색소 <span>6.5 </span> %</p>
+                <p style="font-size: 20px;"><span style="color: white;">300 </span>kcal 더 먹을 수 있어요!</p>
 
-                    <p style="font-size: 20px; margin-top: 40px;">현재 당신의 상태는 <span style="color: #F2F597;">위험</span>입니다</p>
-                </div>
             </div>
-            
-            <div id="tab02" class="contents">
-                <div class="diet_report">
-                    <h3>일주일 영양소 섭취량</h3>
-                    
-                    <p class="main_info">총 섭취 <span>10000 </span>kcal</p>
 
-                    <div class="nutrient">
-                        <p><span style="background-color: #F2F597;">탄</span> 146g</p> 
-                        <p><span>단</span> 126g</p> 
-                        <p><span style="background-color: #AAD9BB;">지</span> 136g</p> 
-                    </div>
-
-                    <div style="text-align: center;">
-                        <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
-                    </div>
-                    
-
-                    <p style="font-size: 20px;">너무 많이 먹었어요!</p>
-
-                </div>
-
-                <div class="exercise_report">
-                    <h3>일주일 총 운동량</h3>
+            <div class="exercise_report">
+                <h3>오늘 하루 운동량</h3>
                 
-                    <p class="main_info">총 소모 칼로리 <span>1300 </span>kcal</p>
-                    <p class="main_info">총 운동 시간 <span>160 </span>분</p>
+                <p class="main_info">총 소모 칼로리 <span>300 </span>kcal</p>
+                <p class="main_info">총 운동 시간 <span>40 </span>분</p>
 
-                    <div style="text-align: center;">
-                        <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
-                    </div>
-
-                    <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
-
+                <div style="text-align: center;">
+                    <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
                 </div>
 
-                <div class="blood_report2">
-                    <h3>일주일 당뇨 지표</h3>
-                    <select id="options" onchange="showButton()">
-                        <option name="options" value="option1">혈당</option>
-                        <option name="options" value="option2">혈압</option>
-                        <option name="options" value="option3">당화혈색소</option>
-                    </select>
+                <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
 
-                    <select class="blood_detail" id="blood1_check">
-                        <option>아침 식전</option>
-                        <option>점심 식전</option>
-                        <option>저녁 식전</option>
-                        <option>아침 식후</option>
-                        <option>점심 식후</option>
-                        <option>저녁 식후</option>
-                        <option>공복</option>
-                    </select>
+            </div>
 
-                    <select class="blood_detail" id="blood2_check">
-                        <option>수축기</option>
-                        <option>이완기</option>
-                    </select>
+            <div class="blood_report1">
+                <h3>오늘 하루 당뇨 지표</h3>
 
-                    <div style="width: 400px; height: 330px; background-color: white; border-radius: 20px;">
-                        <canvas id="canvas" width="400px" height="30px"></canvas>
-                    </div>
+                <ul class="blood_sugar2">
+                    <li>
+                        <p class="time">공복</p>
+                        <p><span>100</span>mg / dL</p>
+                    </li>
+                    <li>
+                        <p class="time">점심 직전</p>
+                        <p><span>100</span>mg / dL</p>
+                    </li>
+                    <li style="border: none;">
+                        <p class="time">점심 직후</p>
+                        <p><span>100</span>mg / dL</p>
+                    </li>
+                </ul>
+                <p style="font-size: 25px; margin-bottom: 20px;">가 혈당이 가장 높아요!</p>
 
-                </div>
+                <p class="main_info">혈압 <span>120 </span> - <span>80 </span> mmHg</p>
+                <p class="main_info">당화혈색소 <span>6.5 </span> %</p>
+
+                <p style="font-size: 20px; margin-top: 40px;">현재 당신의 상태는 <span style="color: #F2F597;">위험</span>입니다</p>
             </div>
         </div>
 
+        <div id="tab02" class="contents">
+            <div class="diet_report">
+                <h3>일주일 영양소 섭취량</h3>
+
+                <p class="main_info">총 섭취 <span>10000 </span>kcal</p>
+
+                <div class="nutrient">
+                    <p><span style="background-color: #F2F597;">탄</span> 146g</p>
+                    <p><span>단</span> 126g</p>
+                    <p><span style="background-color: #AAD9BB;">지</span> 136g</p>
+                </div>
+
+                <div style="text-align: center;">
+                    <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
+                </div>
+
+
+                <p style="font-size: 20px;">너무 많이 먹었어요!</p>
+
+            </div>
+
+            <div class="exercise_report">
+                <h3>일주일 총 운동량</h3>
+                
+                <p class="main_info">총 소모 칼로리 <span>1300 </span>kcal</p>
+                <p class="main_info">총 운동 시간 <span>160 </span>분</p>
+
+                <div style="text-align: center;">
+                    <img src="{% static 'img/report_chara.png' %}" style="padding: 0px 10px;" alt="">
+                </div>
+
+                <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
+
+            </div>
+
+            <div class="blood_report2">
+                <h3>일주일 당뇨 지표</h3>
+                <select id="options" onchange="showButton()">
+                    <option name="options" value="option1">혈당</option>
+                    <option name="options" value="option2">혈압</option>
+                    <option name="options" value="option3">당화혈색소</option>
+                </select>
+
+                <select class="blood_detail" id="blood1_check" onchange="showButton()">
+                    <option value="morning_before">아침 식전</option>
+                    <option value="lunch_before">점심 식전</option>
+                    <option value="dinner_before">저녁 식전</option>
+                    <option value="morning_after">아침 식후</option>
+                    <option value="lunch_after">점심 식후</option>
+                    <option value="dinner_after">저녁 식후</option>
+                    <option value="vacant">공복</option>
+                </select>
+
+                <select class="blood_detail" id="blood2_check" onchange="showButton()">
+                    <option value="systolic">수축기</option>
+                    <option value="diastolic">이완기</option>
+                </select>
+
+                <div style="width: 400px; height: 330px; background-color: white; border-radius: 20px;">
+                    <canvas id="canvas" width="400px" height="30px"></canvas>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
-{% block scripts %}
-    <script>
-        // fade in/out
-        {#$(function () {#}
-        {#    $('.tabcontent > div').hide();#}
-        {#    $('.tabnav a').click(function () {#}
-        {#        $('.tabcontent > div').hide().filter(this.hash).fadeIn();#}
-        {#        $('.tabnav a').removeClass('active');#}
-        {#        $(this).addClass('active');#}
-        {#        return false;#}
-        {#    }).filter(':eq(0)').click();#}
-        {# });#}
-
-        function showButton() {
-            var selectedOption = document.getElementById('options').value;
-            document.getElementById('blood2_check').style.display = "none";
-
-            if (selectedOption === 'option1') {
-                document.getElementById('blood1_check').style.display = "block";
-
-            } else if (selectedOption === 'option2') {
-                document.getElementById('blood2_check').style.display = "block";
-                document.getElementById('blood1_check').style.display = "none";
-            } else {
-                document.getElementById('blood1_check').style.display = "none";
-            }
-        }
-        
-        {#import Chart from 'chart.js/auto';#}
-        
-        Chart.defaults.font.family = 'pretendard';
-        
-        const ctx = document.getElementById('canvas');
-
-        const config = {
-            type: 'line',
-            data: {
-                labels: ['빨강', 'Blue', 'Yellow', '초록', 'Purple', '오렌지'],
-                datasets: [
-                    {
-                        label: '아침 식전 혈당',
-                        data: [120, 190, 130, 150, 120, 130],
-                        backgroundColor: 'red',
-                        borderColor: 'red',
-                        borderWidth: 3
-                    }
-                ]
-            },
-            options: {
-                maintainAspectRatio: false,
-                legend: {
-                    labels: {
-                        fontColor: "black",
-                        fontSize: 18,
-                        family: 'pretendard'
-                    }
-                },
-
-                scales: {
-                    xAxes: [{
-                        ticks: {
-                            fontColor: 'rgba(12, 13, 13, 1)',
-                            fontSize: 16
-                        },
-                        gridLines: {
-                            color: "white",
-                            lineWidth: 0
-                        }
-                    }],
-
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            max: 200,
-                            fontSize: 14,
-                        },
-                        gridLines: {
-                            color: "white",
-                            lineWidth: 0
-                        }
-                    }]
-                },
-            }
-        }
-
-        const chart = new Chart(ctx, config);
-    </script>
-{% endblock %}
