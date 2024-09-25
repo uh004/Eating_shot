@@ -6,8 +6,13 @@
 <div class="banner2">
     
     <div class="deco">
-        <h2>혈압 기록하기</h2>
-        <img src="{% static 'img/blood_form.jpg' %}" width="100px" height="100px" style="display: block; margin: 0 auto;">
+        {% if form.instance.pk %}
+            <h2>혈압 기록 수정하기</h2>
+        {% else %}
+            <h2>혈압 기록하기</h2>
+        {% endif %}
+        <img src="{% static 'img/blood_form.jpg' %}" width="100px" height="100px"
+             style="display: block; margin: 0 auto;">
     </div>
     
     <form method="post" action="">
@@ -28,11 +33,15 @@
                    value="{{ form.diastolic.value }}">
             <p style="width: 110px;">mmHg</p>
         </div>
-        
+
+        {% if form.errors %}
+            <div class="error-message">{{ form.errors }}</div>
+        {% endif %}
+
         <p style="font-size: 20px; padding: 40px 0; text-align: center;">혈압 수치는 <span class="danger-message" style="color: orange; 
         font-size: 25px;">주의</span>입니다.</p>
         
-        <input type="submit" value="기록하기"/>
+        <input type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}"/>
     </form>
 
 </div>
@@ -41,11 +50,17 @@
         document.addEventListener('DOMContentLoaded', function () {
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
+
+            calculateBloodPressure();
         });
 
         document.querySelector('form').addEventListener('change', function (event) {
             event.preventDefault(); // Prevent form submission
 
+            calculateBloodPressure();
+        });
+
+        function calculateBloodPressure() {
             const systolic = document.getElementById('blood_2').value;
             const diastolic = document.getElementById('blood_3').value;
             const dangerMessage = document.querySelector('.danger-message');
@@ -69,6 +84,6 @@
 
             dangerMessage.textContent = dangerLevel;
             dangerMessage.style.color = color;
-        });
+        }
     </script>
 {% endblock %}
