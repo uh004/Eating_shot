@@ -15,59 +15,42 @@
             </div>
 
             {% for exercise in exercises %}
-            <div class="ex">
+                <div class="ex">
 
-                <div class="for_ex">
-                    <img src="{% static 'img/exercise_logo.png' %}">
-                    <div style="display: flex;">
-                        <button type="button" onclick="window.location.href = {% url 'exercise_revise_form' %}">수정</button>
-                        <button type="button" onclick="deleteBoard()">삭제</button>
+                    <div class="for_ex">
+                        <img src="{% static 'img/exercise_logo.png' %}">
+                        <div style="display: flex;">
+                            <button type="button"
+                                    onclick="window.location.href='{% url 'exercise_form' exercise.exercise_type.id exercise.id %}'">
+                                수정
+                            </button>
+                            <button type="button" onclick="deleteBoard({{ exercise.id }})">삭제</button>
+                        </div>
                     </div>
-                </div>
 
-                <div class="exercise_tt">
+                    <div class="exercise_tt">
 
-                    <p>{{ exercise.exercise_type }}</p>
-                    <span>
+                        <p>{{ exercise.exercise_type }}</p>
+                        <span>
                         <span style="color: #00BCD4;">
                             {{ exercise.exercise_calories }} 
                         </span> 
                         kcal / {{ exercise.exercise_time }}분
                     </span>
 
-                </div>
+                    </div>
 
-            </div>
+                </div>
             
 
             {% endfor %}
+        </div>
+
+        <button type="button" class="plus">
+            <img src="{% static 'img/plus-sign.png' %}" width="50px"
+                 onclick="window.location.href = {% url 'exercise_list' %}" alt="">
+        </button>
     </div>
-    
-    <button type="button" class="plus">
-        <img src="{% static 'img/plus-sign.png' %}" width="50px"
-             onclick="window.location.href = {% url 'exercise_list' %}" alt="">
-    </button>
 </div>
 
-{% block script %}
-<script>
 
-    function deleteBoard(seq){
-            Swal.fire({
-            title: '<p style="margin: 0px; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
-            text: "삭제하시면 다시 복구시킬 수 없습니다.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#00BCD4',
-            cancelButtonColor: '#e5e2e2',
-            confirmButtonText: '삭제',
-            cancelButtonText: '취소',
-            width:'400px'
-            }).then((result) => {
-            if (result.value) {
-                //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
-            }
-        })
-    }
-</script>
-{% endblock %}
