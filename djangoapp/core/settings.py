@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 if os.environ.get("DJANGO_ENV") == "production":
     DEBUG = False
     ALLOWED_HOSTS = [
-        "localhost",
+        "localhost", # TODO: add domain here
     ]
 else:
     DEBUG = True
@@ -171,8 +171,10 @@ MEDIA_ROOT = BASE_DIR / "photos"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# KAFKA_BOOTSTRAP_SERVERS = "kafka:29092" # for host
-KAFKA_BOOTSTRAP_SERVERS = "kafka:9092"  # for docker
+if os.environ.get("DJANGO_ENV") == "production":
+    KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
+else:
+    KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
 
 LOGGING = {
     "version": 1,
