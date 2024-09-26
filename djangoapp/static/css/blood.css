@@ -137,21 +137,27 @@ form {
 .deco {
     background-color: #006D83;
     height: 220px;
-    text-align: center;
-    color: white;
+    padding: 0px 20px;
 }
 
 .deco h2 {
-    margin: 0 auto;
-    padding-top: 92px;
+    text-align: center;
+    margin: 20px 0px;
+    color: white;
 }
 
-.deco img {
+.deco .deco_chara {
     bottom: 0;
     width: 150px;
-    height: 100px;
+    height: 98px;
     display: block; 
     margin: 0 auto;
+}
+
+.back {
+    width:36px;
+    height:36px;
+    padding: 10px 0px 8px 0px;
 }
 
 input {

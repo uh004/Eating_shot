@@ -7,9 +7,10 @@
 {# !! TODO: image upload view  !! #}
 <div class="main_container" id="main">
     <div class="deco">
+        <img src="{% static 'img/back.png' %}" onclick="window.history.back()" class="back">
         <h2>식단 기록하기</h2>
         <p style="margin: 10px;">오늘의 식탁을 분석해드립니다!</p>
-        <img src="{% static 'img/diet_form.png' %}">
+        <img src="{% static 'img/diet_form.png' %}" class="deco_chara">
     </div>
     
     <form method="post" enctype="multipart/form-data" action="">

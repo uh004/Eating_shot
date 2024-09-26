@@ -9,7 +9,7 @@
     margin: 0 auto;
     background-size: contain;
     background-repeat: no-repeat;
-    background-color: white;
+    background-color: #e8f5f8;
     zoom: 100%;
 }
 
@@ -63,7 +63,7 @@
 .exercise_report {
     height: 420px;
     padding: 20px;
-    background-color: #00A1B8;
+    background-color: #82C8D2;
     border-radius: 30px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 20px;
@@ -76,7 +76,7 @@
 .blood_report1 {
     height: 420px;
     padding: 20px;
-    background-color: #006D83;
+    background-color: #82C8D2;
     border-radius: 30px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 20px;
@@ -85,41 +85,72 @@
 .blood_report2 {
     height: 500px;
     padding: 20px;
-    background-color: #006D83;
     border-radius: 30px;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
     margin-bottom: 20px;
+    background-color: #82C8D2;
 }
 
 .blood_report1 p {
-    text-align: center;
-    margin: 10px 0;
+    margin: 5px 5px 5px 0px;
 }
 
-.blood_sugar2 {
+.mini_title {
     display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    margin: 2px 0 10px 0;
-    background-color: white;
+}
+
+.mini_title .status {
+    background-color: rgb(255, 159, 159);
+    color: red;
+    padding: 2px 10px;
     border-radius: 20px;
 }
 
+.mini_title .status2 {
+    background-color: rgb(255, 236, 159);
+    color: rgb(255, 123, 0);
+    padding: 2px 10px;
+    border-radius: 20px;
+}
 
-.blood_sugar2 li {
+.blood_result {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 2px 0 15px 0;
+    background-color: white;
+    border-radius: 20px;
+    text-align: center;
+}
+
+
+.blood_result li {
     list-style-type: none;
     font-size: 19px;
     padding: 0 15px;
     border-right: 3px solid gray;
 }
 
-.blood_sugar2 span {
+.blood_result span {
     color: #006D83;
 }
 
-.blood_sugar2 p {
+.blood_result p {
     color: black;
     font-size: 18px;
+    text-align: center;
+}
+
+.sakso {
+    background-color: white;
+    text-align: center;
+    padding: 10px 0px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.sakso span {
+    color: #006D83;
 }
 
 input[type="radio"] {

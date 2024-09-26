@@ -15,6 +15,7 @@ urlpatterns = [
 
     path("diet-form/", views.diet_form, name="diet_form"),
     path("diet-revise-form/", views.diet_revise_form, name="diet_revise_form"),
+    path("food-detail/", views.food_detail, name="food_detail"),
     path(
         "excercise-form/<int:exercise_id>/", views.exercise_form, name="exercise_form"
     ),
@@ -25,5 +26,8 @@ urlpatterns = [
     path("blood2-revise-form/", views.blood2_revise_form, name="blood2_revise_form"),
     path("blood3-revise-form/", views.blood3_revise_form, name="blood3_revise_form"),
 
-    path("mypage-revise-form/", views.mypage_revise_form, name="mypage_revise_form")
+    path("mypage-revise-form/", views.mypage_revise_form, name="mypage_revise_form"),
+
+    path("pill-alarm/", views.pill_alarm, name="pill_alarm"),
+    path("hospital-alarm/", views.hospital_alarm, name="hospital_alarm")
 ]

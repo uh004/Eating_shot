@@ -7,54 +7,48 @@
 <div class="main_container" id="main">
     <div class="deco">
         <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
-        <h2>내 정보 수정하기</h2>
+        <h2>약 알람 설정하기</h2>
     </div>
     
     <form method="post" action="">
         {% csrf_token %}
         
-        <label for="my_email">E-mail</label>
-        <input type="email" id="my_email" placeholder="내가 입력했던 이메일">
+        <label for="pill_alarm_time">약 알람 시간</label>
+        <input type="time" id="pill_alarm_time" placeholder="내가 입력했던 이메일">
 
-        <label for="my_height">키(cm)</label>
-        <input type="number" id="my_height" placeholder="내가 입력했던 키">
 
-        <label for="my_weight">몸무게(kg)</label>
-        <input type="number" id="my_weight" placeholder="내가 입력했던 몸무게">
-
-        <label>질병</label>
-
+        <label for="check_disease">요일</label>
         <div class="check_disease">
             <ul class="list">
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c1" checked/>
+                <input type="checkbox" class="hidden-box" id="w1" checked/>
                 <label for="c1" class="check--label">
                     <span class="check--label-box"></span>
-                    <span class="check--label-text">1형 당뇨</span>
+                    <span class="check--label-text">월</span>
                 </label>
                 </li>
 
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c2" />
+                <input type="checkbox" class="hidden-box" id="w3" />
                 <label for="c2" class="check--label">
                     <span class="check--label-box"></span>
-                    <span class="check--label-text">2형 당뇨</span>
+                    <span class="check--label-text">수</span>
                 </label>
                 </li>
 
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c3" />
+                <input type="checkbox" class="hidden-box" id="w5" />
                 <label for="c3" class="check--label">
                     <span class="check--label-box"></span>
-                    <span class="check--label-text">임신성 당뇨</span>
+                    <span class="check--label-text">금</span>
                 </label>
                 </li>
 
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="c4" />
+                    <input type="checkbox" class="hidden-box" id="w7" />
                     <label for="c4" class="check--label">
                     <span class="check--label-box"></span>
-                    <span class="check--label-text">내당증</span>
+                    <span class="check--label-text">일</span>
                     </label>
                 </li>
 
@@ -62,40 +56,32 @@
 
             <ul class="list">
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c5"/>
+                <input type="checkbox" class="hidden-box" id="w2"/>
                 <label for="c5" class="check--label">
                     <span class="check--label-box"></span>
-                    <span class="check--label-text">고혈압</span>
+                    <span class="check--label-text">화</span>
                 </label>
                 </li>
 
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c6" />
+                <input type="checkbox" class="hidden-box" id="w4" />
                 <label for="c6" class="check--label">
                     <span class="check--label-box"></span>
-                    <span class="check--label-text">저혈압</span>
+                    <span class="check--label-text">목</span>
                 </label>
                 </li>
 
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c7" />
+                <input type="checkbox" class="hidden-box" id="w6" />
                 <label for="c7" class="check--label">
                     <span class="check--label-box"></span>
-                    <span class="check--label-text">고지혈증</span>
+                    <span class="check--label-text">토</span>
                 </label>
-                </li>
-
-                <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="c8" />
-                    <label for="c8" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">당뇨</span>
-                    </label>
                 </li>
 
             </ul>
         </div>
 
-        <input type="submit" value="수정하기" id="form_submit">
+        <input type="submit" value="추가하기" id="form_submit">
     </form>
 </div>

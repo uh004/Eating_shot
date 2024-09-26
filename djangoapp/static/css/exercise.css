@@ -93,25 +93,31 @@ form {
 .deco {
     background-color: #00A1B8;
     height: 220px;
+    padding: 0px 20px;
+}
+
+.deco h2 {
     text-align: center;
-    color: white;
+    margin: 0px;
 }
 
 .deco p {
     margin: 10px;
+    text-align: center;
 }
 
-.deco h2 {
-    margin: 0 auto;
-    padding-top: 53px;
-}
-
-.deco img {
+.deco .deco_chara {
     bottom: 0;
     width: 150px;
-    height: 100px;
+    height: 96px;
     display: block; 
     margin: 0 auto;
+}
+
+.back {
+    width:36px;
+    height:36px;
+    padding: 10px 0px 8px 0px;
 }
 
 .exercise_times {

@@ -274,3 +274,12 @@ def blood3_revise_form(request):
 
 def mypage_revise_form(request):
     return render(request, "users/mypage_revise_form.html", {})
+
+def food_detail(request):
+    return render(request, "users/food_detail.html", {})
+
+def pill_alarm(request):
+    return render(request, "users/pill_alarm.html", {})
+
+def hospital_alarm(request):
+    return render(request, "users/hospital_alarm.html", {})

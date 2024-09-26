@@ -1,0 +1,27 @@
+{% load static %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+{% endblock %}
+
+<div class="main_container" id="main">
+    <div class="deco">
+        <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
+        <h2>병원 알람 설정하기</h2>
+    </div>
+    
+    <form method="post" action="">
+        {% csrf_token %}
+        
+        <label for="hospital_name">예약 병원 이름</label>
+        <input type="text" id="hospital_name" placeholder="OO병원">
+
+        <label for="hospital_date">병원 예약 날짜</label>
+        <input type="date" id="hospital_date">
+
+        <label for="hospital_time">병원 예약 시간</label>
+        <input type="time" id="hospital_time">
+
+        <input type="submit" value="추가하기" id="form_submit">
+    </form>
+</div>

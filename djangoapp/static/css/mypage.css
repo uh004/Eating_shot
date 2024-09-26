@@ -4,7 +4,7 @@
 }
 
 .banner {
-    width: 480px;
+    width: 450px;
     height: 739px;
     margin: 0 auto;
     background-size: contain;
@@ -63,11 +63,6 @@
     font-size: 18px;
 }
 
-hr {
-    border: 1px solid #EEEFF1;
-    margin: 0px;
-}
-
 #disease {
     display: flex;
     justify-content: space-between;
@@ -91,7 +86,7 @@ hr {
 }
 
 #for_personal_info {
-    max-height: 600px;
+    max-height: 620px;
     overflow: scroll;
 }
 
@@ -144,11 +139,11 @@ hr {
 }
 
 .pill_alarm ul, .hospital_alarm ul{
-    padding: 0px 10px;
+    padding: 10px 10px;
     margin: 0px;
     background-color: white;
     width: 430px;
-    max-height: 200px;
+    max-height: 240px;
     overflow: scroll;
 }
 
@@ -156,26 +151,28 @@ hr {
     display: none;
 }
 
-.pill_alarm li {
+.pill_alarm li:not(:last-child) {
     list-style-type: none;
     display: flex;
     justify-content: space-between;
+    border-bottom: 1px solid #EEEFF1;
 }
 
-.hospital_alarm li {
+.hospital_alarm li:not(:last-child) {
     list-style-type: none;
+    border-bottom: 1px solid #EEEFF1;
 }
 
 .pill_alarm .time, .hospital_alarm .time {
     margin: 10px 0px;
 }
 
-.pill_alarm span, .hospital_alarm span {
+.pill_alarm .time span, .hospital_alarm .time span {
     font-size: 25px;
 }
 
 .hospital {
-    margin : 18px 0px 0px 5px
+    margin : 18px 0px 0px 5px;
 }
 
 .weekday {
@@ -194,6 +191,15 @@ hr {
     background: transparent;
     padding: 0px;
     margin : 17px 0px;
+}
+
+.pill_button {
+    padding: 15px 10px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+    width: 430px;
+    background-color: #00BCD4;
 }
 
 
@@ -216,17 +222,22 @@ form {
 .deco {
     background-color: #3A6D8C;
     height: 220px;
-    text-align: center;
     color: white;
+    padding: 0px 20px;
 }
 
 .deco h2 {
-    margin: 0 auto;
-    line-height: 220px;
+    margin: 40px 0px 0px 0px;
+    text-align: center;
 }
 
+.back {
+    width:36px;
+    height:36px;
+    padding: 10px 0px 8px 0px;
+}
 
-input[type="email"], input[type="number"] {
+input[type="email"], input[type="number"], input[type="time"], input[type="text"],input[type="date"] {
     background-color: #F2F4F5;
     border: none;
     width: 420px;
@@ -236,6 +247,7 @@ input[type="email"], input[type="number"] {
     margin-bottom: 20px;
     padding: 10px;
 }
+
 
 input[type="submit"]{
     background-color: #3A6D8C;
