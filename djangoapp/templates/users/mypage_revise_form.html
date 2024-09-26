@@ -1,101 +1,114 @@
 {% load static %}
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
 {% endblock %}
+<link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
 
 <div class="main_container" id="main">
     <div class="deco">
         <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
         <h2>내 정보 수정하기</h2>
     </div>
-    
+
     <form method="post" action="">
         {% csrf_token %}
-        
+
         <label for="my_email">E-mail</label>
-        <input type="email" id="my_email" placeholder="내가 입력했던 이메일">
+        <input type="email" id="my_email" name="{{ form.email.name }}" placeholder="내가 입력했던 이메일"
+               value="{{ form.email.value }}">
 
         <label for="my_height">키(cm)</label>
-        <input type="number" id="my_height" placeholder="내가 입력했던 키">
+        <input type="number" id="my_height" name="{{ form.height.name }}" placeholder="내가 입력했던 키"
+               value="{{ form.height.value }}">
 
         <label for="my_weight">몸무게(kg)</label>
-        <input type="number" id="my_weight" placeholder="내가 입력했던 몸무게">
+        <input type="number" id="my_weight" name="{{ form.weight.name }}" placeholder="내가 입력했던 몸무게"
+               value="{{ form.weight.value }}">
 
-        <label>질병</label>
-
+        <label>{{ form.health_conditions.label }}</label>
         <div class="check_disease">
             <ul class="list">
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c1" checked/>
-                <label for="c1" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">1형 당뇨</span>
-                </label>
-                </li>
-
-                <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c2" />
-                <label for="c2" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">2형 당뇨</span>
-                </label>
-                </li>
-
-                <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c3" />
-                <label for="c3" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">임신성 당뇨</span>
-                </label>
-                </li>
-
-                <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="c4" />
-                    <label for="c4" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">내당증</span>
+                    <input type="checkbox" class="hidden-box" id="c1" name="health_conditions" value="type1"
+                           {% if "type1" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c1" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">1형 당뇨</span>
                     </label>
                 </li>
 
+                <li class="list-item">
+                    <input type="checkbox" class="hidden-box" id="c2" name="health_conditions" value="type2"
+                           {% if "type2" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c2" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">2형 당뇨</span>
+                    </label>
+                </li>
+
+                <li class="list-item">
+                    <input type="checkbox" class="hidden-box" id="c3" name="health_conditions" value="gestational"
+                           {% if "gestational" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c3" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">임신성 당뇨</span>
+                    </label>
+                </li>
+
+                <li class="list-item">
+                    <input type="checkbox" class="hidden-box" id="c4" name="health_conditions" value="prediabetes"
+                           {% if "prediabetes" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c4" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">내당증</span>
+                    </label>
+                </li>
             </ul>
 
             <ul class="list">
                 <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c5"/>
-                <label for="c5" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">고혈압</span>
-                </label>
-                </li>
-
-                <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c6" />
-                <label for="c6" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">저혈압</span>
-                </label>
-                </li>
-
-                <li class="list-item">
-                <input type="checkbox" class="hidden-box" id="c7" />
-                <label for="c7" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">고지혈증</span>
-                </label>
-                </li>
-
-                <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="c8" />
-                    <label for="c8" class="check--label">
-                    <span class="check--label-box"></span>
-                    <span class="check--label-text">당뇨</span>
+                    <input type="checkbox" class="hidden-box" id="c5" name="health_conditions" value="high"
+                           {% if "high" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c5" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">고혈압</span>
                     </label>
                 </li>
 
+                <li class="list-item">
+                    <input type="checkbox" class="hidden-box" id="c6" name="health_conditions" value="low"
+                           {% if "low" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c6" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">저혈압</span>
+                    </label>
+                </li>
+
+                <li class="list-item">
+                    <input type="checkbox" class="hidden-box" id="c7" name="health_conditions" value="hyperlipidemia"
+                           {% if "hyperlipidemia" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c7" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">고지혈증</span>
+                    </label>
+                </li>
+
+                <li class="list-item">
+                    <input type="checkbox" class="hidden-box" id="c8" name="health_conditions" value="obesity"
+                           {% if "obesity" in form.health_conditions.value %}checked{% endif %}/>
+                    <label for="c8" class="check--label">
+                        <span class="check--label-box"></span>
+                        <span class="check--label-text">비만</span>
+                    </label>
+                </li>
             </ul>
         </div>
+            
+        {% if form.health_conditions.errors %}
+            <div class="error-message">{{ form.health_conditions.errors }}</div>
+        {% endif %}
 
         <input type="submit" value="수정하기" id="form_submit">
     </form>
+
 </div>

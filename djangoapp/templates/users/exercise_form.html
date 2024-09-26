@@ -36,27 +36,36 @@
                 {% endfor %}
             </div>
         </div>
+
+        {% if form.errors %}
+            <div class="error">{{ form.errors }}</div>
+        {% endif %}
         
-        <p id="calories_pred">예상 소모 칼로리는 <span>0kcal</span>입니다. </p>
-        <input type="submit" value="기록하기" id="form_submit">
+        <p id="calories_pred">예상 소모 칼로리는 <span id="calories">0kcal</span>입니다. </p>
+        <input id="form_submit" type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}">
     </form>
 </div>
 
 {% block script %}
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const dateInput = document.getElementById('date_input');
+            const dateInput = document.getElementsByClassName('date_input')[0];
             dateInput.value = new Date().toISOString().split('T')[0];
+
+            calculateCalories();
         });
 
         document.querySelector('form').addEventListener('change', function (event) {
             event.preventDefault();
-            // calculate the calories automatically
+            calculateCalories();
+        });
+
+        function calculateCalories() {
             const exerciseTime = document.querySelector('input[name="exercise_time"]').value;
             const caloriesPerHour = {{ calories_per_hour }} / 60;
             const calories = Math.round(caloriesPerHour * exerciseTime);
 
             document.getElementById('calories').textContent = `${calories}kcal`;
-        });
+        }
     </script>
 {% endblock %}

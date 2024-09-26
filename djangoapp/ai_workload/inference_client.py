@@ -5,7 +5,7 @@ INFERENCE_SERVER_URL = "http://inferenceapp:8099/predict"  # the dummy fastapi s
 
 def run_inference(image_path):
     with open(image_path, "rb") as img:
-        files = {"image": img}
+        files = {"file": img}
         response = requests.post(INFERENCE_SERVER_URL, files=files)
 
     if response.status_code == 200:
