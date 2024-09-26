@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('meal_type', models.CharField(max_length=10)),
                 ('date', models.DateField()),
-                ('image', models.ImageField(upload_to='inference_photos/')),
+                ('image', models.ImageField(upload_to='')),
                 ('result', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='ai_workload.inferenceresult')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

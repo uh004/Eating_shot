@@ -201,6 +201,7 @@ services:
       - logstash
     image: elastic/filebeat:${STACK_VERSION}
     container_name: filebeat
+    command: filebeat -e -strict.perms=false
     user: root
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
@@ -216,6 +217,7 @@ services:
         condition: service_healthy
     image: elastic/metricbeat:${STACK_VERSION}
     container_name: metricbeat
+    command: metricbeat -e -strict.perms=false
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -229,7 +231,7 @@ services:
     networks:
       - elk
 
-
+  # not used yet
   #  packetbeat:
   #    image: docker.elastic.co/beats/packetbeat:7.10.0
   #    container_name: packetbeat

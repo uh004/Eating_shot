@@ -51,7 +51,7 @@ class Diet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     meal_type = models.CharField(max_length=10)
     date = models.DateField()
-    image = models.ImageField(upload_to="inference_photos/")
+    image = models.ImageField(upload_to='')
     result = models.ForeignKey(
         "ai_workload.InferenceResult", on_delete=models.SET_NULL, null=True, blank=True
     )
