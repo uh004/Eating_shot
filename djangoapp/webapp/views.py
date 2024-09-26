@@ -106,10 +106,6 @@ def load_content(request, menu):
     match menu:
         case "diet":
             meals = Diet.objects.filter(user=request.user)
-            for meal in meals:
-                meal.result_names_list = meal.result.result_names_comma_separated.split(
-                    ","
-                )
             context["meals"] = meals
         case "exercise":
             context["exercises"] = Exercise.objects.filter(user=request.user)
@@ -516,8 +512,12 @@ def delete_request(request, menu, id):
         return JsonResponse({"message": "Deleted successfully."}, status=200)
     return JsonResponse({"error": "Invalid method."}, status=400)
 
-def food_detail(request):
-    return render(request, "users/food_detail.html", {})
+def food_detail(request, id):
+    meal = get_object_or_404(Diet, pk=id)
+    meal.result_names_list = meal.result.result_names_comma_separated.split(
+        ","
+    )
+    return render(request, "users/food_detail.html", {"meal": meal})
 
 def pill_alarm(request):
     return render(request, "users/pill_alarm.html", {})
