@@ -1,3 +1,6 @@
+/**
+ * 문서가 준비되면 실행되는 함수
+ */
 $(document).ready(function () {
     // 모든 .meals_btn에 클릭 이벤트 설정
     $('.meals_btn').on('click', function () {
@@ -32,6 +35,11 @@ $(document).ready(function () {
     });
 });
 
+
+/**
+ * 식단을 삭제하는 함수
+ * @param {number} mealId - 삭제할 식단의 ID
+ */
 function deleteBoard(mealId) {
     Swal.fire({
         title: '<p style="margin: 0px; font-size: 20px;">해당 식단을 삭제하시겠습니까?</p>',
@@ -69,11 +77,14 @@ function deleteBoard(mealId) {
     });
 }
 
-
-// TODO: Django form????
+/**
+ * 식품 이름을 삭제하는 함수
+ * @param {number} mealId - 식단의 ID
+ * @param {string} nutrientName - 삭제할 영양소 이름
+ */
 function deleteMealName2(mealId, nutrientName) {
     Swal.fire({
-        title: '<p style="margin: 0px; font-size: 20px;">해당 식품 이름을 삭제하시겠습니까?</p>',
+        title: '<p style="margin: 0; font-size: 20px;">해당 식품 이름을 삭제하시겠습니까?</p>',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#00BCD4',
@@ -92,22 +103,30 @@ function deleteMealName2(mealId, nutrientName) {
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message);
+                        });
                     }
                     return response.json();
                 })
                 .then(data => {
-                    Swal.fire('삭제되었습니다!', '', 'success').then(() => {
+                    Swal.fire('삭제되었습니다!', data.message, 'success').then(() => {
                         location.reload();
                     });
                 })
                 .catch(error => {
-                    Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
+                    Swal.fire('삭제 실패!', error.message, 'error');
                 });
         }
     });
 }
 
+
+/**
+ * 식품 이름을 수정하는 함수
+ * @param {number} mealId - 식단의 ID
+ * @param {string} nutrientName - 수정할 영양소 이름
+ */
 function modifyMealName2(mealId, nutrientName) {
     const newNutrientName = document.getElementById('toModifyNutrientName').value;
     const newKcal = document.getElementById('toModifyKcal').value;
@@ -118,7 +137,7 @@ function modifyMealName2(mealId, nutrientName) {
     }
 
     fetch(`/mod/${mealId}/${nutrientName}/`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken
@@ -132,12 +151,12 @@ function modifyMealName2(mealId, nutrientName) {
             return response.json();
         })
         .then(data => {
-            Swal.fire('수정되었습니다!', '', 'success').then(() => {
+            Swal.fire('수정되었습니다!', data.message, 'success').then(() => {
                 location.reload();
             });
         })
         .catch(error => {
-            Swal.fire('수정 실패!', '다시 시도해주세요.', 'error');
+            Swal.fire('수정 실패!', error.message, 'error');
         });
 
     // a good looking alternative bigger alert
@@ -182,7 +201,12 @@ function modifyMealName2(mealId, nutrientName) {
     // });
 }
 
-function modifyMealName3(mealId, nutrientName) {
+
+/**
+ * 식품 이름을 추가하는 함수 (임시?)
+ * @param {number} mealId - 식단의 ID
+ */
+function modifyMealName3(mealId) {
     const newNutrientName = document.getElementById('newNutrientName').value;
     const newKcal = document.getElementById('newKcal').value;
 
@@ -192,8 +216,8 @@ function modifyMealName3(mealId, nutrientName) {
     }
 
     // 삭제, 수정도 아닌 추가
-    fetch(`/mod/${mealId}/${nutrientName}/`, {
-        method: 'PUT',
+    fetch(`/mod/${mealId}/${newNutrientName}/`, {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrfToken
@@ -207,11 +231,19 @@ function modifyMealName3(mealId, nutrientName) {
             return response.json();
         })
         .then(data => {
-            Swal.fire('추가되었습니다!', '', 'success').then(() => {
+            Swal.fire('추가되었습니다!', data.message, 'success').then(() => {
                 location.reload();
             });
         })
         .catch(error => {
-            Swal.fire('추가 실패!', '다시 시도해주세요.', 'error');
+            if (error.name === 'AbortError') {
+                console.error('Fetch aborted:', error);
+            } else if (error instanceof TypeError) {
+                console.error('Network error:', error);
+                Swal.fire('네트워크 오류!', '네트워크 연결을 확인해주세요.', 'error');
+            } else {
+                console.error('Fetch error:', error);
+                Swal.fire('추가 실패!', error.message, 'error');
+            }
         });
 }

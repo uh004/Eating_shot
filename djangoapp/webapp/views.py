@@ -213,7 +213,7 @@ def update_meal(request, meal_id, nutrient_name):
     :param nutrient_name: target nutrient name
     :return:
     """
-    if request.method == "POST":
+    if request.method == "PUT":
         data = json.loads(request.body)
         name = data.get("name")
         kcal = data.get("kcal", 0)
@@ -230,12 +230,12 @@ def update_meal(request, meal_id, nutrient_name):
                 # TODO: Kcal update
             else:
                 return JsonResponse(
-                    {"success": False, "error": "Already exists"}, status=304
+                    {"success": False, "message": "Already exists"}, status=304
                 )
             return JsonResponse({"success": True}, status=200)
         except Diet.DoesNotExist:
             return JsonResponse(
-                {"success": False, "error": "Meal not found"}, status=404
+                {"success": False, "message": "Meal not found"}, status=404
             )
     # TODO: reduce duplicate code
     elif request.method == "DELETE":
@@ -248,20 +248,28 @@ def update_meal(request, meal_id, nutrient_name):
                 id=Diet.objects.get(id=meal_id).result_id
             )
             comma_separated = target_big.result_names_comma_separated
+            if len(comma_separated.split(",")) == 1:
+                return JsonResponse(
+                    {"success": False, "message": "마지막 음식은 삭제할 수 없습니다."},
+                    status=400,
+                )
             if nutrient_name in comma_separated.split(","):
+                # if comma_separated == nutrient_name:
+                #     comma_separated = ""
+                # else:
                 comma_separated = comma_separated.replace(nutrient_name + ",", "")
                 target_big.result_names_comma_separated = comma_separated
                 target_big.save()
             else:
                 return JsonResponse(
-                    {"success": False, "error": "Not found"}, status=404
+                    {"success": False, "message": "Not found"}, status=404
                 )
             return JsonResponse({"success": True}, status=200)
         except Diet.DoesNotExist:
             return JsonResponse(
-                {"success": False, "error": "Meal not found"}, status=404
+                {"success": False, "message": "Meal not found"}, status=404
             )
-    elif request.method == "PUT":
+    elif request.method == "POST":
         data = json.loads(request.body)
         name = data.get("name")
         kcal = data.get("kcal", 0)
@@ -271,22 +279,17 @@ def update_meal(request, meal_id, nutrient_name):
                 id=Diet.objects.get(id=meal_id).result_id
             )
             comma_separated = target_big.result_names_comma_separated
-            # if nutrient_name in comma_separated.split(","):
             comma_separated += f",{name}"
             target_big.result_names_comma_separated = comma_separated
             target_big.save()
-            # else:
-            #     return JsonResponse(
-            #         {"success": False, "error": "Not found"}, status=404
-            #     )
             return JsonResponse({"success": True}, status=200)
         except Diet.DoesNotExist:
             return JsonResponse(
-                {"success": False, "error": "Meal not found"}, status=404
+                {"success": False, "message": "Meal not found"}, status=404
             )
 
     return JsonResponse(
-        {"success": False, "error": "Invalid request method"}, status=400
+        {"success": False, "message": "Invalid request method"}, status=400
     )
 
 

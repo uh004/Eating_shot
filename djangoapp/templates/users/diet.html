@@ -21,7 +21,7 @@
             {#            {% if meal.result.status == "PENDING" %}#} {# TODO: inference status check in profile?? #}
             <div class="meals">
                 <button type="button" style="display: flex;" class="meals_btn">
-                    <img src="{{ meal.image }}" alt="">
+                    <img src="inference_photos/{{ meal.image }}" alt="">
                     <div class="img_info">
                         <p id="meal_type">{{ meal.meal_type }} (<span>509</span>kcal)</p>
                         <p id="meal_detail" style="font-size: 14px;">{{ meal.result.result_data }}</p>
@@ -36,7 +36,7 @@
                         <button type="button" onclick="deleteBoard({{ meal.id }})">삭제</button>
                     </div>
 
-                    <img src="{{ meal.image }}" alt="">
+                    <img src="inference_photos/{{ meal.image }}" alt="">
                     <p class=" topic">식단 영양소 정보</p>
                     <hr>
 
@@ -93,12 +93,12 @@
                     <div class="add_meal_form">
                         <p>음식 추가</p>
 
-                        <form class="inputs">
+                        <div class="inputs">
                             <input type="text" placeholder="음식명" id="newNutrientName">
                             <input type="number" placeholder="kcal" id="newKcal">
                             <input type="submit" value="확인" class="color_btn"
-                                   onclick="modifyMealName3({{ meal.id }}, '{{ nutrient }}')">
-                        </form>
+                                   onclick="modifyMealName3({{ meal.id }})">
+                        </div>
 
                     </div>
                 </div>
