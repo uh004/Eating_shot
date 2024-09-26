@@ -74,6 +74,42 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     4. ???
     5. TODO: SSL everything
 
+
+
+## plan 2.2 (hardening website)
+
+2. hardening the website!
+    1. ~~[x] edit and delete 운동 기록~~
+    2. ~~edit and delete 혈압~~
+    3. ~~edit and delete 혈당~~
+    4. ~~디자인 나오는거 기달..~~
+    5. all done!
+
+1. hardening the webapp
+    2. ~~edit and delete 운동 기록~~
+    3. ~~edit and delete 혈압~~
+    4. ~~edit and delete 혈당~~
+    5. ~~edit and delete 당화혈색소~~
+    6. all done!
+
+#### plan 2.2.7
+
+7. 누적 칼로리(탄, 단, 지)
+
+현재 보고서 반 정도 완성 (그래프)
+
+안된 것:
+
+8. 일일 뽑아내기 / 주간 뽑아내기
+9. 전체 유저의 상위 n%입니다 표식
+
+사소한 것:
+- 나이 생년월일 맞춰야 하기? 아니면 둘 중 하나만 받기
+
+### plan 3.4
+
+go back to plan 3 and do the money involving stuff
+
 ## plan 개입.1
 
 ### deploying
@@ -94,6 +130,8 @@ thinking of supabase, it actually is a firebase alternative. and it provides stu
 
 instead of boto3, i can use the supabase python sdk.
 django-storage?
+
+for now i will use sqlite3. but in this case migration must be done.
 
 #### monitoring(not enabled yet)
 
@@ -136,36 +174,7 @@ may be better off sticking with one cloud provider.
     2. ???
     3. done!
 
-## plan 2.2 (hardening website)
 
-2. hardening the website!
-    1. ~~[x] edit and delete 운동 기록~~
-    2. ~~edit and delete 혈압~~
-    3. ~~edit and delete 혈당~~
-    4. ~~디자인 나오는거 기달..~~
-    5. all done!
-
-1. hardening the webapp
-    2. ~~edit and delete 운동 기록~~
-    3. ~~edit and delete 혈압~~
-    4. ~~edit and delete 혈당~~
-    5. ~~edit and delete 당화혈색소~~
-    6. all done!
-
-#### plan 2.2.7
-
-7. 누적 칼로리(탄, 단, 지)
-
-현재 보고서 반 정도 완성 (그래프)
-
-안된 것:
-
-8. 일일 뽑아내기 / 주간 뽑아내기
-9. 전체 유저의 상위 n%입니다 표식
-
-### plan 3.4
-
-go back to plan 3 and do the money involving stuff
 
 ### passwords to copy yada yada
 
