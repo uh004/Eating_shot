@@ -8,7 +8,7 @@ services:
     volumes:
       #      - static_volume:/app/static
       - ./djangoapp/db.sqlite3:/app/db.sqlite3
-      - ./inference_photos:/app/inference_photos
+      - ./inference_photos:/app/photos
     expose:
       - "8000"
     depends_on:
@@ -58,7 +58,7 @@ services:
     command: [ "sh", "-c", "sleep 5 && python run_consumer.py" ] # Introduce a delay
     volumes:
       - ./djangoapp:/app
-      - ./inference_photos:/app/inference_photos
+      - ./inference_photos:/app/photos
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings
       - PYTHONPATH=/app

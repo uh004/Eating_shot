@@ -1,7 +1,14 @@
 # users/models.py
+import os
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
+def diet_image_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/<id>/<filename>
+    print(instance.user.id)
+    return os.path.join(str(instance.user.id), filename)
 
 
 class CustomUser(AbstractUser):
@@ -51,10 +58,20 @@ class Diet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     meal_type = models.CharField(max_length=10)
     date = models.DateField()
-    image = models.ImageField(upload_to='')
+    image = models.ImageField(upload_to=diet_image_path)
     result = models.ForeignKey(
         "ai_workload.InferenceResult", on_delete=models.SET_NULL, null=True, blank=True
     )
+
+    # def save(self, *args, **kwargs):
+    #     if not self.id:
+    #         # Save the instance to generate an ID
+    #         temp_image = self.image
+    #         self.image = None
+    #         super().save(*args, **kwargs)
+    #         self.image = temp_image
+    #     # Now that the instance has an ID, save again to update the image path
+    #     super().save(*args, **kwargs)
 
 
 class ExerciseType(models.Model):
