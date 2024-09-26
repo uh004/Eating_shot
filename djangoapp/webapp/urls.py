@@ -42,4 +42,4 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root="../inference_photos")
+    urlpatterns += static(settings.MEDIA_URL, document_root="../photos")
