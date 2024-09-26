@@ -36,6 +36,9 @@ urlpatterns = [
         views.update_meal,
         name="update_meal",
     ),
+    path("food-detail/", views.food_detail, name="food_detail"),
+    path("pill-alarm/", views.pill_alarm, name="pill_alarm"),
+    path("hospital-alarm/", views.hospital_alarm, name="hospital_alarm")
 ]
 
 if settings.DEBUG:
