@@ -71,6 +71,8 @@ services:
     build: ./djangoapp
     container_name: kafka_consumer
     command: [ "sh", "-c", "sleep 3 && python run_consumer.py" ] # Introduce a delay
+    env_file:
+      - .env
     volumes:
       - ./djangoapp:/app
       - ./inference_photos:/app/photos
