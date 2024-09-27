@@ -26,7 +26,7 @@ jobs:
       - name: copy source via ssh key
         uses: burnett01/rsync-deployments@master
         with:
-          switches: -avzr --delete --exclude 'data' --exclude '.env' --exclude 'models'
+          switches: -avzr --delete --exclude 'db_data' --exclude '.env' --exclude 'models'
           path: .
           remote_path: /home/deployer/deployment
           remote_host: ${{ secrets.HOST }}
