@@ -153,9 +153,9 @@ for now i will use sqlite3. but in this case migration must be done.
 - gcp compute engine ($300 free credit)
     - **GCP 기본 MTU가 1460이라서 docker 서비스도 1460으로 맞춰줘야 함!!**
 
-may be better off sticking with one cloud provider.
+may be better off sticking with one cloud provider. done!
 
-## plan 3.2 (do this before doing all the money involving stuff in plan 3.1)
+# plan 3.5 (do this before doing all the money involving stuff in plan 3.1)
 
 0. use environment variables for secrets
 1. vulnerabilities (thinking about something to exploit when money is applied)
@@ -165,14 +165,6 @@ may be better off sticking with one cloud provider.
             1. upload size
             2. upload count
     2. ???
-
-## plan 3.3
-
-0. use environment variables for secrets
-1. implement ai related stuff
-    1. get the model and use it in the fastapi server
-    2. ???
-    3. done!
 
 ### passwords to copy yada yada
 
