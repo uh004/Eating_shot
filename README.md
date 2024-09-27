@@ -16,12 +16,12 @@
 ### 하기 전에
 
 ```dotenv
-# .env (djangoapp/.env)
+# .env
 DJANGO_SECRET_KEY=
 ```
 
 ```dotenv
-# .env (.env)
+# .env
 STACK_VERSION=8.15.1
 
 ELASTIC_PASSWORD=
