@@ -32,7 +32,8 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 if os.environ.get("DJANGO_ENV") == "production":
     DEBUG = False
     ALLOWED_HOSTS = [
-        "localhost", # TODO: add domain here
+        "localhost",
+        "eatingshot.jonngwanma.de",
     ]
 else:
     DEBUG = True
