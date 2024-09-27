@@ -18,10 +18,6 @@
 ```dotenv
 # .env
 DJANGO_SECRET_KEY=
-```
-
-```dotenv
-# .env
 STACK_VERSION=8.15.1
 
 ELASTIC_PASSWORD=
