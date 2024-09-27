@@ -24,6 +24,11 @@ ELASTIC_PASSWORD=
 LOGSTASH_PASSWORD=
 KIBANA_PASSWORD=
 
+POSTGRES_HOST=
+POSTGRES_DB=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+
 # Set to 'basic' or 'trial' to automatically start the 30-day trial  
 LICENSE=basic
 #LICENSE=trial
