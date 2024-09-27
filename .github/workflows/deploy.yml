@@ -41,4 +41,5 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd /home/deployer/deployment
+            docker compose down
             docker compose up --build -d
