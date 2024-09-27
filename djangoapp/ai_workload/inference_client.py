@@ -1,10 +1,12 @@
 import requests
-from django.conf import settings
+import os
 
-if settings.DEBUG:
+if not os.environ.get("DJANGO_ENV") == "production":
     INFERENCE_SERVER_URL = "http://localhost:8000/predict"  # the dummy fastapi
 else:
-    INFERENCE_SERVER_URL = "http://inferenceapp:8099/predict"  # the dummy fastapi server
+    INFERENCE_SERVER_URL = (
+        "http://inferenceapp:8099/predict"  # the dummy fastapi server
+    )
 
 
 def run_inference(image_path):
