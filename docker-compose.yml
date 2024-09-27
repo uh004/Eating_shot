@@ -8,7 +8,8 @@ services:
     command: uvicorn core.asgi:application --host 0.0.0.0 --port 8000
     volumes:
       #      - static_volume:/app/static
-      - ./djangoapp/db.sqlite3:/app/db.sqlite3
+      - db_volume:/app/db.sqlite3
+      #      - ./djangoapp/db.sqlite3:/app/db.sqlite3
       - ./inference_photos:/app/photos
     expose:
       - "8000"
@@ -347,6 +348,7 @@ services:
 #    networks:
 #      - monitoring
 volumes:
+  db_volume:
   caddy_data:
   caddy_config:
   esdata:
