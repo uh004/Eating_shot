@@ -3,8 +3,8 @@ services:
     build: djangoapp
     container_name: django_app
     command: uvicorn core.asgi:application --host 0.0.0.0 --port 8000
-    env_file:
-      - .env
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
     volumes:
       #      - static_volume:/app/static
       - ./djangoapp/db.sqlite3:/app/db.sqlite3
@@ -71,12 +71,11 @@ services:
     build: ./djangoapp
     container_name: kafka_consumer
     command: [ "sh", "-c", "sleep 3 && python run_consumer.py" ] # Introduce a delay
-    env_file:
-      - .env
     volumes:
       - ./djangoapp:/app
       - ./inference_photos:/app/photos
     environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
       - DJANGO_SETTINGS_MODULE=core.settings
       - PYTHONPATH=/app
     depends_on:
