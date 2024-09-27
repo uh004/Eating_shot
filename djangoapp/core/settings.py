@@ -36,7 +36,7 @@ if os.environ.get("DJANGO_ENV") == "production":
         "eatingshot.jonngwanma.de",
     ]
     CSRF_TRUSTED_ORIGINS = [  # for django 4.0 and above
-        "eatingshot.jonngwanma.de",
+        "https://eatingshot.jonngwanma.de",
     ]
 else:
     DEBUG = True
