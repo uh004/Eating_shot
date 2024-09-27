@@ -4,7 +4,11 @@ from django.conf import settings
 if settings.DEBUG:
     INFERENCE_SERVER_URL = "http://localhost:8000/predict"  # the dummy fastapi
 else:
-    INFERENCE_SERVER_URL = "http://inferenceapp:8099/predict"  # the dummy fastapi server
+    INFERENCE_SERVER_URL = (
+        "http://inferenceapp:8099/predict"  # the dummy fastapi server
+    )
+
+print(INFERENCE_SERVER_URL)
 
 
 def run_inference(image_path):
