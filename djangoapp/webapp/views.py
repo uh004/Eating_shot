@@ -61,7 +61,6 @@ def login_view(request):
             else:
                 return redirect("index")
         else:
-            # TODO: show error message
             return render(request, "users/login.html", {"form": form})
     else:
         form = CustomAuthenticationForm()
@@ -512,15 +511,16 @@ def delete_request(request, menu, id):
         return JsonResponse({"message": "Deleted successfully."}, status=200)
     return JsonResponse({"error": "Invalid method."}, status=400)
 
+
 def food_detail(request, id):
     meal = get_object_or_404(Diet, pk=id)
-    meal.result_names_list = meal.result.result_names_comma_separated.split(
-        ","
-    )
+    meal.result_names_list = meal.result.result_names_comma_separated.split(",")
     return render(request, "users/food_detail.html", {"meal": meal})
+
 
 def pill_alarm(request):
     return render(request, "users/pill_alarm.html", {})
+
 
 def hospital_alarm(request):
     return render(request, "users/hospital_alarm.html", {})

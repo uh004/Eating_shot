@@ -189,6 +189,7 @@ if os.environ.get("DJANGO_ENV") == "production":
     KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
 else:
     KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
+    # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!! (TODO: how to handle this?)
 
 LOGGING = {
     "version": 1,
