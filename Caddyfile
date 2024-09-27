@@ -1,0 +1,13 @@
+eatingshot.jonngwanma.de {
+    reverse_proxy http://djangoapp:8000
+
+    handle_path /photos/* {
+        root * /usr/share/nginx/html/media
+        file_server
+    }
+
+    handle_path /static/* {
+        root * /usr/share/nginx/html/static
+        file_server
+    }
+}

@@ -1,0 +1,44 @@
+name: Deploy to server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: 'production-v1'
+      url: https://eatingshot.jonngwanma.de
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: create remote directory
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: deployer
+          key: ${{ secrets.KEY }}
+          # password: ${{ secrets.PASSWORD }}
+          script: |
+            mkdir -p /home/deployer/deployment
+
+      - name: copy source via ssh key
+        uses: burnett01/rsync-deployments@master
+        with:
+          switches: -avzr --delete --exclude 'db.sqlite3' --exclude '.env' --exclude 'models'
+          path: .
+          remote_path: /home/deployer/deployment
+          remote_host: ${{ secrets.HOST }}
+          remote_user: deployer
+          remote_key: ${{ secrets.KEY }}
+
+      - name: executing remote ssh commands using password
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: deployer
+          key: ${{ secrets.KEY }}
+          script: |
+            cd /home/deployer/deployment
+            docker compose up --build -d
