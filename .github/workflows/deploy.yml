@@ -17,7 +17,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: deployer
+          username: ubuntu
           key: ${{ secrets.KEY }}
           # password: ${{ secrets.PASSWORD }}
           script: |
@@ -30,14 +30,14 @@ jobs:
           path: .
           remote_path: /home/ubuntu/deployment
           remote_host: ${{ secrets.HOST }}
-          remote_user: deployer
+          remote_user: ubuntu
           remote_key: ${{ secrets.KEY }}
 
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
-          username: deployer
+          username: ubuntu
           key: ${{ secrets.KEY }}
           script: |
             cd /home/ubuntu/deployment
