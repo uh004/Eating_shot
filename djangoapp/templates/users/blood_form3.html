@@ -7,7 +7,11 @@
 <div class="banner2">
     <div class="deco">
         <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
+        {% if form.instance.pk %}
+            <h2>당화혈색소 기록 수정하기</h2>
+        {% else %}
         <h2>당화혈색소 기록하기</h2>
+        {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
     
@@ -22,23 +26,33 @@
                     "{{ form.hba1c.value }}" step="0.1">
             <p style="width: 60px;">%</p>
         </div>
-        
+
+        {% if form.errors %}
+            <div class="error-message">{{ form.errors }}</div>
+        {% endif %}
+
         <p style="font-size: 20px; padding: 60px 0; text-align: center;">당화혈색소 수치는 <span
                 class="danger-message" style="color: green; font-size: 25px;">정상</span>입니다.</p>
         
-        <input type="submit" value="기록하기"/>
+        <input type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}"/>
     </form>
 </div>
 {% block script %}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
+
+            calculateHba1c();
         });
-        
+
         document.querySelector('form').addEventListener('change', function (event) {
             event.preventDefault(); // Prevent form submission
 
+            calculateHba1c();
+        });
+
+        function calculateHba1c() {
             const hba1c = document.getElementById('blood_1').value;
             const dangerMessage = document.querySelector('.danger-message');
 
@@ -58,6 +72,6 @@
 
             dangerMessage.textContent = dangerLevel;
             dangerMessage.style.color = color;
-        });
+        }
     </script>
 {% endblock %}

@@ -20,76 +20,70 @@
             </ul>
         </div>
 
-
-        <div style="display: flex; overflow: hidden;" class="for_record">
-            <!-- 식단 -->
-
+        <div style="display: flex; overflow: hidden;">
             <div id="insert"></div>
-
         </div>
-
     </div>
 {% endblock %}
 
 {% block scripts %}
-    <script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script>
+const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        // dummy code
-        $(document).ready(function () {
-            let now = 0;
+$(document).ready(function () {
+    let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
+    let previousTab = null;
+    const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
 
-            $('.meals_btn').on('click', function () {
-                now++;
-                let info;
-                if (now % 2 === 1) {
-                    info = document.getElementById('meal_info')
-                    info.style.display = "block";
-                } else {
-                    info = document.getElementById('meal_info')
-                    info.style.display = "none";
+    $(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the current menu
+
+    function loadContent(tabIndex) {
+        const insert = $('#insert');
+        $.ajax({
+            url: `/load_content/${arr[tabIndex]}/`,
+            success: function (data) {
+                insert.empty().html(data); // Clear previous content and load new content
+                if (previousTab !== null) {
+                    console.log(`Purge ${arr[previousTab]}.js`); // Log the previous page
+                    insert.off(); // Remove previously attached event handlers
                 }
-            });
+                clearScripts(); // Clear previously loaded scripts
+                loadScript(arr[tabIndex]); // Load the corresponding script
+                console.log(`Load ${arr[tabIndex]}.js`); // Log the current page
+            }
         });
+    }
 
-
-        // 메뉴 클릭 시 해당 내용을 불러오는 ajax
-        $(document).ready(function () {
-            let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
-            const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
-
-            $(`#menu${now} img`).css('background-color', '#00BCD4'); // 이전 메뉴의 배경색 초기화
-
-            $.ajax({
-                url: `/load_content/${arr[now]}/`,
-                success: function (data) {
-                    $('#insert').html(data);
-                }
+    function loadScript(tabName) {
+        const scriptUrl = `{% static 'js/' %}${tabName}.js`;
+        $.getScript(scriptUrl)
+            .done(function (script, textStatus) {
+                console.log(`${tabName}.js loaded successfully`);
+            })
+            .fail(function (jqxhr, settings, exception) {
+                console.error(`Failed to load ${tabName}.js`);
             });
+    }
 
-            $('ul li').on('click', function () {
-                $(`#menu${now} img`).css('background-color', '');
-                now = $(this).attr('id').replace('menu', '');
-                localStorage.setItem('currentTab', now);  // Save the current tab index
-                $(`#menu${now} img`).css('background-color', '#00BCD4');
+    function clearScripts() {
+        $('script[src*="{% static 'js/' %}"]').remove(); // Remove previously loaded scripts
+    }
 
-                $.ajax({
-                    url: `/load_content/${arr[now]}/`,
-                    success: function (data) {
-                        $('#insert').html(data);
-                    }
-                });
-            });
-        });
+    loadContent(now);
 
-        $(function () {
-            $('.tabcontent > div').hide();
-            $('.tabnav a').click(function () {
-                $('.tabcontent > div').hide().filter(this.hash).fadeIn();
-                $('.tabnav a').removeClass('active');
-                $(this).addClass('active');
-                return false;
-            }).filter(':eq(0)').click();
-        });
-
-    </script>
+    $('ul li').on('click', function () {
+        $(`#menu${now} img`).css('background-color', ''); // Reset previous menu background
+        previousTab = now;
+        now = $(this).attr('id').replace('menu', '');
+        localStorage.setItem('currentTab', now);  // Save the current tab index
+        $(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the new menu
+        loadContent(now);
+    });
+});
+</script>
 {% endblock %}
+

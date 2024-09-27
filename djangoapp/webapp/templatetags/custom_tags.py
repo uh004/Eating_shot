@@ -11,3 +11,8 @@ def length(value):
 @register.filter
 def split_by_comma(value):
     return value.split(",")
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

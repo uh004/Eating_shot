@@ -7,7 +7,11 @@
     
     <div class="deco">
         <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
+        {% if form.instance.pk %}
+            <h2>혈당 기록 수정하기</h2>
+        {% else %}
         <h2>혈당 기록하기</h2>
+        {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
     
@@ -28,12 +32,16 @@
                    value="{{ form.blood_sugar.value }}">
             <p style="width: 110px;">mg / dL</p>
         </div>
-        
+
+        {% if form.errors %}
+            <div class="error-message">{{ form.errors }}</div>
+        {% endif %}
+
         <p style="font-size: 20px; padding: 60px 0; text-align: center;">혈당 수치는 <span class="danger-message"
-                                                                                      style="color: green; font-size: 
+                                                                                      style="color: green; font-size:
 25px;">정상</span>입니다.</p>
         
-        <input type="submit" value="기록하기"/>
+        <input type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}"/>
     </form>
 
 </div>
@@ -42,48 +50,35 @@
         document.addEventListener('DOMContentLoaded', function () {
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
+
+            calculateBloodSugar();
         });
 
         document.querySelector('form').addEventListener('change', function (event) {
             event.preventDefault(); // Prevent form submission
+            calculateBloodSugar();
+        });
 
+        function calculateBloodSugar() {
             const bloodSugar = document.getElementById('blood_1').value;
             const dangerMessage = document.querySelector('.danger-message');
-            const bloodSugar_time = document.getElementById('bloodSugar_time').value;
 
             let dangerLevel = '정상'; // Default to normal
             let color = 'green'; // Default color
-                   
 
-            if ((bloodSugar_time == "공복") || (bloodSugar_time.includes("식전"))) {
-                if (bloodSugar <= 99) {
-                    dangerLevel = '정상';
-                    color = 'green';
-                } else if (bloodSugar <= 125) {
-                    dangerLevel = '주의';
-                    color = 'orange';
-                } else {
-                    dangerLevel = '위험';
-                    color = 'red';
-                }
-
-                
-            } else if (bloodSugar_time.includes("식후")) {
-                if (bloodSugar <= 140) {
-                    dangerLevel = '정상';
-                    color = 'green';
-                } else if (bloodSugar <= 199) {
-                    dangerLevel = '주의';
-                    color = 'orange';
-                } else {
-                    dangerLevel = '위험';
-                    color = 'red';
-                }
-                
+            if (bloodSugar <= 99) {
+                dangerLevel = '정상';
+                color = 'green';
+            } else if (bloodSugar <= 125) {
+                dangerLevel = '주의';
+                color = 'orange';
+            } else {
+                dangerLevel = '위험';
+                color = 'red';
             }
 
             dangerMessage.textContent = dangerLevel;
             dangerMessage.style.color = color;
-        });
+        }
     </script>
 {% endblock %}

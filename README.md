@@ -13,6 +13,23 @@
 
 ## 명령어 (도커)
 
+### 하기 전에
+
+```dotenv
+# .env
+DJANGO_SECRET_KEY=
+STACK_VERSION=8.15.1
+
+ELASTIC_PASSWORD=
+LOGSTASH_PASSWORD=
+KIBANA_PASSWORD=
+
+# Set to 'basic' or 'trial' to automatically start the 30-day trial  
+LICENSE=basic
+#LICENSE=trial
+
+```
+
 - `docker compose up -d` : 전부 실행 (파일이 바뀌었을 시 `--build` 옵션을 붙이면 됨) 30초 정도 걸림.
 - `docker compose up [서비스 이름 (공백으로 복수 서비스 기입 가능)]` : 서비스들 실행
 - `docker compose down` : 전부 종료 (-v 옵션을 붙이면 볼륨도 삭제). 재시작(`--force-recreate` 등) 시 kafka가 자기 자기를 지우지 못하고 재시작되니 주의.

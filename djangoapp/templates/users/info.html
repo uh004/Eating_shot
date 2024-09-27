@@ -111,6 +111,10 @@
                         </p>
                         <input type="submit" value="앱 시작하기">
                     </div>
+
+                    {% if form.errors %}
+                        <div class="error">{{ form.errors }}</div>
+                    {% endif %}
                 </form>
                 <button type="button" class="btn" id="btn" style="width: 150px; margin-left: 320px;"> > NEXT</button>
             </div>
@@ -119,6 +123,9 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         $(document).ready(function () {
             let now = 1;

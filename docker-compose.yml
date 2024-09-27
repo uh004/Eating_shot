@@ -8,6 +8,7 @@ services:
     volumes:
       #      - static_volume:/app/static
       - ./djangoapp/db.sqlite3:/app/db.sqlite3
+      - ./inference_photos:/app/photos
     expose:
       - "8000"
     depends_on:
@@ -27,6 +28,7 @@ services:
     restart: on-failure
     volumes:
       #      - static_volume:/usr/share/nginx/html/static
+      - ./inference_photos:/usr/share/nginx/html/media
       - ./djangoapp/static:/usr/share/nginx/html/static
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
@@ -38,8 +40,10 @@ services:
   inferenceapp:
     build: inference
     container_name: inference_app
-    ports:
-      - "8099:8099"
+    volumes:
+      - ./models:/app/models
+    #    ports:
+    #      - "8099:8099"
     logging:
       driver: "json-file"
       options:
@@ -54,7 +58,7 @@ services:
     command: [ "sh", "-c", "sleep 5 && python run_consumer.py" ] # Introduce a delay
     volumes:
       - ./djangoapp:/app
-      - ./inference_photos:/app/inference_photos
+      - ./inference_photos:/app/photos
     environment:
       - DJANGO_SETTINGS_MODULE=core.settings
       - PYTHONPATH=/app
@@ -84,7 +88,6 @@ services:
       - zookeeper
     ports:
       - 29092:29092
-      - 9092:9092
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -187,9 +190,9 @@ services:
       - xpack.security.http.ssl.certificate=certs/logstash/logstash.crt
       - xpack.security.http.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.http.ssl.verification_mode=certificate
-    ports:
-      - "5044:5044"
-      - "9600:9600"
+    #    ports:
+    #      - "5044:5044" # test
+    #      - "9600:9600"
     networks:
       - elk
 
@@ -198,6 +201,7 @@ services:
       - logstash
     image: elastic/filebeat:${STACK_VERSION}
     container_name: filebeat
+    command: filebeat -e -strict.perms=false
     user: root
     volumes:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
@@ -213,6 +217,7 @@ services:
         condition: service_healthy
     image: elastic/metricbeat:${STACK_VERSION}
     container_name: metricbeat
+    command: metricbeat -e -strict.perms=false
     user: root
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -226,7 +231,7 @@ services:
     networks:
       - elk
 
-
+  # not used yet
   #  packetbeat:
   #    image: docker.elastic.co/beats/packetbeat:7.10.0
   #    container_name: packetbeat
@@ -270,9 +275,9 @@ services:
     volumes:
       - certs:/usr/share/elasticsearch/config/certs:ro
       - esdata:/usr/share/elasticsearch/data
-    ports:
-      - "9200:9200"
-      - "9243:9243"
+    #    ports:
+    #      - "9200:9200"
+    #      - "9243:9243"
     networks:
       - elk
     healthcheck:
@@ -302,8 +307,8 @@ services:
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_CERTIFICATE=/usr/share/kibana/config/certs/kibana/kibana.crt
       - SERVER_SSL_KEY=/usr/share/kibana/config/certs/kibana/kibana.key
-    ports:
-      - "5601:5601"
+    #    ports:
+    #      - "5601:5601"
     networks:
       - elk
 
