@@ -5,14 +5,57 @@ from users.models import CustomUser, Diet, Exercise, BloodSugar, BloodPressure, 
 
 
 class CustomUserCreationForm(UserCreationForm):
+
     class Meta:
         model = CustomUser
         fields = ["username", "email", "password1", "password2"]
+        error_messages = {
+            "username": {
+                "required": "사용자 이름을 입력해주세요.",
+                "unique": "이미 존재하는 사용자 이름입니다.",
+            },
+            "email": {
+                "required": "이메일을 입력해주세요.",
+                "unique": "이미 존재하는 이메일입니다.",
+                "invalid": "유효한 이메일 주소를 입력해주세요.",
+            },
+        }
+
+    def is_valid(self) -> bool:
+        for item in self.errors.as_data().items():
+            if item[0] in self.fields:
+                self.fields[item[0]].widget.attrs["class"] = "general-error"
+                self.fields[item[0]].widget.attrs["placeholder"] = item[1][0].message
+                self.data = self.data.copy()
+                self.data[item[0]] = ""
+
+        return super().is_valid()
 
 
 class CustomAuthenticationForm(AuthenticationForm):
+
     class Meta:
         model = CustomUser
+        fields = ["username", "password"]
+        error_messages = {
+            "username": {
+                "required": "사용자 이름을 입력해주세요.",
+                "invalid": "유효한 사용자 이름을 입력해주세요.",
+            },
+            "password": {
+                "required": "비밀번호를 입력해주세요.",
+                "invalid_login": "사용자 이름 또는 비밀번호가 올바르지 않습니다.",
+            },
+        }
+
+    def is_valid(self) -> bool:
+        for item in self.errors.as_data().items():
+            if item[0] in self.fields:
+                print(item[0])
+                self.fields[item[0]].widget.attrs["class"] = "general-error"
+                self.fields[item[0]].widget.attrs["placeholder"] = item[1][0].message
+
+        return super().is_valid()
 
 
 class HealthInfoForm(forms.Form):

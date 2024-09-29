@@ -56,17 +56,15 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            if (
-                user.height is None
-            ):  # check for any required fields present in the user model (e.g. height)
-                return redirect("info")
-            else:
-                return redirect("index")
+            return redirect("index")
         else:
-            return render(request, "users/login.html", {"form": form})
+            error_messages = "아이디 또는 비밀번호가 올바르지 않습니다."
     else:
         form = CustomAuthenticationForm()
-    return render(request, "users/login.html", {"form": form})
+        error_messages = None
+    return render(
+        request, "users/login.html", {"form": form, "error_messages": error_messages}
+    )
 
 
 @login_required
