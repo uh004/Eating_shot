@@ -15,11 +15,12 @@
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        labels: {
-                            fontColor: "black",
-                            fontSize: 18,
-                            fontFamily: 'pretendard'
-                        }
+                        // labels: {
+                        //     fontColor: "black",
+                        //     fontSize: 18,
+                        //     fontFamily: 'pretendard'
+                        // }
+                        display: false
                     }
                 },
                 scales: {
