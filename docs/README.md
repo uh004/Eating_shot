@@ -74,8 +74,6 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     4. ???
     5. TODO: SSL everything
 
-
-
 ## plan 2.2 (hardening website)
 
 2. hardening the website!
@@ -104,6 +102,7 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
 9. 전체 유저의 상위 n%입니다 표식
 
 사소한 것:
+
 - 나이 생년월일 맞춰야 하기? 아니면 둘 중 하나만 받기
 
 ### plan 3.4
@@ -152,10 +151,11 @@ for now i will use sqlite3. but in this case migration must be done.
 - aws ec2 (https://aws.amazon.com/ec2/instance-types/)
     - instance type: arm64 or x86?
 - gcp compute engine ($300 free credit)
+    - **GCP 기본 MTU가 1460이라서 docker 서비스도 1460으로 맞춰줘야 함!!**
 
-may be better off sticking with one cloud provider.
+may be better off sticking with one cloud provider. done!
 
-## plan 3.2 (do this before doing all the money involving stuff in plan 3.1)
+# plan 3.5 (do this before doing all the money involving stuff in plan 3.1)
 
 0. use environment variables for secrets
 1. vulnerabilities (thinking about something to exploit when money is applied)
@@ -165,16 +165,6 @@ may be better off sticking with one cloud provider.
             1. upload size
             2. upload count
     2. ???
-
-## plan 3.3
-
-0. use environment variables for secrets
-1. implement ai related stuff
-    1. get the model and use it in the fastapi server
-    2. ???
-    3. done!
-
-
 
 ### passwords to copy yada yada
 
@@ -193,6 +183,13 @@ elasticsearch 컨테이너로 가서 `bin/elasticsearch-reset-password auto [-u 
 ^ 이걸 다시 .env에 넣어놓고 셋업 완료해야 함.
 
 가동될때까지 노트북에서 70초, 성능좋은 데탑에서 30초정도 걸림
+
+## reset kafka topic
+
+```shell
+docker-compose exec kafka kafka-topics --delete --topic inference_tasks --bootstrap-server localhost:9092 #(or 
+kafka:9092)
+```
 
 #### query dsl
 

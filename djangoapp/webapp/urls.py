@@ -38,8 +38,8 @@ urlpatterns = [
     ),
     path("food-detail/<int:id>", views.food_detail, name="food_detail"),
     path("pill-alarm/", views.pill_alarm, name="pill_alarm"),
-    path("hospital-alarm/", views.hospital_alarm, name="hospital_alarm")
+    path("hospital-alarm/", views.hospital_alarm, name="hospital_alarm"),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root="../photos")
+    urlpatterns += static(settings.MEDIA_URL, document_root="./photos")

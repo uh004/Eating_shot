@@ -20,8 +20,13 @@
 
 .error-message {
     color: red;
-    font-size: 0.9em;
+    font-size: 14px;
     margin-top: 5px;
+    text-align: center;
+}
+
+.error-message li {
+    list-style-type: square;
 }
 
 .general-error {
@@ -32,3 +37,8 @@
     margin-bottom: 20px;
     border-radius: 5px;
 }
+
+/*.general-error-radio {*/
+/*    background-color: #ffcccc;*/
+/*    border: 1px solid #ff0000;*/
+/*}*/

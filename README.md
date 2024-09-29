@@ -24,11 +24,18 @@ ELASTIC_PASSWORD=
 LOGSTASH_PASSWORD=
 KIBANA_PASSWORD=
 
+POSTGRES_HOST=
+POSTGRES_DB=
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+
 # Set to 'basic' or 'trial' to automatically start the 30-day trial  
 LICENSE=basic
 #LICENSE=trial
 
 ```
+
+- `docker compose up -f docker-compose.dev.yml -d` : 개발용 실행(카프카, 임시db)
 
 - `docker compose up -d` : 전부 실행 (파일이 바뀌었을 시 `--build` 옵션을 붙이면 됨) 30초 정도 걸림.
 - `docker compose up [서비스 이름 (공백으로 복수 서비스 기입 가능)]` : 서비스들 실행
@@ -36,12 +43,11 @@ LICENSE=basic
 
 
 - ~~- `docker compose up -d` : 카프카~~
-- ~~- `python -m run_consumer` : 카프카 먹기 시작~~
-- ~~- `python -m inference_dummy_fastapi.main` : 간이 서버 시작~~
 
-### ~~(fastapi 서버 디렉토리에서)~~
+# 각자 디렉토리에서)
 
-- ~~`uvicorn main:app --port 8099 --reload` : fastapi 서버 시작하기~~
+- `python -m run_consumer` : 카프카 먹기 시작
+- `python -m main` : 간이 서버 시작
 
 ## url
 

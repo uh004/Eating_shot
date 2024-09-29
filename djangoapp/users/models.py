@@ -2,8 +2,10 @@
 import os
 
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from datetime import date
+
 
 def diet_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<id>/<filename>
@@ -11,7 +13,20 @@ def diet_image_path(instance, filename):
     return os.path.join(str(instance.user.id), filename)
 
 
-class CustomUser(AbstractUser):
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class CustomUser(AbstractBaseUser):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=20, unique=True)
     height = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
@@ -32,6 +47,24 @@ class CustomUser(AbstractUser):
         blank=True,
     )
     health_conditions = models.CharField(max_length=255, null=True, blank=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
+
+    def save(self, *args, **kwargs):
+        if self.birthdate:
+            today = date.today()
+            self.age = (
+                today.year
+                - self.birthdate.year
+                - (
+                    (today.month, today.day)
+                    < (self.birthdate.month, self.birthdate.day)
+                )
+            )
+        super(CustomUser, self).save(*args, **kwargs)
 
 
 class BloodSugar(models.Model):

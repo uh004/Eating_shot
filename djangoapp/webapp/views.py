@@ -33,6 +33,8 @@ from datetime import datetime
 
 @login_required
 def index(request):
+    if request.user.height is None:
+        return redirect("info")
     return render(request, "users/home.html")
 
 
@@ -54,18 +56,15 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            if (
-                user.height is None
-            ):  # check for any required fields present in the user model (e.g. height)
-                return redirect("info")
-            else:
-                return redirect("index")
+            return redirect("index")
         else:
-            # TODO: show error message
-            return render(request, "users/login.html", {"form": form})
+            error_messages = "아이디 또는 비밀번호가 올바르지 않습니다."
     else:
         form = CustomAuthenticationForm()
-    return render(request, "users/login.html", {"form": form})
+        error_messages = None
+    return render(
+        request, "users/login.html", {"form": form, "error_messages": error_messages}
+    )
 
 
 @login_required
@@ -76,7 +75,7 @@ def info_view(request):
             user = request.user
             user.height = form.cleaned_data["height"]
             user.weight = form.cleaned_data["weight"]
-            user.age = form.cleaned_data["age"]
+            # user.age = form.cleaned_data["age"]
             user.birthdate = form.cleaned_data["birthdate"]
             user.gender = form.cleaned_data["gender"]
             user.goal = form.cleaned_data["goal"]
@@ -512,15 +511,16 @@ def delete_request(request, menu, id):
         return JsonResponse({"message": "Deleted successfully."}, status=200)
     return JsonResponse({"error": "Invalid method."}, status=400)
 
+
 def food_detail(request, id):
     meal = get_object_or_404(Diet, pk=id)
-    meal.result_names_list = meal.result.result_names_comma_separated.split(
-        ","
-    )
+    meal.result_names_list = meal.result.result_names_comma_separated.split(",")
     return render(request, "users/food_detail.html", {"meal": meal})
+
 
 def pill_alarm(request):
     return render(request, "users/pill_alarm.html", {})
+
 
 def hospital_alarm(request):
     return render(request, "users/hospital_alarm.html", {})

@@ -6,11 +6,11 @@
 
 <div class="banner2">
     <div class="deco">
-        <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
+        <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
         {% if form.instance.pk %}
             <h2>당화혈색소 기록 수정하기</h2>
         {% else %}
-        <h2>당화혈색소 기록하기</h2>
+            <h2>당화혈색소 기록하기</h2>
         {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
@@ -23,12 +23,12 @@
         <div class="blood_sugar">
             <p style="width: 140px;">{{ form.hba1c.label }}</p>
             <input type="number" name="{{ form.hba1c.name }}" id="blood_1" placeholder="6.5" value=
-                    "{{ form.hba1c.value }}" step="0.1">
+                    "{{ form.hba1c.value }}" step="0.1" {% if form.hba1c.errors %}class="general-error"{% endif %}>
             <p style="width: 60px;">%</p>
         </div>
 
         {% if form.errors %}
-            <div class="error-message">{{ form.errors }}</div>
+            <div class="error-message">{{ form.hba1c.errors }}</div>
         {% endif %}
 
         <p style="font-size: 20px; padding: 60px 0; text-align: center;">당화혈색소 수치는 <span

@@ -6,11 +6,11 @@
 <div class="banner2">
     
     <div class="deco">
-        <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
+        <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
         {% if form.instance.pk %}
             <h2>혈압 기록 수정하기</h2>
         {% else %}
-        <h2>혈압 기록하기</h2>
+            <h2>혈압 기록하기</h2>
         {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
@@ -23,19 +23,20 @@
         <div class="blood_sugar">
             <p>{{ form.systolic.label }}</p>
             <input type="number" name="{{ form.systolic.name }}" id="blood_2" placeholder="120"
-                   value="{{ form.systolic.value }}">
+                   value="{{ form.systolic.value }}" {% if form.systolic.errors %}class="general-error"{% endif %}>
             <p style="width: 110px;">mmHg</p>
         </div>
         
         <div class="blood_sugar">
             <p>{{ form.diastolic.label }}</p>
             <input type="number" name="{{ form.diastolic.name }}" id="blood_3" placeholder="80"
-                   value="{{ form.diastolic.value }}">
+                   value="{{ form.diastolic.value }}" {% if form.diastolic.errors %}class="general-error"{% endif %}>
             <p style="width: 110px;">mmHg</p>
         </div>
 
         {% if form.errors %}
-            <div class="error-message">{{ form.errors }}</div>
+            <div class="error-message">{{ form.systolic.errors }}</div>
+            <div class="error-message">{{ form.diastolic.errors }}</div>
         {% endif %}
 
         <p style="font-size: 20px; padding: 40px 0; text-align: center;">혈압 수치는 <span class="danger-message" style="color: orange; 

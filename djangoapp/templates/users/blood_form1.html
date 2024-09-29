@@ -6,11 +6,11 @@
 <div class="banner2">
     
     <div class="deco">
-        <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
+        <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
         {% if form.instance.pk %}
             <h2>혈당 기록 수정하기</h2>
         {% else %}
-        <h2>혈당 기록하기</h2>
+            <h2>혈당 기록하기</h2>
         {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
@@ -29,12 +29,14 @@
         <div class="blood_sugar">
             <p>{{ form.blood_sugar.label }}</p>
             <input type="number" name="{{ form.blood_sugar.name }}" id="blood_1" placeholder="100"
-                   value="{{ form.blood_sugar.value }}">
+                   value="{{ form.blood_sugar.value }}"
+                   {% if form.blood_sugar.errors %}class="general-error"{% endif %}>
             <p style="width: 110px;">mg / dL</p>
         </div>
 
         {% if form.errors %}
-            <div class="error-message">{{ form.errors }}</div>
+            <div class="error-message">{{ form.blood_sugar.errors }}</div>
+            <div class="error-message">{{ form.time.errors }}</div>
         {% endif %}
 
         <p style="font-size: 20px; padding: 60px 0; text-align: center;">혈당 수치는 <span class="danger-message"

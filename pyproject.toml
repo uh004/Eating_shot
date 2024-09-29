@@ -26,6 +26,8 @@ python-logstash = "^0.4.8"
 python-dotenv = "^1.0.1"
 ultralytics = "^8.2.91"
 python-multipart = "^0.0.9"
+psycopg2-binary = "^2.9.9"
+ujson = "^5.10.0"
 
 
 [build-system]
