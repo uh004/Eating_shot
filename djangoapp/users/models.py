@@ -1,10 +1,32 @@
 # users/models.py
+import os
+
 from django.conf import settings
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+from datetime import date
 
 
-class CustomUser(AbstractUser):
+def diet_image_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/<id>/<filename>
+    print(instance.user.id)
+    return os.path.join(str(instance.user.id), filename)
+
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError("The Email field must be set")
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+
+class CustomUser(AbstractBaseUser):
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=20, unique=True)
     height = models.IntegerField(null=True, blank=True)
     weight = models.IntegerField(null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
@@ -25,6 +47,24 @@ class CustomUser(AbstractUser):
         blank=True,
     )
     health_conditions = models.CharField(max_length=255, null=True, blank=True)
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username"]
+
+    def save(self, *args, **kwargs):
+        if self.birthdate:
+            today = date.today()
+            self.age = (
+                today.year
+                - self.birthdate.year
+                - (
+                    (today.month, today.day)
+                    < (self.birthdate.month, self.birthdate.day)
+                )
+            )
+        super(CustomUser, self).save(*args, **kwargs)
 
 
 class BloodSugar(models.Model):
@@ -51,10 +91,20 @@ class Diet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     meal_type = models.CharField(max_length=10)
     date = models.DateField()
-    image = models.ImageField(upload_to="inference_photos/")
+    image = models.ImageField(upload_to=diet_image_path)
     result = models.ForeignKey(
         "ai_workload.InferenceResult", on_delete=models.SET_NULL, null=True, blank=True
     )
+
+    # def save(self, *args, **kwargs):
+    #     if not self.id:
+    #         # Save the instance to generate an ID
+    #         temp_image = self.image
+    #         self.image = None
+    #         super().save(*args, **kwargs)
+    #         self.image = temp_image
+    #     # Now that the instance has an ID, save again to update the image path
+    #     super().save(*args, **kwargs)
 
 
 class ExerciseType(models.Model):

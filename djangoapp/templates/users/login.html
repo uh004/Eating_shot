@@ -1,6 +1,5 @@
 {% extends "users/base.html" %}
 {% load static %}
-
 {% block title %}로그인 페이지{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
@@ -17,16 +16,29 @@
             <div class="forms">
                 <form action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
+<<<<<<< HEAD
                     <h3>이메일</h3>
+=======
+                    <!-- Username Field -->
+                    <h3>{{ form.username.label }}</h3>
+>>>>>>> ceef7a4e978862d918b5efe8d1b66d7011a1c4bc
                     {{ form.username }}
-                    <h3>{{ form.email.label }}</h3>
-                    {{ form.email }}
+
+                    <!-- Password Field -->
                     <h3>{{ form.password.label }}</h3>
                     {{ form.password }}
+
+                    <!-- Submit Button -->
                     <input type="submit" value="로그인">
                 </form>
+                {% if error_messages %}
+                    <div class="error-message">
+                        {{ error_messages }}
+                    </div>
+                {% endif %}
             </div>
-            <p class="go_join">계정이 없다면 <a href="{% url 'register' %}"><span style="color: #00BCD4;">회원가입 하러가기</span></a></p>
+            <p class="go_join">계정이 없다면 <a href="{% url 'register' %}"><span style="color: #00BCD4;">회원가입 하러가기</span></a>
+            </p>
         </div>
     </div>
 {% endblock %}

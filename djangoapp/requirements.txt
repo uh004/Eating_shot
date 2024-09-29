@@ -9,3 +9,4 @@ celery
 pillow
 python-logstash
 uvicorn
+psycopg2-binary

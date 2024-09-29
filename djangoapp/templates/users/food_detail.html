@@ -4,8 +4,6 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/diet.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}
 
 
@@ -13,12 +11,13 @@
     <img src="{% static 'img/back.png' %}" onclick="window.history.back()" alt="" class="back">
     <div class="meal_info2">
         <h2>아침</h2>
-        <div class="meal_revise">
-            <button type="button" onclick="window.location.href = {% url 'diet_revise_form' %}">수정</button>
-            <button type="button" onclick="deleteBoard()">삭제</button>
+         <div class="meal_revise">
+            <button type="button" onclick="window.location.href = '{% url 'diet_form_edit' meal.id %}'">수정
+            </button>
+            <button type="button" onclick="deleteBoard({{ meal.id }})">삭제</button>
         </div>
 
-        <img src="{% static 'img/sigpan.jpg' %}">
+        <img src="/photos/{{ meal.image.name }}" alt="">
         <p class="topic">식단 영양소 정보</p>
         <hr>
 
@@ -44,122 +43,51 @@
         <p class="topic">식단 목록</p>
 
         <ul class="nutrient_info">
-            <li>
-                <div>
-                    <p class="meal_name">보리밥</p>
-                    <input type="text" placeholder="음식명" class="modify_meal_name">
-                    <input type="number" placeholder="kcal" class="modify_meal_kcal">
-                </div>
+            {% for nutrient in meal.result_names_list %}
+                <li>
+                    <div>
+                        <p class="meal_name">{{ nutrient }}</p>
+                        <input type="text" id="toModifyNutrientName" placeholder="음식명"
+                               class="modify_meal_name">
+                        <input type="number" id="toModifyKcal" placeholder="kcal"
+                               class="modify_meal_kcal">
+                    </div>
 
-                <div class="btns">
-                    <button type="button" class="modify_meal">수정</button>
-                    <button type="button" class="delete_meal" onclick="deleteBoard2()">삭제</button>
-                    <button type="button" class="confirm_meal">확인</button>
-                </div>
-            </li>
-
-            <li>
-                <div>
-                    <p class="meal_name">떡갈비</p>
-                    <input type="text" placeholder="음식명" class="modify_meal_name">
-                    <input type="number" placeholder="kcal" class="modify_meal_kcal">
-                </div>
-
-                <div class="btns">
-                    <button type="button" class="modify_meal">수정</button>
-                    <button type="button" class="delete_meal" onclick="deleteBoard2()">삭제</button>
-                    <button type="button" class="confirm_meal">확인</button>
-                </div>
-            </li>
+                    <div class="btns">
+                        <button type="button" class="modify_meal">수정</button>
+                        <button type="button" class="delete_meal" onclick="deleteMealName2({{ meal.id }},
+                                '{{ nutrient }}')">
+                            삭제
+                        </button>
+                        <button type="button" class="confirm_meal" onclick="modifyMealName2(
+                                {{ meal.id }}, '{{ nutrient }}') {# TODO: Kcal #}
+                                ">확인
+                        </button>
+                    </div>
+                </li>
+            {% endfor %}
         </ul>
 
-        <button type="button" id="add_meal">추가하기</button>
+         <button type="button" id="add_meal">추가하기</button>
 
         <div class="add_meal_form">
             <p>음식 추가</p>
 
-            <form class="inputs">
-                <input type="text" placeholder="음식명">
-                <input type="number" placeholder="kcal">
-                <input type="submit" value="확인" class="color_btn">
-            </form>
-            
+            <div class="inputs">
+                <input type="text" placeholder="음식명" id="newNutrientName">
+                <input type="number" placeholder="kcal" id="newKcal">
+                <input type="submit" value="확인" class="color_btn"
+                       onclick="modifyMealName3({{ meal.id }})">
+            </div>
+
         </div>
     </div>
-    
-    
-
 </div>
 
 {% block script %}
-    <script>
-        $(document).ready(function() {
-            $('#add_meal').on('click', function() {
-                let add_meal_form = $(this).next('.add_meal_form');
-                add_meal_form.toggle();
-            });
-        });
-
-        $(document).ready(function() {
-            $('.modify_meal').on('click', function() {
-
-                var parent_li = $(this).closest("li") 
-
-                parent_li.find('.modify_meal').hide();
-                parent_li.find('.delete_meal').hide();
-                parent_li.find('.meal_name').hide();
-                parent_li.find('.confirm_meal').show();
-                parent_li.find('.modify_meal_name').show();
-                parent_li.find('.modify_meal_kcal').show();
-            });
-        });
-
-        $(document).ready(function() {
-            $('.confirm_meal').on('click', function() {
-                $('.modify_meal').show();
-                $('.delete_meal').show();
-                $('.meal_name').show();
-                $('.confirm_meal').hide();
-                $('.modify_meal_name').hide();
-                $('.modify_meal_kcal').hide();
-            });
-        });
-
-
-        function deleteBoard(seq){
-                Swal.fire({
-                title: '<p style="margin: 0px; font-size: 20px;">해당 식단을 삭제하시겠습니까?</p>',
-                text: "삭제하시면 다시 복구시킬 수 없습니다.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#00BCD4',
-                cancelButtonColor: '#e5e2e2',
-                confirmButtonText: '삭제',
-                cancelButtonText: '취소',
-                width:'400px'
-                }).then((result) => {
-                if (result.value) {
-                    //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
-                }
-            })
-        }
-
-        function deleteBoard2(seq){
-                Swal.fire({
-                title: '<p style="margin: 0px; font-size: 20px;">해당 식단을 삭제하시겠습니까?</p>',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#00BCD4',
-                cancelButtonColor: '#e5e2e2',
-                confirmButtonText: '삭제',
-                cancelButtonText: '취소',
-                width:'400px'
-                }).then((result) => {
-                if (result.value) {
-                    //"삭제" 버튼을 눌렀을 때 작업할 내용을 이곳에 넣어주면 된다. 
-                }
-            })
-        }
-
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="{% static 'js/diet.js' %}"></script>
 {% endblock %}

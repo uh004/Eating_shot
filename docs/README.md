@@ -36,7 +36,7 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
 
 1. according to these newly created pages:
     - databases
-        1. 누적 칼로리(탄, 단, 지)
+      ~~1. 누적 칼로리(탄, 단, 지)~~
         2. 누적 운동기록들
             - 운동시간
         3. 당뇨 지표
@@ -45,8 +45,6 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
             6. 당화혈색소: 년월일, 당화혈색소(%)
         4. 식단기록(이미지 업로드): 년월일, (아침,점심,저녁,간식), (칼로리, 탄수화물, 단백질, 지방)
 
-        - 일일 뽑아내기 / 주간 뽑아내기
-        - 전체 유저의 상위 n%입니다 표식
 2. integrate the new databases with the existing ones
 3. ???
 4. Profit
@@ -63,25 +61,7 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     6. i should experiment by using git branches i guess
     7. no wait just do what i planned in keep
 
-went for approach number 1: import the functions and classes from 'ai_workload'
-
-## plan 2.2
-
-1. what should i do next?
-2. hardening the website!
-    1. [x] edit and delete 운동 기록
-    2. edit and delete 혈압
-    3. edit and delete 혈당
-    4. HOW???
-
-#### plan 2.2.1
-
-1. hardening the webapp
-    2. [ ] edit and delete 운동 기록
-    3. [ ] edit and delete 혈압
-    4. [ ] edit and delete 혈당
-    5. [ ] edit and delete 당화혈색소
-    6. ...
+-> went for approach number 1: import the functions and classes from 'ai_workload'
 
 ## plan 3
 
@@ -93,6 +73,41 @@ went for approach number 1: import the functions and classes from 'ai_workload'
     3. ~~added monitoring stack (prometheus, grafana)~~
     4. ???
     5. TODO: SSL everything
+
+## plan 2.2 (hardening website)
+
+2. hardening the website!
+    1. ~~[x] edit and delete 운동 기록~~
+    2. ~~edit and delete 혈압~~
+    3. ~~edit and delete 혈당~~
+    4. ~~디자인 나오는거 기달..~~
+    5. all done!
+
+1. hardening the webapp
+    2. ~~edit and delete 운동 기록~~
+    3. ~~edit and delete 혈압~~
+    4. ~~edit and delete 혈당~~
+    5. ~~edit and delete 당화혈색소~~
+    6. all done!
+
+#### plan 2.2.7
+
+7. 누적 칼로리(탄, 단, 지)
+
+현재 보고서 반 정도 완성 (그래프)
+
+안된 것:
+
+8. 일일 뽑아내기 / 주간 뽑아내기
+9. 전체 유저의 상위 n%입니다 표식
+
+사소한 것:
+
+- 나이 생년월일 맞춰야 하기? 아니면 둘 중 하나만 받기
+
+### plan 3.4
+
+go back to plan 3 and do the money involving stuff
 
 ## plan 개입.1
 
@@ -115,6 +130,8 @@ thinking of supabase, it actually is a firebase alternative. and it provides stu
 instead of boto3, i can use the supabase python sdk.
 django-storage?
 
+for now i will use sqlite3. but in this case migration must be done.
+
 #### monitoring(not enabled yet)
 
 - prometheus
@@ -134,12 +151,11 @@ django-storage?
 - aws ec2 (https://aws.amazon.com/ec2/instance-types/)
     - instance type: arm64 or x86?
 - gcp compute engine ($300 free credit)
+    - **GCP 기본 MTU가 1460이라서 docker 서비스도 1460으로 맞춰줘야 함!!**
 
-may be better off sticking with one cloud provider.
+may be better off sticking with one cloud provider. done!
 
-TODO: prune some ports in docker-compose.yml if needed
-
-## plan 3.2 (do this before doing all the money involving stuff in plan 3.1)
+# plan 3.5 (do this before doing all the money involving stuff in plan 3.1)
 
 0. use environment variables for secrets
 1. vulnerabilities (thinking about something to exploit when money is applied)
@@ -167,6 +183,13 @@ elasticsearch 컨테이너로 가서 `bin/elasticsearch-reset-password auto [-u 
 ^ 이걸 다시 .env에 넣어놓고 셋업 완료해야 함.
 
 가동될때까지 노트북에서 70초, 성능좋은 데탑에서 30초정도 걸림
+
+## reset kafka topic
+
+```shell
+docker-compose exec kafka kafka-topics --delete --topic inference_tasks --bootstrap-server localhost:9092 #(or 
+kafka:9092)
+```
 
 #### query dsl
 

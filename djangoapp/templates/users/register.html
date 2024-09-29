@@ -12,16 +12,21 @@
             <img src="{% static 'img/register_form.png' %}" width="250px" height="100px" class="register_img">
             <p style="font-size: 30px; margin : 10px auto 30px auto;">회원가입</p>
             <div class="forms">
-                <form action="{% url 'register' %}" method="POST">
+                <form id="registerForm" action="{% url 'register' %}" method="POST">
                     {% csrf_token %}
-                    <h3>{{ form.username.label }}</h3>
-                    {{ form.username }}
+                    <!-- Email Field -->
                     <h3>{{ form.email.label }}</h3>
                     {{ form.email }}
+                    <!-- Username Field -->
+                    <h3>{{ form.username.label }}</h3>
+                    {{ form.username }}
+
+                    <!-- Password Field -->
                     <h3>{{ form.password1.label }}</h3>
                     {{ form.password1 }}
                     <h3>{{ form.password2.label }}</h3>
                     {{ form.password2 }}
+
                     <input type="submit" value="회원가입">
                 </form>
             </div>

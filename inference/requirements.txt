@@ -1,2 +1,6 @@
 fastapi[standard]
 python-logstash
+ultralytics
+PyYAML
+python-multipart
+ujson

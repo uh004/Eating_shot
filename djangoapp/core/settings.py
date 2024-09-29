@@ -33,6 +33,10 @@ if os.environ.get("DJANGO_ENV") == "production":
     DEBUG = False
     ALLOWED_HOSTS = [
         "localhost",
+        "eatingshot.jonngwanma.de",
+    ]
+    CSRF_TRUSTED_ORIGINS = [  # for django 4.0 and above
+        "https://eatingshot.jonngwanma.de",
     ]
 else:
     DEBUG = True
@@ -114,10 +118,20 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {  # modify as needed
+# DATABASES = {  # modify as needed
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB"),
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": "db" if os.environ.get("DJANGO_ENV") == "production" else "localhost",
+        "PORT": 5432,
     }
 }
 
@@ -163,14 +177,19 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+MEDIA_URL = "/photos/"
+MEDIA_ROOT = BASE_DIR / "photos"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# KAFKA_BOOTSTRAP_SERVERS = "kafka:29092" # for host
-KAFKA_BOOTSTRAP_SERVERS = "kafka:9092"  # for docker
+if os.environ.get("DJANGO_ENV") == "production":
+    KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
+else:
+    KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
+    # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!! (TODO: how to handle this?)
 
 LOGGING = {
     "version": 1,
