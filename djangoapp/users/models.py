@@ -4,6 +4,8 @@ import os
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from datetime import date
+
 
 def diet_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<id>/<filename>
@@ -32,6 +34,19 @@ class CustomUser(AbstractUser):
         blank=True,
     )
     health_conditions = models.CharField(max_length=255, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.birthdate:
+            today = date.today()
+            self.age = (
+                today.year
+                - self.birthdate.year
+                - (
+                    (today.month, today.day)
+                    < (self.birthdate.month, self.birthdate.day)
+                )
+            )
+        super(CustomUser, self).save(*args, **kwargs)
 
 
 class BloodSugar(models.Model):

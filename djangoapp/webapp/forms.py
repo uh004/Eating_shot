@@ -18,7 +18,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 class HealthInfoForm(forms.Form):
     height = forms.IntegerField(required=True)
     weight = forms.IntegerField(required=True)
-    age = forms.IntegerField(required=True)
+    # age = forms.IntegerField(required=True)
     birthdate = forms.DateField(required=True)
     gender = forms.ChoiceField(
         choices=[("male", "Male"), ("female", "Female")], required=True

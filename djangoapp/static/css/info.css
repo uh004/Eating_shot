@@ -104,13 +104,26 @@ button {
     border: none;
     margin-top: 10px;
     font-style: italic;
-    position: absolute;
+    /*position: absolute;*/
     width: 150px;
     margin-left: 320px;
 }
 
 button:active {
     color: #00BCD4;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#prev-btn, #next-btn {
+    flex: 1;
+    margin: 0 10px;
+    max-width: 150px;
 }
 
 /* .forms {

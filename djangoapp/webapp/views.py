@@ -33,6 +33,8 @@ from datetime import datetime
 
 @login_required
 def index(request):
+    if request.user.height is None:
+        return redirect("info")
     return render(request, "users/home.html")
 
 
@@ -75,7 +77,7 @@ def info_view(request):
             user = request.user
             user.height = form.cleaned_data["height"]
             user.weight = form.cleaned_data["weight"]
-            user.age = form.cleaned_data["age"]
+            # user.age = form.cleaned_data["age"]
             user.birthdate = form.cleaned_data["birthdate"]
             user.gender = form.cleaned_data["gender"]
             user.goal = form.cleaned_data["goal"]
