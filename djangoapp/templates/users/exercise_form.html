@@ -9,7 +9,7 @@
 
 <div class="main_container" id="main">
     <div class="deco">
-        <img src="{% static 'img/back.png' %}" onclick="window.history.back()" class="back">
+        <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'exercise_list' %}'" class="back">
         <h2>{{ exercise_name }}</h2>
         <p>유산소</p>
         <img src="{% static 'img/exercise_form.png' %}" class="deco_chara">
@@ -38,7 +38,8 @@
         </div>
 
         {% if form.errors %}
-            <div class="error">{{ form.errors }}</div>
+            <div class="error-message">{{ form.exercise_time.errors }}</div>
+            <div class="error-message">{{ form.intensity.errors }}</div>
         {% endif %}
         
         <p id="calories_pred">예상 소모 칼로리는 <span id="calories">0kcal</span>입니다. </p>

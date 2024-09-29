@@ -25,6 +25,10 @@
     text-align: center;
 }
 
+.error-message li {
+    list-style-type: square;
+}
+
 .general-error {
     background-color: #ffeeee;
     border: 1px solid #ffcccc;

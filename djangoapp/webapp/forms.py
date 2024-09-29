@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from users.models import CustomUser, Diet, Exercise, BloodSugar, BloodPressure, HbA1c
 
@@ -59,8 +60,14 @@ class CustomAuthenticationForm(AuthenticationForm):
 
 
 class HealthInfoForm(forms.Form):
-    height = forms.IntegerField(required=True)
-    weight = forms.IntegerField(required=True)
+    height = forms.IntegerField(
+        required=True,
+        validators=[MinValueValidator(0), MaxValueValidator(300)],
+    )
+    weight = forms.IntegerField(
+        required=True,
+        validators=[MinValueValidator(0)],
+    )
     # age = forms.IntegerField(required=True)
     birthdate = forms.DateField(required=True)
     gender = forms.ChoiceField(
@@ -167,6 +174,7 @@ class BloodSugarForm(forms.ModelForm):
     blood_sugar = forms.IntegerField(
         widget=forms.NumberInput(attrs={"placeholder": "100"}),
         label="혈당 수치",
+        validators=[MinValueValidator(0)],
         required=True,
     )
 
@@ -183,11 +191,13 @@ class BloodPressureForm(forms.ModelForm):
     systolic = forms.IntegerField(
         widget=forms.NumberInput(attrs={"placeholder": "120"}),
         label="수축기",
+        validators=[MinValueValidator(0)],
         required=True,
     )
     diastolic = forms.IntegerField(
         widget=forms.NumberInput(attrs={"placeholder": "80"}),
         label="이완기",
+        validators=[MinValueValidator(0)],
         required=True,
     )
 
@@ -201,6 +211,7 @@ class HbA1cForm(forms.ModelForm):
     hba1c = forms.FloatField(
         widget=forms.NumberInput(attrs={"placeholder": "6.5"}),
         label="당화혈색소",
+        validators=[MinValueValidator(0)],
         required=True,
     )
     date = forms.DateField(
@@ -221,11 +232,13 @@ class MyPageReviseForm(forms.ModelForm):
     height = forms.IntegerField(
         widget=forms.NumberInput(attrs={"placeholder": "내가 입력했던 키"}),
         label="키(cm)",
+        validators=[MinValueValidator(0), MaxValueValidator(300)],
         required=True,
     )
     weight = forms.IntegerField(
         widget=forms.NumberInput(attrs={"placeholder": "내가 입력했던 몸무게"}),
         label="몸무게(kg)",
+        validators=[MinValueValidator(0)],
         required=True,
     )
     health_conditions = forms.MultipleChoiceField(
