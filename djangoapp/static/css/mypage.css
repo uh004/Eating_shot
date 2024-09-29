@@ -44,8 +44,15 @@
 }
 
 #modify_myinfo {
+    margin: 0px 10px 0px 0px;
+    color: darkgray;
+    line-height: 1;
+}
+
+#logout {
     margin: 0px;
     color: darkgray;
+    line-height: 1;
 }
 
 .personal_info {

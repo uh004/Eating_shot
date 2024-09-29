@@ -112,7 +112,9 @@
                         <input type="submit" value="앱 시작하기">
                     </div>
                 </form>
-                <button type="button" class="btn" id="btn" style="width: 150px; margin-left: 320px;"> > NEXT</button>
+
+                <button type="button" class="btn" id="prev" style="width: 150px;"> < 이전</button>
+                <button type="button" class="btn" id="next" style="width: 150px; margin-left:170px;"> 다음 ></button>
             </div>
         </div>
     </div>
@@ -122,19 +124,34 @@
     <script>
         $(document).ready(function () {
             let now = 1;
-            const totalSteps = 3;
 
-            $('.btn').on('click', function () {
-                if (now < totalSteps) {
+            $('#next').on('click', function () {
+                if (now <= 2) {
                     $('form').css('transform', `translateX(-${480 * now}px)`);
                     now++;
                 }
 
-                if (now === totalSteps) {
-                    $('.btn').css('display', 'none');
+                if (now == 3) {
                     $('#chara').css('visibility', 'hidden');
+                    $('#next').css('visibility', 'hidden');
                 }
             });
+
+            $('#prev').on('click', function () {
+                if (now > 1) {
+                    now--;
+                    $('form').css('transform', `translateX(-${(480 * (now-1))}px)`);
+                } if (now < 3) {
+                    $('#chara').css('visibility', 'visible');
+                    $('#next').css('visibility', 'visible');
+                }
+
+                if (now == 1) {
+                    window.location.href = {% url 'register' %}
+                }
+
+            });
+
         });
     </script>
 {% endblock %}

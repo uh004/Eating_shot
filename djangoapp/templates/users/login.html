@@ -17,7 +17,7 @@
             <div class="forms">
                 <form action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
-                    <h3>{{ form.username.label }}</h3>
+                    <h3>이메일</h3>
                     {{ form.username }}
                     <h3>{{ form.email.label }}</h3>
                     {{ form.email }}

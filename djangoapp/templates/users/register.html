@@ -8,7 +8,8 @@
 {% block content %}
     <div class="main_container">
         <div class="banner">
-            <img src="{% static 'img/register_form.png' %}" width="250px" height="100px" alt="">
+            <img src="{% static 'img/back.png' %}" onclick="window.location.href = {% url 'login' %}" class="back">
+            <img src="{% static 'img/register_form.png' %}" width="250px" height="100px" class="register_img">
             <p style="font-size: 30px; margin : 10px auto 30px auto;">회원가입</p>
             <div class="forms">
                 <form action="{% url 'register' %}" method="POST">
