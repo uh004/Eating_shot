@@ -16,12 +16,8 @@
             <div class="forms">
                 <form action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
-<<<<<<< HEAD
-                    <h3>이메일</h3>
-=======
                     <!-- Username Field -->
                     <h3>{{ form.username.label }}</h3>
->>>>>>> ceef7a4e978862d918b5efe8d1b66d7011a1c4bc
                     {{ form.username }}
 
                     <!-- Password Field -->

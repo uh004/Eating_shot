@@ -18,35 +18,7 @@
     
     <form method="post" enctype="multipart/form-data" action="">
         {% csrf_token %}
-<<<<<<< HEAD
-        <div class="meal_times" style="display: flex; justify-content: space-between;">
-            <p>식사</p>
-            
-            <div class="check_meal_time">
-                <div style="display: flex;" class="strength">
-                    <input id="meal_time1" type="radio" name="meal_time"
-                            value="breakfast" checked>
-                    <label for="meal_time1" class="for_meal_time">아침</label>
-                </div>
 
-                <div style="display: flex;" class="strength">
-                    <input id="meal_time2" type="radio" name="meal_time"
-                            value="lunch">
-                    <label for="meal_time2" class="for_meal_time">점심</label>
-                </div>
-
-                <div style="display: flex;" class="strength">
-                    <input id="meal_time3" type="radio" name="meal_time"
-                            value="dinner">
-                    <label for="meal_time3" class="for_meal_time">저녁</label>
-                </div>
-
-                <div style="display: flex;" class="strength">
-                    <input id="meal_time4" type="radio" name="meal_time"
-                            value="snack">
-                    <label for="meal_time4" class="for_meal_time">간식</label>
-                </div>
-=======
         {% if form.meal_type.errors %}
             <div class="error-message">이 필드는 필수 항목입니다.</div>
         {% endif %}
@@ -63,18 +35,11 @@
                         <label for="mealtime{{ forloop.counter }}" class="for_meal_time">{{ label }}</label>
                     </div>
                 {% endfor %}
->>>>>>> ceef7a4e978862d918b5efe8d1b66d7011a1c4bc
             </div>
         </div>
 
         <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
-<<<<<<< HEAD
-        
-=======
 
-        {#                {{ form.date.label_tag }} {{ form.date }}#}
-
->>>>>>> ceef7a4e978862d918b5efe8d1b66d7011a1c4bc
         <div class="upload-box" onclick="document.getElementById('chooseFile').click();">
             <div id="drop-file" class="drag-file">
                 <img src="{% static 'img/salad.png' %}" width="40px" height="40px" alt="">
