@@ -154,7 +154,6 @@ def load_content(request, menu):
                 "obesity": "비만",
             }
             health_conditions = user_info.health_conditions.split(",")
-            print(health_conditions)
             context["health_conditions"] = [
                 conversion_table[condition] for condition in health_conditions
             ]
@@ -489,7 +488,6 @@ def get_chart_data(request, chart_type, detail_type):
     match (chart_type, detail_type):
         case "option1", detail_type:
             blood_sugar = BloodSugar.objects.filter(user=request.user, time=detail_type)
-            print(blood_sugar)
             labels = [datetime.strftime(data.date, "%Y%m%d") for data in blood_sugar]
             data = [data.blood_sugar for data in blood_sugar]
         case "option2", detail_type:
@@ -544,8 +542,6 @@ def pill_alarm(request, id=None):
             alarm.user = request.user
             alarm.save()
             return redirect("index")
-        else:
-            print(form.errors)
     else:
         form = PillAlarmForm(instance=alarm)
 
@@ -577,7 +573,6 @@ def delete_request(request, menu, id):
     if request.method == "DELETE":
         match menu:
             case "meal":
-                print("deleting diet with id", id)
                 Diet.objects.filter(id=id).delete()
             case "exercise":
                 Exercise.objects.filter(id=id).delete()
