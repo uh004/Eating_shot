@@ -8,6 +8,7 @@ urlpatterns = [
     path("register/", views.register_view, name="register"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
+    path("change_password/", views.change_password, name="change_password"),
     path("post-enrollment/", views.info_view, name="info"),
     path("load_content/<str:menu>/", views.load_content, name="load_content"),
     path("blood1/", views.blood_1, name="blood1"),
@@ -38,7 +39,9 @@ urlpatterns = [
     ),
     path("food-detail/<int:id>", views.food_detail, name="food_detail"),
     path("pill-alarm/", views.pill_alarm, name="pill_alarm"),
+    path("pill-alarm/<int:id>", views.pill_alarm, name="pill_alarm"),
     path("hospital-alarm/", views.hospital_alarm, name="hospital_alarm"),
+    path("hospital-alarm/<int:id>", views.hospital_alarm, name="hospital_alarm"),
 ]
 
 if settings.DEBUG:

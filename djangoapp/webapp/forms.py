@@ -2,35 +2,77 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from users.models import CustomUser, Diet, Exercise, BloodSugar, BloodPressure, HbA1c
+from users.models import (
+    CustomUser,
+    Diet,
+    Exercise,
+    BloodSugar,
+    BloodPressure,
+    HbA1c,
+    PillAlarm,
+    HospitalAlarm,
+)
+
+
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 
 class CustomUserCreationForm(UserCreationForm):
-
     class Meta:
         model = CustomUser
         fields = ["username", "email", "password1", "password2"]
         error_messages = {
             "username": {
-                "required": "사용자 이름을 입력해주세요.",
                 "unique": "이미 존재하는 사용자 이름입니다.",
             },
             "email": {
-                "required": "이메일을 입력해주세요.",
                 "unique": "이미 존재하는 이메일입니다.",
-                "invalid": "유효한 이메일 주소를 입력해주세요.",
             },
         }
 
-    def is_valid(self) -> bool:
-        for item in self.errors.as_data().items():
-            if item[0] in self.fields:
-                self.fields[item[0]].widget.attrs["class"] = "general-error"
-                self.fields[item[0]].widget.attrs["placeholder"] = item[1][0].message
-                self.data = self.data.copy()
-                self.data[item[0]] = ""
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise ValidationError(
+                "비밀번호가 일치하지 않습니다.",
+                code="password_mismatch",
+            )
+        try:
+            validate_password(password2, self.instance)
+        except ValidationError as error:
+            self.add_error("password2", error)
+        return password2
 
-        return super().is_valid()
+    def add_error(self, field, error):
+        if isinstance(error, ValidationError):
+            if field == "password2":
+                new_error_list = []
+                for e in error.error_list:
+                    if e.code == "password_too_short":
+                        e.message = "비밀번호는 8자 이상이어야 합니다."
+                    elif e.code == "password_too_common":
+                        e.message = "너무 일반적인 비밀번호입니다."
+                    elif e.code == "password_entirely_numeric":
+                        e.message = "비밀번호는 숫자로만 이루어질 수 없습니다."
+                    elif e.code == "password_too_similar":
+                        e.message = "비밀번호가 사용자 이름과 유사합니다."
+                    new_error_list.append(e)
+                error.error_list = new_error_list
+        super().add_error(field, error)
+
+    def is_valid(self) -> bool:
+        is_valid = super().is_valid()
+        if not is_valid:
+            for field, errors in self.errors.items():
+                if field in self.fields:
+                    self.fields[field].widget.attrs["class"] = "general-error"
+                    self.fields[field].widget.attrs["placeholder"] = errors[0]
+                    self.data = self.data.copy()
+                    self.data[field] = ""
+        return is_valid
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -260,3 +302,62 @@ class MyPageReviseForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ["email", "height", "weight", "health_conditions"]
+
+    def save(self, commit=True):
+        health_conditions = self.cleaned_data["health_conditions"]
+        health_conditions = ",".join(health_conditions)
+        self.instance.health_conditions = health_conditions
+        return super().save(commit)
+
+
+class PillAlarmForm(forms.ModelForm):
+    pill_name = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "약 이름"}),
+        label="약 이름",
+        required=True,
+    )
+    time = forms.TimeField(
+        widget=forms.TimeInput(attrs={"type": "time"}), label="시간", required=True
+    )
+    weekday = forms.MultipleChoiceField(
+        choices=[
+            ("mon", "월"),
+            ("tue", "화"),
+            ("wed", "수"),
+            ("thu", "목"),
+            ("fri", "금"),
+            ("sat", "토"),
+            ("sun", "일"),
+        ],
+        widget=forms.CheckboxSelectMultiple,
+        label="요일",
+        required=True,
+    )
+
+    class Meta:
+        model = PillAlarm
+        fields = ["pill_name", "time", "weekday"]
+
+    def save(self, commit=True):
+        weekday = self.cleaned_data["weekday"]
+        weekday = ",".join(weekday)
+        self.instance.weekday = weekday
+        return super().save(commit)
+
+
+class HospitalAlarmForm(forms.ModelForm):
+    hospital_name = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "병원 이름"}),
+        label="병원 이름",
+        required=True,
+    )
+    hospital_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}), label="날짜", required=True
+    )
+    hospital_time = forms.TimeField(
+        widget=forms.TimeInput(attrs={"type": "time"}), label="시간", required=True
+    )
+
+    class Meta:
+        model = HospitalAlarm
+        fields = ["hospital_name", "hospital_date", "hospital_time"]

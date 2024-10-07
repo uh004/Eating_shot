@@ -14,14 +14,18 @@
         {% csrf_token %}
         
         <label for="hospital_name">예약 병원 이름</label>
-        <input type="text" id="hospital_name" placeholder="OO병원">
+        {{ form.hospital_name }}
 
         <label for="hospital_date">병원 예약 날짜</label>
-        <input type="date" id="hospital_date">
+        {{ form.hospital_date }}
 
         <label for="hospital_time">병원 예약 시간</label>
-        <input type="time" id="hospital_time">
+        {{ form.hospital_time }}
 
         <input type="submit" value="추가하기" id="form_submit">
     </form>
+
+    {% if form.errors %}
+        <div class="error-message">{{ form.errors }}</div>
+    {% endif %}
 </div>
