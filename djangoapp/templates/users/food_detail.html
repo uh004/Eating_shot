@@ -6,12 +6,12 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
 {% endblock %}
 
-
+{% csrf_token %}
 <div class="main_container2">
     <img src="{% static 'img/back.png' %}" onclick="window.history.back()" alt="" class="back">
     <div class="meal_info2">
         <h2>아침</h2>
-         <div class="meal_revise">
+        <div class="meal_revise">
             <button type="button" onclick="window.location.href = '{% url 'diet_form_edit' meal.id %}'">수정
             </button>
             <button type="button" onclick="deleteBoard({{ meal.id }})">삭제</button>
@@ -22,20 +22,20 @@
         <hr>
 
         <ul class="tdj">
-           <li>
+            <li>
                 <p class="tandanji">탄수화물</p>
                 <p class="gram">30g</p>
-           </li>
-           
-           <li>
+            </li>
+
+            <li>
                 <p class="tandanji">단백질</p>
                 <p class="gram">30g</p>
-           </li>
+            </li>
 
-           <li>
+            <li>
                 <p class="tandanji">지방</p>
                 <p class="gram">30g</p>
-           </li>
+            </li>
         </ul>
 
         <hr>
@@ -68,7 +68,7 @@
             {% endfor %}
         </ul>
 
-         <button type="button" id="add_meal">추가하기</button>
+        <button type="button" id="add_meal">추가하기</button>
 
         <div class="add_meal_form">
             <p>음식 추가</p>

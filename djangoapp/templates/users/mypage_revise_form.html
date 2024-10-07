@@ -6,7 +6,7 @@
 
 <div class="main_container" id="main">
     <div class="deco">
-        <img src="{% static 'img/back2.png' %}" onclick="window.history.back()" class="back">
+        <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
         <h2>내 정보 수정하기</h2>
     </div>
 
@@ -103,7 +103,7 @@
                 </li>
             </ul>
         </div>
-            
+
         {% if form.health_conditions.errors %}
             <div class="error-message">{{ form.health_conditions.errors }}</div>
         {% endif %}

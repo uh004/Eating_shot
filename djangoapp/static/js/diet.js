@@ -56,7 +56,7 @@ function deleteBoard(mealId) {
             fetch(`/delete/meal/${mealId}/`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRFToken': csrfToken
+                    'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
                 }
             })
                 .then(response => {
@@ -67,7 +67,7 @@ function deleteBoard(mealId) {
                 })
                 .then(data => {
                     Swal.fire('삭제되었습니다!', '', 'success').then(() => {
-                        location.reload();
+                        location = '/';
                     });
                 })
                 .catch(error => {
@@ -97,7 +97,7 @@ function deleteMealName2(mealId, nutrientName) {
             fetch(`/mod/${mealId}/${nutrientName}/`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRFToken': csrfToken
+                    'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
                 },
                 body: JSON.stringify({name: nutrientName}) // TODO: Kcal 추가
             })
@@ -140,7 +140,7 @@ function modifyMealName2(mealId, nutrientName) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken
+            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
         },
         body: JSON.stringify({name: newNutrientName}) // TODO: Kcal 추가
     })
@@ -220,7 +220,7 @@ function modifyMealName3(mealId) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken
+            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
         },
         body: JSON.stringify({name: newNutrientName}) // TODO: Kcal 추가
     })
