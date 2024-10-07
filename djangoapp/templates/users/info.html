@@ -121,19 +121,13 @@
                     </div>
 
                 </form>
-<<<<<<< HEAD
-
-                <button type="button" class="btn" id="prev" style="width: 150px;"> < 이전</button>
-                <button type="button" class="btn" id="next" style="width: 150px; margin-left:170px;"> 다음 ></button>
-=======
                 <div class="button-container">
-                    <button type="button" class="btn" id="prev-btn" style="width: 150px;"> < PREV</button>
-                    <button type="button" class="btn" id="next-btn" style="width: 150px;"> > NEXT</button>
+                    <button type="button" class="btn" id="prev" style="width: 150px;"> < 이전</button>
+                    <button type="button" class="btn" id="next" style="width: 150px; margin-left:170px;"> 다음 ></button>
                 </div>
                 {% if form.errors %}
                     <div class="error-message">뭔가 잘못 입력하신 것 같아요. 다시 한 번 확인해주세요.</div>
                 {% endif %}
->>>>>>> ceef7a4e978862d918b5efe8d1b66d7011a1c4bc
             </div>
         </div>
     </div>
@@ -147,7 +141,6 @@
         $(document).ready(function () {
             let now = 1;
 
-<<<<<<< HEAD
             $('#next').on('click', function () {
                 if (now <= 2) {
                     $('form').css('transform', `translateX(-${480 * now}px)`);
@@ -163,19 +156,22 @@
             $('#prev').on('click', function () {
                 if (now > 1) {
                     now--;
-                    $('form').css('transform', `translateX(-${(480 * (now-1))}px)`);
-                } if (now < 3) {
+                    $('form').css('transform', `translateX(-${(480 * (now - 1))}px)`);
+                }
+                if (now < 3) {
                     $('#chara').css('visibility', 'visible');
                     $('#next').css('visibility', 'visible');
                 }
-
+                /*
                 if (now == 1) {
-                    window.location.href = {% url 'register' %}
+                    window.location.href =
+
+                {% url 'register' %}
                 }
+                */
 
             });
 
-=======
             function updateButtons() {
                 if (now === 1) {
                     $('#prev-btn').css('display', 'none');
@@ -207,9 +203,6 @@
                     updateButtons();
                 }
             });
-
-            updateButtons();
->>>>>>> ceef7a4e978862d918b5efe8d1b66d7011a1c4bc
         });
     </script>
 {% endblock %}

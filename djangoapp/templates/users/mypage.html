@@ -7,23 +7,12 @@
 
 <div class="banner" id="mypage">
 
-<<<<<<< HEAD
-        <div class="profile">
-            <img src="{% static 'img/profile.png' %}" alt="">
-            <div class="profile_detail">
-                <p class="nickname">마진패딩설정귀찮</p>
-                <div style="display: flex;">
-                    <p id="modify_myinfo" onclick="window.location.href = {% url 'mypage_revise_form' %}">내 정보 수정하기</p>
-                    <p id="logout">로그아웃</p>
-                </div>
-            </div>
-=======
     <div class="profile">
         <img src="{% static 'img/profile.png' %}" alt="">
         <div class="profile_detail">
             <p class="nickname">{{ user_info.username }}</p>
             <p id="modify_myinfo" onclick="window.location.href = {% url 'mypage_revise_form' %}">내 정보 수정하기</p>
->>>>>>> ceef7a4e978862d918b5efe8d1b66d7011a1c4bc
+            <p id="logout" onclick="window.location.href = {% url 'logout' %}">로그아웃</p>
         </div>
     </div>
 
@@ -82,10 +71,11 @@
                         </div>
                     </div>
                 
-                    </li>
-                    <button type="button" class="pill_button" onclick="window.location.href = {% url 'pill_alarm' %}">추가하기</button>
-                </ul>
-            </div>
+                </li>
+                <button type="button" class="pill_button" onclick="window.location.href = {% url 'pill_alarm' %}">추가하기
+                </button>
+            </ul>
+        </div>
 
         <button type="button" class="alarm" id="for_hospital_alarm">
             <img src="{% static 'img/hospital.png' %}" alt="">
@@ -110,7 +100,9 @@
                     </div>
 
                 </li>
-                <button type="button" class="pill_button" onclick="window.location.href = {% url 'hospital_alarm' %}">추가하기</button>
+                <button type="button" class="pill_button" onclick="window.location.href = {% url 'hospital_alarm' %}">
+                    추가하기
+                </button>
             </ul>
         </div>
 
