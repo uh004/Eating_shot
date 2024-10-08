@@ -8,11 +8,52 @@
     <div class="banner">
         <div class="slide" id="exercise_info">
 
-            {# TODO: food with calorie somoryang #}
             <div class="cal_info">
-                <p>오늘 운동 칼로리 소모량은</p>
-                <img src="{% static 'img/apple.png' %}">
-                <p class="cal_result"><span>사과 한 알</span>(약 96kcal)
+                {% if total_calories > 100 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/apple.png' %}">
+                    <p class="cal_result"><span>사과 한 알</span>(약 100kcal)</p>
+                {% elif total_calories > 200 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/donut.png' %}">
+                    <p class="cal_result"><span>사과 두 알</span>(약 200kcal)</p>
+                {% elif total_calories > 300 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/rice_bowl.png' %}">
+                    <p class="cal_result"><span>사과 세 알</span>(약 300kcal)</p>
+                {% elif total_calories > 400 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/soju.png' %}">
+                    <p class="cal_result"><span>사과 두 알</span>(약 400kcal)</p>
+                {% elif total_calories > 500 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/hamburger.png' %}">
+                    <p class="cal_result"><span>사과 세 알</span>(약 500kcal)</p>
+                {% elif total_calories > 600 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/spaghetti.png' %}">
+                    <p class="cal_result"><span>사과 두 알</span>(약 600kcal)</p>
+                {% elif total_calories > 700 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/banana.png' %}">
+                    <p class="cal_result"><span>사과 세 알</span>(약 700kcal)</p>
+                {% elif total_calories > 800 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/pizza.png' %}">
+                    <p class="cal_result"><span>사과 두 알</span>(약 800kcal)</p>
+                {% elif total_calories > 900 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/meat.png' %}">
+                    <p class="cal_result"><span>사과 세 알</span>(약 900kcal)</p>
+                {% elif total_calories > 1000 %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <img src="{% static 'img/chicken.png' %}">
+                    <p class="cal_result"><span>사과 두 알</span>(약 1000kcal)</p>
+                {% else %}
+                    <p>오늘 운동 칼로리 소모량은</p>
+                    <p>🤯</p>
+                    <p class="cal_result"><span>오 마이 갓</span>(약 1000kcal 이상)</p>
+                {% endif %}
             </div>
 
             {% for exercise in exercises %}

@@ -122,6 +122,10 @@ def load_content(request, menu):
             context["meals"] = meals
         case "exercise":
             context["exercises"] = Exercise.objects.filter(user=request.user)
+            context["total_calories"] = sum(
+                # [exercise.calories for exercise in context["exercises"]]
+                [100, 20]  # TODO: change to real data
+            )
         case "blood":
             # get all blood related data(blood sugar, blood pressure, hba1c) and align all in one list
 
