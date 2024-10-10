@@ -72,7 +72,7 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     2. added logging stack (elk)
     3. ~~added monitoring stack (prometheus, grafana)~~
     4. ???
-    5. TODO: SSL everything
+    5. ~~SSL everything~~
 
 ## plan 2.2 (hardening website)
 
@@ -164,7 +164,31 @@ may be better off sticking with one cloud provider. done!
         2. infinitity problem
             1. upload size
             2. upload count
+        3. preventing XSS
     2. ???
+
+# plan 3.6
+
+1. completed setting up the environment variables for secrets
+2. completed deployment setup (aws ec2)
+3. completed stuff below
+    - a bad apple pizza
+    - removed age from input form
+    - pill alarm storage
+    - hospital appointment data storage
+    - graph for blood stats
+    - form errrors
+    - any maybe few other things
+
+# plan 3.8 (doing this before plan 3.5)
+
+1. switched from kafka to redis with celery for ai workload, since kafka is overkill and not fit for this purpose
+2. added a new django app for SSE (name 'events')
+    3. currently has /events/ endpoint for the frontend to connect to
+    4. you can test notifications by going to /events/trigger_test_alarm/
+    5. specialized js is in `home.html` for now
+3. ???
+4. password reset (with email)
 
 ### passwords to copy yada yada
 
