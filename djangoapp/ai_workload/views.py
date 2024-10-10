@@ -3,7 +3,9 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from .models import InferenceTask
 from .serializers import InferenceTaskSerializer, PhotoUploadSerializer
-from .kafka.producer import send_inference_task
+
+# from .kafka.producer import send_inference_task
+from .tasks import process_inference_task
 
 
 class PhotoUploadView(generics.CreateAPIView):
@@ -14,7 +16,8 @@ class PhotoUploadView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         task = serializer.save()
-        send_inference_task(task.id)
+        # send_inference_task(task.id)
+        process_inference_task.delay(task.id)
         return Response({"task_id": task.id}, status=status.HTTP_201_CREATED)
 
 

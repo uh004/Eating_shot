@@ -6,7 +6,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.http import JsonResponse
 
-from ai_workload.kafka.producer import send_inference_task
+# from ai_workload.kafka.producer import send_inference_task
+from ai_workload.tasks import process_inference_task
+
 from ai_workload.models import InferenceTask, InferenceResult
 from users.models import (
     Exercise,
@@ -16,9 +18,8 @@ from users.models import (
     BloodPressure,
     HbA1c,
     CustomUser,
-    PillAlarm,
-    HospitalAlarm,
 )
+from events.models import PillAlarm, HospitalAlarm
 from .forms import (
     CustomUserCreationForm,
     CustomAuthenticationForm,
@@ -217,7 +218,8 @@ def diet_form(request, id=None):
             )
 
             # Queue the inference task
-            send_inference_task(inference_task.id)
+            # send_inference_task(inference_task.id) # Kafka
+            process_inference_task.delay(inference_task.id)  # Celery
 
             # Wait for the inference result to be ready
             inference_task.refresh_from_db()

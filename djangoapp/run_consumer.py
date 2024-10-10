@@ -1,3 +1,6 @@
+# NO LONGER USED BUT LEFT FOR REFERENCE
+# NO LONGER USED BUT LEFT FOR REFERENCE
+
 import os
 import django
 import logging
@@ -15,3 +18,6 @@ from ai_workload.kafka.consumer import start_consuming
 if __name__ == "__main__":
     logging.info("Starting Kafka consumer...")
     start_consuming()
+
+# NO LONGER USED BUT LEFT FOR REFERENCE
+# NO LONGER USED BUT LEFT FOR REFERENCE

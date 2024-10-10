@@ -17,7 +17,6 @@ ruff = "^0.6.4"
 pyjwt = "^2.9.0"
 djangorestframework-simplejwt = "^5.3.1"
 pillow = "^10.4.0"
-kafka-python = "^2.0.2"
 celery = "^5.4.0"
 requests = "^2.32.3"
 fastapi = "^0.114.0"
@@ -28,6 +27,10 @@ ultralytics = "^8.2.91"
 python-multipart = "^0.0.9"
 psycopg2-binary = "^2.9.9"
 ujson = "^5.10.0"
+django-eventstream = {extras = ["drf"], version = "^5.3.1"}
+daphne = "^4.1.2"
+channels = "^4.1.0"
+redis = "^5.1.1"
 
 
 [build-system]

@@ -44,8 +44,13 @@ else:
 
 # Application definition
 
+WSGI_APPLICATION = "core.wsgi.application"
+
+ASGI_APPLICATION = "core.asgi.application"
+
 INSTALLED_APPS = [
     # 'django.contrib.admin', # disable admin pages for production!
+    "daphne",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -56,9 +61,12 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
     # "widget_tweaks",
+    "django_eventstream",
+    "channels",
     "users.apps.UsersConfig",
     "ai_workload.apps.AiWorkloadConfig",
     "webapp.apps.WebappConfig",
+    "events.apps.EventsConfig",
 ]
 
 MIDDLEWARE = [
@@ -78,6 +86,13 @@ REST_FRAMEWORK = {
         # "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+        "django_eventstream.renderers.SSEEventRenderer",
+        "django_eventstream.renderers.BrowsableAPIEventStreamRenderer",
+        # Add other renderers as needed
+    ],
 }
 SPECTACULAR_SETTINGS = {
     "TITLE": "Project EatingShot's API",
@@ -94,6 +109,8 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
 }
+
+EVENTSTREAM_STORAGE_CLASS = "django_eventstream.storage.DjangoModelStorage"
 
 ROOT_URLCONF = "core.urls"
 
@@ -113,7 +130,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "core.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -188,14 +204,23 @@ MEDIA_ROOT = BASE_DIR / "photos"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 if os.environ.get("DJANGO_ENV") == "production":
-    KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
+    # KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
+    CELERY_BROKER_URL = "redis://redis:6379/0"  # for docker
+    CELERY_RESULT_BACKEND = "redis://redis:6379/0"  # for docker
 else:
-    KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
+    # KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
     # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!! (TODO: how to handle this?)
+    CELERY_BROKER_URL = "redis://localhost:6379/0"
+    CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "loggers": {
+        "asyncio": {
+            "level": "WARNING",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",

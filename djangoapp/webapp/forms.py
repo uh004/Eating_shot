@@ -1,4 +1,3 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -9,12 +8,10 @@ from users.models import (
     BloodSugar,
     BloodPressure,
     HbA1c,
-    PillAlarm,
-    HospitalAlarm,
 )
+from events.models import PillAlarm, HospitalAlarm
 
-
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 

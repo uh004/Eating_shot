@@ -31,6 +31,16 @@ model = YOLO("models/food3.pt")
 logging.info("Loaded the model.")
 
 
+def save_annotated_image(image, results):
+    for result in results.xyxy:
+        image = result.draw(image)
+    image.save("annotated.jpg")
+    # TODO: do something here to save the annotated image
+    # cut the image path (/photos/0/1.jpg -> 0 is the user id, 1 is the image id)
+    # and add 'anno' to the image name (0/1.jpg -> 0/1_anno.jpg)
+    # done!
+
+
 @app.get("/")
 async def root():
     return {"message": str(model)}
@@ -52,6 +62,7 @@ async def inference_YOLO(file: UploadFile = File(...)):
 
     results = model.predict(source=image)
     logger.info([r.summary() for r in results])
+    # save_annotated_image(image, results)
     predictions = [r.summary() for r in results]
     for pred in predictions[0]:
         pred["name"] = conv_table.get(pred["name"], "아무렴뭐어때")
