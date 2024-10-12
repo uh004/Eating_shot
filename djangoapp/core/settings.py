@@ -37,6 +37,7 @@ if os.environ.get("DJANGO_ENV") == "production":
     ]
     CSRF_TRUSTED_ORIGINS = [  # for django 4.0 and above
         "https://eatingshot.jonngwanma.de",
+        "https://localhost:8080",
     ]
 else:
     DEBUG = True

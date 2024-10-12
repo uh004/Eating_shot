@@ -11,3 +11,17 @@ eatingshot.jonngwanma.de {
         file_server
     }
 }
+
+localhost:8080 {
+    reverse_proxy http://djangoapp:8000
+
+    handle_path /photos/* {
+        root * /usr/share/caddy/media
+        file_server
+    }
+
+    handle_path /static/* {
+        root * /usr/share/caddy/static
+        file_server
+    }
+}
