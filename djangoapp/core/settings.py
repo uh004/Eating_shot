@@ -62,7 +62,9 @@ INSTALLED_APPS = [
     "drf_spectacular",
     # "widget_tweaks",
     "django_eventstream",
-    "channels",
+    # "channels",
+    "django_celery_beat",
+    "django_celery_results",
     "users.apps.UsersConfig",
     "ai_workload.apps.AiWorkloadConfig",
     "webapp.apps.WebappConfig",
@@ -110,6 +112,11 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
 }
 
+EVENTSTREAM_REDIS = {
+    "host": "localhost" if DEBUG else "redis",
+    "port": 6379,
+    "db": 0,
+}
 EVENTSTREAM_STORAGE_CLASS = "django_eventstream.storage.DjangoModelStorage"
 
 ROOT_URLCONF = "core.urls"
@@ -129,7 +136,6 @@ TEMPLATES = [
         },
     },
 ]
-
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -203,15 +209,23 @@ MEDIA_ROOT = BASE_DIR / "photos"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_EXTENDED = True
+
 if os.environ.get("DJANGO_ENV") == "production":
     # KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
     CELERY_BROKER_URL = "redis://redis:6379/0"  # for docker
-    CELERY_RESULT_BACKEND = "redis://redis:6379/0"  # for docker
 else:
     # KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
     # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!! (TODO: how to handle this?)
     CELERY_BROKER_URL = "redis://localhost:6379/0"
-    CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+# CELERY_BEAT_SCHEDULE = {
+#     "delete_past_alarms": {
+#         "task": "events.tasks.delete_past_alarms",
+#         "schedule": crontab("0", "0", "*", "*", "*"),  # every day at midnight
+#     },
+# }
 
 LOGGING = {
     "version": 1,
