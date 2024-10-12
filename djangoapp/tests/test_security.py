@@ -1,4 +1,4 @@
-# tests/test_security.py
+# events/test_security.py
 from django.test import TestCase
 from rest_framework.test import APIClient
 

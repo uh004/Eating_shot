@@ -1,4 +1,4 @@
-# tests/test_transactions.py
+# events/test_transactions.py
 from django.db import transaction
 from django.test import TestCase
 from users.models import BloodSugar
