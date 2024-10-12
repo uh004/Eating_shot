@@ -9,7 +9,7 @@ from datetime import date
 
 def diet_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<id>/<filename>
-    print(instance.user.id)
+    # print(instance.user.id)
     return os.path.join(str(instance.user.id), filename)
 
 

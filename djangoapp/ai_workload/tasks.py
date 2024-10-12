@@ -3,13 +3,14 @@ from .models import InferenceTask, InferenceResult
 from .inference_client import run_inference
 from celery import shared_task
 
+
 # TODO: any better way other than this??
 # TODO: stress test on this?
 
 
 # this is run by the consumer. refresh the consumer if any changes are made
 # def process_inference_task(task_id):
-@shared_task
+@shared_task(queue="ai_queue")
 def process_inference_task(task_id):
     task = InferenceTask.objects.get(id=task_id)
     task.status = "PROCESSING"

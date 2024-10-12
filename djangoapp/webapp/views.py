@@ -530,6 +530,7 @@ def get_chart_data(request, chart_type, detail_type):
 @login_required
 def food_detail(request, id):
     meal = get_object_or_404(Diet, pk=id)
+    meal.image.name = meal.image.name.split(".")[0] + "_anno.jpg"
     meal.result_names_list = meal.result.result_names_comma_separated.split(",")
     return render(request, "users/food_detail.html", {"meal": meal})
 

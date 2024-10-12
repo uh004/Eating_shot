@@ -41,5 +41,8 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd /home/ubuntu/deployment
-            docker compose down
+            for volume in caddy_data caddy_config esdata certs; do
+              docker volume create $volume
+            done
+            docker compose down -v --remove-orphans
             docker compose up --build -d
