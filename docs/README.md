@@ -208,7 +208,7 @@ elasticsearch 컨테이너로 가서 `bin/elasticsearch-reset-password auto [-u 
 
 가동될때까지 노트북에서 70초, 성능좋은 데탑에서 30초정도 걸림
 
-## reset kafka topic
+## ~~reset kafka topic~~
 
 ```shell
 docker-compose exec kafka kafka-topics --delete --topic inference_tasks --bootstrap-server localhost:9092 #(or 
@@ -216,6 +216,8 @@ kafka:9092)
 ```
 
 #### query dsl
+
+이거랑 message, container.name
 
 ```json
 {
@@ -234,12 +236,12 @@ kafka:9092)
         },
         {
           "match_phrase": {
-            "container.name": "kafka_consumer"
+            "container.name": "celery-worker"
           }
         },
         {
           "match_phrase": {
-            "container.name": "nginx"
+            "container.name": "caddy"
           }
         }
       ],
