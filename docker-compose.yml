@@ -465,14 +465,14 @@ services:
       - certs:/usr/share/kibana/config/certs:ro
     environment:
       - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_CERTIFICATE=/usr/share/kibana/config/certs/kibana/kibana.crt
       - SERVER_SSL_KEY=/usr/share/kibana/config/certs/kibana/kibana.key
-    #    ports:
-    #      - "5601:5601"
+    ports:
+      - "5601:5601"
     networks:
       - elk
 
