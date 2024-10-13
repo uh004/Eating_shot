@@ -38,10 +38,7 @@ def save_annotated_image(image, result, path, pred_result):
     label = result.boxes.cls  # 모델이 예측한 레이블 결과 ex) 30, 11, 2, 15
     fontpath = "models/Pretendard-Bold.ttf"
     font = ImageFont.truetype(fontpath, 25)
-    # TODO: do something here to save the annotated image
-    # cut the image path (/photos/0/1.jpg -> 0 is the user id, 1 is the image id)
-    # and add 'anno' to the image name (0/1.jpg -> 0/1_anno.jpg)
-    # done!
+
     for i in range(len(result.boxes.xyxy)):
         x = int(
             (result.boxes.xyxy[i][0] + result.boxes.xyxy[i][2]) / 2

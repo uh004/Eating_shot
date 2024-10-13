@@ -218,7 +218,7 @@ if os.environ.get("DJANGO_ENV") == "production":
     CELERY_BROKER_URL = "redis://redis:6379/0"  # for docker
 else:
     # KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
-    # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!! (TODO: how to handle this?)
+    # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!!
     CELERY_BROKER_URL = "redis://localhost:6379/0"
 
 # CELERY_BEAT_SCHEDULE = {
