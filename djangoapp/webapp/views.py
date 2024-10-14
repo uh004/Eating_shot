@@ -126,6 +126,26 @@ def load_content(request, menu):
             blood_pressure = BloodPressure.objects.filter(user=request.user)
             hba1c = HbA1c.objects.filter(user=request.user)
 
+            context["total_calories"] = 0
+            context["total_carbohydrates"] = 0
+            context["total_protein"] = 0
+            context["total_fat"] = 0
+
+            context["total_calories_week"] = 0
+            context["total_carbohydrates_week"] = 0
+            context["total_protein_week"] = 0
+            context["total_fat_week"] = 0
+
+            context["total_exercise_calories"] = 0
+            context["total_exercise_time"] = 0
+
+            context["total_exercise_calories_week"] = 0
+            context["total_exercise_time_week"] = 0
+
+            context["mean_blood_sugar"] = 0
+            context["max_blood_sugar"] = 0
+            context["min_blood_sugar"] = 0
+
             if len(meals) > 0:
                 # meal data
                 context["meals"] = meals
