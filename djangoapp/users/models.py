@@ -155,3 +155,17 @@ class Exercise(models.Model):
     # @classmethod
     # def get_exercise_types(cls):
     #     return [exercise[2] for exercise in cls.exercise_types]
+
+
+# UNUSED BUT KEPT FOR REFERENCE
+class FoodCalories(models.Model):
+    food_name = models.CharField(max_length=100)
+    energy_kcal = models.IntegerField()
+    weight_g = models.IntegerField()
+    carbohydrates_g = models.FloatField()
+    protein_g = models.FloatField()
+    fat_g = models.FloatField()
+    diabetes_risk_classification = models.IntegerField()
+
+    def __str__(self):
+        return self.food_name
