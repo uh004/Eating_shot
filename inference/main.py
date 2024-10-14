@@ -5,6 +5,7 @@ from fastapi.responses import UJSONResponse
 
 # TODO: if we were hosting this on a separate server from django...
 
+import csv
 import logging
 import logstash
 
@@ -29,7 +30,7 @@ logger.addHandler(logstash.TCPLogstashHandler(host, 5000, version=1))
 
 
 ## model loading
-model = YOLO("models/food3.pt")
+model = YOLO("models/best.pt")
 logging.info("Loaded the model.")
 
 
@@ -47,11 +48,11 @@ def save_annotated_image(image, result, path, pred_result):
             (result.boxes.xyxy[i][1] + result.boxes.xyxy[i][3]) / 2
         )  # 인식한 객체의 바운딩 박스 세로 정가운데
 
-        conversion_list = {
-            0: "도토리묵",
-            1: "깍두기",
-            2: "떡갈비",
-        }
+        with open("food_calories.csv", encoding="utf-8") as file:
+            csv.reader(file)
+            next(file)
+            conversion_list = {i: row[0] for i, row in enumerate(file)}
+
         pred_result = conversion_list[int(label[i])]
 
         overlay = image.copy()
@@ -89,6 +90,23 @@ def save_annotated_image(image, result, path, pred_result):
         cv2.imwrite(f"{path.split('.')[0]}_anno.jpg", image)
 
 
+def get_food_info(label):
+    with open("food_calories.csv", encoding="utf-8") as file:
+        reader = csv.reader(file)
+        next(reader)
+        for row in reader:
+            if row[0] == label:
+                return {
+                    "food_name": row[0],
+                    "energy_kcal": row[1],
+                    "weight_g": row[2],
+                    "carbohydrates_g": row[3],
+                    "protein_g": row[4],
+                    "fat_g": row[5],
+                    "diabetes_risk_classification": row[6],
+                }
+
+
 @app.get("/")
 async def root():
     return {"message": str(model)}
@@ -99,25 +117,43 @@ async def predict(file: UploadFile = File(...), path: str = Form(...)):
     logger.info("Received inference request at /predict")
     filepath = "/".join(path.split("/")[-3:])
     print(filepath)
-    # hardcoded conversion table
-    conv_table = {
-        "DotoriMook": "도토리묵",
-        "KkakDugi": "깍두기",
-        "TteokGalbi": "떡갈비",
-        # ...
-    }
+    # hardcoded conversion table. UNUSED
+    # conv_table = {
+    #     "DotoriMook": "도토리묵",
+    #     "KkakDugi": "깍두기",
+    #     "TteokGalbi": "떡갈비",
+    #     # ...
+    # }
 
     image_data = await file.read()
     image = Image.open(io.BytesIO(image_data))
 
     results = model.predict(source=image)
+    # [
+    # {"name": "\ub5a1\uac08\ube44", "class": 2, "confidence": 0.62822, "box": {"x1": 555.51776, "y1": 53.29996, "x2": 911.6275, "y2": 480.85587}},
+    # {"name": "\uae4d\ub450\uae30", "class": 0, "confidence": 0.28041, "box": {"x1": 477.50217, "y1": 469.79544, "x2": 731.09552, "y2": 836.90717}}
+    # ]
     logger.info([r.summary() for r in results])
     predictions = [r.summary() for r in results]
-    for pred in predictions[0]:
-        pred["name"] = conv_table.get(pred["name"], "아무렴뭐어때")
+    # for pred in predictions[0]:
+    #     pred["name"] = conv_table.get(pred["name"], "아무렴뭐어때")
     save_annotated_image(image, results[0], filepath, predictions[0])
 
-    return predictions[0]  # nested list. escape one level
+    food_info = [get_food_info(pred["name"]) for pred in predictions[0]]
+    # [
+    # {
+    # "food_name": "asdf",
+    # "energy_kcal": 100,
+    # "weight_g": 100,
+    # "carbohydrates_g": 100,
+    # "protein_g": 100,
+    # "fat_g": 100,
+    # "diabetes_risk_classification": 1
+    # }
+    # ]
+
+    # return predictions[0]  # nested list. escape one level
+    return {"predictions": predictions[0], "food_info": food_info}
 
 
 if __name__ == "__main__":
