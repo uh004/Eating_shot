@@ -33,7 +33,7 @@ from .forms import (
     PillAlarmForm,
     HospitalAlarmForm,
 )
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @login_required
@@ -117,15 +117,242 @@ def load_content(request, menu):
 
     context = {}
 
+    # TODO: reducing duplicate code
     match menu:
+        case "report":
+            meals = Diet.objects.filter(user=request.user).prefetch_related("result")
+            exercises = Exercise.objects.filter(user=request.user)
+            blood_sugar = BloodSugar.objects.filter(user=request.user)
+            blood_pressure = BloodPressure.objects.filter(user=request.user)
+            hba1c = HbA1c.objects.filter(user=request.user)
+
+            if len(meals) > 0:
+                # meal data
+                context["meals"] = meals
+
+                max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
+                context["max_calories"] = max_calories
+                context["max_carbohydrates"] = 100  # fixed value
+                context["max_protein"] = int(
+                    CustomUser.objects.get(id=request.user.id).weight
+                    * 0.8  # for proteins, 0.8g per kg
+                )
+                context["max_fat"] = 50  # fixed value
+
+                # {
+                # "predictions": [
+                # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
+                # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
+                # ],
+                # "food_info": [
+                # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
+                # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
+                # ]
+                # }
+
+                total_calories = 0
+                total_carbohydrates = 0
+                total_protein = 0
+                total_fat = 0
+
+                meal_calories = {}
+
+                for meal in meals:
+                    food_info = meal.result.result_data["food_info"]
+                    meal_total_calories = sum(
+                        int(food["energy_kcal"]) for food in food_info
+                    )
+                    meal_calories[meal.id] = meal_total_calories
+                    total_calories += sum(
+                        int(food["energy_kcal"]) for food in food_info
+                    )
+                    total_carbohydrates += sum(
+                        int(food["carbohydrates_g"]) for food in food_info
+                    )
+                    total_protein += sum(int(food["protein_g"]) for food in food_info)
+                    total_fat += sum(int(food["fat_g"]) for food in food_info)
+
+                context["total_calories"] = total_calories
+                context["total_carbohydrates"] = total_carbohydrates
+                context["total_protein"] = total_protein
+                context["total_fat"] = total_fat
+                context["meal_calories"] = meal_calories
+
+                # weekly data
+                total_calories_week = 0
+                total_carbohydrates_week = 0
+                total_protein_week = 0
+                total_fat_week = 0
+
+                meals_last_week = Diet.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=7)
+                ).prefetch_related("result")
+
+                for meal in meals_last_week:
+                    food_info = meal.result.result_data["food_info"]
+                    total_calories_week += sum(
+                        int(food["energy_kcal"]) for food in food_info
+                    )
+                    total_carbohydrates_week += sum(
+                        int(food["carbohydrates_g"]) for food in food_info
+                    )
+                    total_protein_week += sum(
+                        int(food["protein_g"]) for food in food_info
+                    )
+                    total_fat_week += sum(int(food["fat_g"]) for food in food_info)
+
+                context["total_calories_week"] = total_calories_week
+                context["total_carbohydrates_week"] = total_carbohydrates_week
+                context["total_protein_week"] = total_protein_week
+                context["total_fat_week"] = total_fat_week
+
+            if len(exercises) > 0:
+                # exercise data
+                context["total_exercise_calories"] = sum(
+                    [
+                        exercise.exercise_calories
+                        for exercise in Exercise.objects.filter(user=request.user)
+                    ]
+                )
+                context["total_exercise_time"] = sum(
+                    [
+                        exercise.exercise_time
+                        for exercise in Exercise.objects.filter(user=request.user)
+                    ]
+                )
+
+                # weekly exercise data
+                context["total_exercise_calories_week"] = sum(
+                    [
+                        exercise.exercise_calories
+                        for exercise in Exercise.objects.filter(
+                            user=request.user,
+                            date__gte=datetime.now() - timedelta(days=7),
+                        )
+                    ]
+                )
+                context["total_exercise_time_week"] = sum(
+                    [
+                        exercise.exercise_time
+                        for exercise in Exercise.objects.filter(
+                            user=request.user,
+                            date__gte=datetime.now() - timedelta(days=7),
+                        )
+                    ]
+                )
+
+            if len(blood_sugar) > 0:
+                # blood data for today(under 24 hours)
+                blood_sugar = BloodSugar.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
+                )
+                blood_pressure = BloodPressure.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
+                )
+                hba1c = HbA1c.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
+                )
+
+                mean_blood_sugar = sum(
+                    [data.blood_sugar for data in blood_sugar]
+                ) / len(blood_sugar)
+                max_blood_sugar = max([data.blood_sugar for data in blood_sugar])
+                min_blood_sugar = min([data.blood_sugar for data in blood_sugar])
+
+                context["mean_blood_sugar"] = int(mean_blood_sugar)
+                context["max_blood_sugar"] = max_blood_sugar
+                context["min_blood_sugar"] = min_blood_sugar
+
+            if len(blood_pressure) > 0:
+                # mean_blood_pressure: blood pressure instances which
+                mean_blood_pressure_systolic = sum(
+                    [data.systolic for data in blood_pressure]
+                ) / len(blood_pressure)
+                mean_blood_pressure_diastolic = sum(
+                    [data.diastolic for data in blood_pressure]
+                ) / len(blood_pressure)
+                max_blood_pressure_systolic = max(
+                    [data.systolic for data in blood_pressure]
+                )
+                max_blood_pressure_diastolic = max(
+                    [data.diastolic for data in blood_pressure]
+                )
+                min_blood_pressure_systolic = min(
+                    [data.systolic for data in blood_pressure]
+                )
+                min_blood_pressure_diastolic = min(
+                    [data.diastolic for data in blood_pressure]
+                )
+                context["mean_blood_pressure_systolic"] = int(
+                    mean_blood_pressure_systolic
+                )
+                context["mean_blood_pressure_diastolic"] = int(
+                    mean_blood_pressure_diastolic
+                )
+                context["max_blood_pressure_systolic"] = max_blood_pressure_systolic
+                context["max_blood_pressure_diastolic"] = max_blood_pressure_diastolic
+                context["min_blood_pressure_systolic"] = min_blood_pressure_systolic
+                context["min_blood_pressure_diastolic"] = min_blood_pressure_diastolic
+
+            if len(hba1c) > 0:
+                context["hb1ac"] = hba1c[0].hba1c  # only one data per day
+
         case "diet":
-            meals = Diet.objects.filter(user=request.user)
+            meals = Diet.objects.filter(user=request.user).prefetch_related("result")
             context["meals"] = meals
+
+            max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
+            context["max_calories"] = max_calories
+            context["max_carbohydrates"] = 100  # fixed value
+            context["max_protein"] = int(
+                CustomUser.objects.get(id=request.user.id).weight
+                * 0.8  # for proteins, 0.8g per kg
+            )
+            context["max_fat"] = 50  # fixed value
+
+            # {
+            # "predictions": [
+            # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
+            # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
+            # ],
+            # "food_info": [
+            # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
+            # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
+            # ]
+            # }
+
+            total_calories = 0
+            total_carbohydrates = 0
+            total_protein = 0
+            total_fat = 0
+
+            meal_calories = {}
+
+            for meal in meals:
+                food_info = meal.result.result_data["food_info"]
+                meal_total_calories = sum(
+                    int(food["energy_kcal"]) for food in food_info
+                )
+                meal_calories[meal.id] = meal_total_calories
+                total_calories += sum(int(food["energy_kcal"]) for food in food_info)
+                total_carbohydrates += sum(
+                    int(food["carbohydrates_g"]) for food in food_info
+                )
+                total_protein += sum(int(food["protein_g"]) for food in food_info)
+                total_fat += sum(int(food["fat_g"]) for food in food_info)
+
+            context["total_calories"] = total_calories
+            context["total_carbohydrates"] = total_carbohydrates
+            context["total_protein"] = total_protein
+            context["total_fat"] = total_fat
+            context["meal_calories"] = meal_calories
         case "exercise":
             context["exercises"] = Exercise.objects.filter(user=request.user)
             context["total_calories"] = sum(
-                # [exercise.calories for exercise in context["exercises"]]
-                [100, 20]  # TODO: change to real data
+                [
+                    exercise.exercise_calories
+                    for exercise in Exercise.objects.filter(user=request.user)
+                ]
             )
         case "blood":
             # get all blood related data(blood sugar, blood pressure, hba1c) and align all in one list
@@ -137,14 +364,6 @@ def load_content(request, menu):
             context["blood1_data"] = blood_sugar
             context["blood2_data"] = blood_pressure
             context["blood3_data"] = hba1c
-        case "report":
-            pass
-            # 주간, 일간 <- 이건 jquery의 ajax로 처리함.
-
-            # 총 섭취 n kcal(탄, 단, 지)
-            # 총 소모 n kcal
-            # 총 운동시간 n 분
-            # 당뇨지표(top 3가 혈당이 가장 높아요!) -> 혈압, 당화혈색소, 현재 당신의 상태는 <> 입니다.
         case "mypage":
             user_info = request.user
             context["user_info"] = user_info
@@ -486,6 +705,10 @@ def get_chart_data(request, chart_type, detail_type):
         "lunch_after": "점심 식후",
         "dinner_after": "저녁 식후",
         "vacant": "공복",
+        # separate
+        "systolic": "systolic",
+        "diastolic": "diastolic",
+        "default": "default",
     }
     detail_type = converison_table.get(detail_type, -1)
     if detail_type == -1:
