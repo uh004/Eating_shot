@@ -16,3 +16,8 @@ def split_by_comma(value):
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+
+@register.filter
+def subtract(value, arg):
+    return value - arg
