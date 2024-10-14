@@ -126,6 +126,12 @@ def load_content(request, menu):
             blood_pressure = BloodPressure.objects.filter(user=request.user)
             hba1c = HbA1c.objects.filter(user=request.user)
 
+            context["max_calories"] = 0
+            # not used
+            context["max_carbohydrates"] = 0
+            context["max_protein"] = 0
+            context["max_fat"] = 0
+
             context["total_calories"] = 0
             context["total_carbohydrates"] = 0
             context["total_protein"] = 0
