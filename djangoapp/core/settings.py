@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+# from celery.schedules import crontab
 
 if not os.environ.get("DJANGO_ENV") == "production":
     from dotenv import load_dotenv
@@ -43,6 +44,12 @@ else:
     DEBUG = True
     ALLOWED_HOSTS = []
 
+
+if DEBUG:
+    INFERENCE_SERVER_URL = "http://localhost:8099"  # the dummy fastapi
+else:
+    INFERENCE_SERVER_URL = "http://inferenceapp:8099"  # the dummy fastapi server
+
 # Application definition
 
 WSGI_APPLICATION = "core.wsgi.application"
@@ -66,6 +73,7 @@ INSTALLED_APPS = [
     # "channels",
     "django_celery_beat",
     "django_celery_results",
+    "django_resized",
     "users.apps.UsersConfig",
     "ai_workload.apps.AiWorkloadConfig",
     "webapp.apps.WebappConfig",
@@ -221,10 +229,11 @@ else:
     # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!!
     CELERY_BROKER_URL = "redis://localhost:6379/0"
 
+# run celery beat to do this
 # CELERY_BEAT_SCHEDULE = {
-#     "delete_past_alarms": {
-#         "task": "events.tasks.delete_past_alarms",
-#         "schedule": crontab("0", "0", "*", "*", "*"),  # every day at midnight
+#     "sync-nutrition-data": {
+#         "task": "your_app.tasks.sync_nutrition_data",
+#         "schedule": crontab(hour="*/6"),  # Run every 6 hours
 #     },
 # }
 

@@ -3,6 +3,10 @@ from .models import InferenceTask, InferenceResult
 from .inference_client import run_inference
 from celery import shared_task
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 # TODO: any better way other than this??
 # TODO: stress test on this?
@@ -18,29 +22,9 @@ def process_inference_task(task_id):
 
     try:
         result_data = run_inference(task.photo.path)
-        """
-        {
-        "predictions": [
-        {"name": "\ub3c4\ud1a0\ub9ac\ubb35", "class": 1, "confidence": 0.47512, "box": {"x1": 87.85016, "y1": 87.95764, "x2": 301.8219, "y2": 288.64481}}, 
-        {"name": "\ub5a1\uac08\ube44", "class": 2, "confidence": 0.26878, "box": {"x1": 331.60638, "y1": 56.98588, "x2": 578.69916, "y2": 358.71658}}
-        ],
-        "food_info": {
-        "food_name": "\ub3c4\ud1a0\ub9ac\ubb35",
-        "energy_kcal": 100,
-        "weight_g": 100,
-        "carbohydrates_g": 100,
-        "protein_g": 100,
-        "fat_g": 100,
-        "diabetes_risk_classification": 1
-        }
-        }
-        """
-        result_names_comma_separated = ",".join(
-            [pred["name"] for pred in result_data["predictions"]]
-        )
+
         result = InferenceResult.objects.create(
             result_data=result_data,
-            result_names_comma_separated=result_names_comma_separated,
         )
 
         diet = Diet.objects.get(image=task.photo)
@@ -49,7 +33,7 @@ def process_inference_task(task_id):
         task.result = result
         task.status = "COMPLETED"
     except Exception as e:
-        print(e)
+        logger.error(f"Error occurred in task: {e}", exc_info=True)
         task.status = "FAILED"
     finally:
         task.save()

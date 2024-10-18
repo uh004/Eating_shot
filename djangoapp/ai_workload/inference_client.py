@@ -1,20 +1,17 @@
-from django.conf import settings
 import httpx
 
 # import requests
 import logging
 
-if settings.DEBUG:
-    INFERENCE_SERVER_URL = "http://localhost:8099/predict"  # the dummy fastapi
-else:
-    INFERENCE_SERVER_URL = (
-        "http://inferenceapp:8099/predict"  # the dummy fastapi server
-    )
+from core.settings import INFERENCE_SERVER_URL
 
-print(INFERENCE_SERVER_URL)
+
+timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
 
 
 def run_inference(image_path):
+    print(INFERENCE_SERVER_URL)
+
     # with open(image_path, "rb") as img:
     #     files = {"file": img}
     #     encoded_path = urllib.parse.quote(image_path)
@@ -24,7 +21,12 @@ def run_inference(image_path):
         files = {"file": img}
         data = {"path": image_path}
         with httpx.Client() as client:
-            response = client.post(INFERENCE_SERVER_URL, files=files, data=data)
+            response = client.post(
+                f"{INFERENCE_SERVER_URL}/predict",
+                files=files,
+                data=data,
+                timeout=timeout,
+            )
             logging.info(response.json())
 
     if response.status_code == 200:

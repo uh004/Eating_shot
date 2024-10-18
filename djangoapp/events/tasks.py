@@ -1,4 +1,5 @@
 from celery import shared_task
+from django.core.management import call_command
 from django.db import connection
 import logging
 from django_eventstream import send_event
@@ -157,3 +158,9 @@ def clean_disassociated_tasks():
         ):
             current_app.control.revoke(task, terminate=True)
             print(f"Revoked task {task}")
+
+
+# move this task somewhere else?
+@shared_task
+def sync_nutrition_data():
+    call_command("import_food_calories")
