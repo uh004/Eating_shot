@@ -1,27 +1,38 @@
 # management/commands/import_food_calories.py
-import csv
+import requests
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from users.models import FoodCalories
 
 
 class Command(BaseCommand):
-    help = "Import food calories data from CSV and overwrite existing data"
+    help = "Import food calories data from inference server and overwrite existing data"
 
     def handle(self, *args, **kwargs):
-        with open("food_calories.csv", encoding="utf-8") as file:
-            reader = csv.reader(file)
-            next(reader)
-            for row in reader:
+        try:
+            response = requests.get(f"{settings.INFERENCE_SERVER_URL}/nutrition_data")
+            response.raise_for_status()
+            nutrition_data = response.json()
+
+            for item in nutrition_data:
                 FoodCalories.objects.update_or_create(
-                    food_name=row[0],
+                    food_name=item["음 식 명"],
                     defaults={
-                        "energy_kcal": int(row[1]),
-                        "weight_g": int(row[2]),
-                        "carbohydrates_g": float(row[3]),
-                        "protein_g": float(row[4]),
-                        "fat_g": float(row[5]),
-                        "diabetes_risk_classification": int(row[6]),
-                        "label": int(row[7]),
+                        "energy_kcal": int(item["에너지(kcal)"]),
+                        "weight_g": int(item["중량(g)"]),
+                        "carbohydrates_g": float(item["탄수화물(g)"]),
+                        "protein_g": float(item["단백질(g)"]),
+                        "fat_g": float(item["지방(g)"]),
+                        "diabetes_risk_classification": int(item["당뇨 위험 분류"]),
+                        # "label": int(item["레이블"]),
                     },
                 )
-        self.stdout.write(self.style.SUCCESS("Successfully imported and updated data"))
+            self.stdout.write(
+                self.style.SUCCESS("Successfully imported and updated data")
+            )
+        except requests.RequestException as e:
+            self.stdout.write(
+                self.style.ERROR(
+                    f"Failed to fetch data from inference server: {str(e)}"
+                )
+            )

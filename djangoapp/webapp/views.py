@@ -18,6 +18,7 @@ from users.models import (
     BloodPressure,
     HbA1c,
     CustomUser,
+    FoodCalories,
 )
 from events.models import PillAlarm, HospitalAlarm
 from .forms import (
@@ -434,8 +435,6 @@ def load_content(request, menu):
 def exercise_list(request):
     exercises_by_type = ExerciseType.objects.annotate(exercise_count=Count("exercise"))
 
-    # print(exercises_by_type.values())
-
     return render(
         request,
         "users/exercise_list.html",
@@ -481,8 +480,31 @@ def diet_form(request, id=None):
     return render(request, "users/diet_form.html", {"form": form})
 
 
+def get_nutrition_data(food_name):
+    food_data = {
+        "food_name": "",
+        "energy_kcal": 0,
+        "weight_g": 0,
+        "carbohydrates_g": 0,
+        "protein_g": 0,
+        "fat_g": 0,
+    }
+    try:
+        nutrition = FoodCalories.objects.get(food_name=food_name)
+        food_data["food_name"] = food_name
+        food_data["energy_kcal"] = nutrition.energy_kcal
+        food_data["weight_g"] = nutrition.weight_g
+        food_data["carbohydrates_g"] = nutrition.carbohydrates_g
+        food_data["protein_g"] = nutrition.protein_g
+        food_data["fat_g"] = nutrition.fat_g
+    except FoodCalories.DoesNotExist:
+        return False
+
+    return food_data
+
+
 @login_required
-def update_meal(request, meal_id, nutrient_name):
+def update_meal(request, meal_id, existing_food_name):
     """
 
     :param request:
@@ -490,80 +512,80 @@ def update_meal(request, meal_id, nutrient_name):
     :param nutrient_name: target nutrient name
     :return:
     """
-    if request.method == "PUT":
-        data = json.loads(request.body)
-        name = data.get("name")
-        kcal = data.get("kcal", 0)
+    try:
+        target_big = InferenceResult.objects.get(
+            id=Diet.objects.get(id=meal_id).result_id
+        )
+        changeable_food_info_names = [
+            x["food_name"]
+            for x in target_big.result_changeable_food_info
+            if x["food_name"] != "TOTAL"
+        ]
 
-        try:
-            target_big = InferenceResult.objects.get(
-                id=Diet.objects.get(id=meal_id).result_id
-            )
-            comma_separated = target_big.result_names_comma_separated
-            if nutrient_name in comma_separated.split(","):
-                comma_separated = comma_separated.replace(nutrient_name, name)
-                target_big.result_names_comma_separated = comma_separated
-                target_big.save()
-                # TODO: Kcal update
+        if request.method == "PUT":
+            # when editing food name
+            data = json.loads(request.body)
+            name = data.get("name")
+
+            to_food_info = get_nutrition_data(name)
+            if to_food_info:
+                if existing_food_name in changeable_food_info_names:
+                    target_big.result_changeable_food_info = [
+                        item
+                        for item in target_big.result_changeable_food_info
+                        if item.get("food_name") != existing_food_name
+                    ]
+                    target_big.result_changeable_food_info.append(to_food_info)
+                else:
+                    return JsonResponse(
+                        {"success": False, "message": "Already exists"}, status=304
+                    )
             else:
                 return JsonResponse(
-                    {"success": False, "message": "Already exists"}, status=304
+                    {"success": False, "message": "No Such Food Exist"}, status=404
                 )
+            target_big.save()
             return JsonResponse({"success": True}, status=200)
-        except Diet.DoesNotExist:
-            return JsonResponse(
-                {"success": False, "message": "Meal not found"}, status=404
-            )
-    # TODO: reduce duplicate code
-    elif request.method == "DELETE":
-        data = json.loads(request.body)
-        name = data.get("name")
-        kcal = data.get("kcal", 0)
 
-        try:
-            target_big = InferenceResult.objects.get(
-                id=Diet.objects.get(id=meal_id).result_id
-            )
-            comma_separated = target_big.result_names_comma_separated
-            if len(comma_separated.split(",")) == 1:
+        elif request.method == "DELETE":
+            # when deleting food names
+            if len(changeable_food_info_names) == 1:
                 return JsonResponse(
                     {"success": False, "message": "마지막 음식은 삭제할 수 없습니다."},
                     status=400,
                 )
-            if nutrient_name in comma_separated.split(","):
-                # if comma_separated == nutrient_name:
-                #     comma_separated = ""
-                # else:
-                comma_separated = comma_separated.replace(nutrient_name + ",", "")
-                target_big.result_names_comma_separated = comma_separated
-                target_big.save()
+            if existing_food_name in changeable_food_info_names:
+                target_big.result_changeable_food_info = [
+                    item
+                    for item in target_big.result_changeable_food_info
+                    if item.get("food_name") != existing_food_name
+                ]
             else:
                 return JsonResponse(
                     {"success": False, "message": "Not found"}, status=404
                 )
-            return JsonResponse({"success": True}, status=200)
-        except Diet.DoesNotExist:
-            return JsonResponse(
-                {"success": False, "message": "Meal not found"}, status=404
-            )
-    elif request.method == "POST":
-        data = json.loads(request.body)
-        name = data.get("name")
-        kcal = data.get("kcal", 0)
-
-        try:
-            target_big = InferenceResult.objects.get(
-                id=Diet.objects.get(id=meal_id).result_id
-            )
-            comma_separated = target_big.result_names_comma_separated
-            comma_separated += f",{name}"
-            target_big.result_names_comma_separated = comma_separated
             target_big.save()
             return JsonResponse({"success": True}, status=200)
-        except Diet.DoesNotExist:
-            return JsonResponse(
-                {"success": False, "message": "Meal not found"}, status=404
-            )
+
+        elif request.method == "POST":
+            # when adding food names
+            data = json.loads(request.body)
+            name = data.get("name")
+
+            to_food_info = get_nutrition_data(name)
+            if to_food_info:
+                target_big.result_changeable_food_info.append(to_food_info)
+            else:
+                return JsonResponse(
+                    {"success": False, "message": "No Such Food Exist"}, status=404
+                )
+            target_big.save()
+            return JsonResponse({"success": True}, status=200)
+    except Diet.DoesNotExist:
+        return JsonResponse(
+            {"success": False, "message": "something went wrong. no meal record found"},
+            status=404,
+        )
 
     return JsonResponse(
         {"success": False, "message": "Invalid request method"}, status=400
@@ -772,7 +794,6 @@ def get_chart_data(request, chart_type, detail_type):
             }
         ],
     }
-    print(fdata)
     return JsonResponse(fdata)
 
 
@@ -781,6 +802,39 @@ def food_detail(request, id):
     meal = get_object_or_404(Diet, pk=id)
     meal.image.name = meal.image.name.split(".")[0] + "_anno.jpg"
     meal.result_names_list = meal.result.result_names_comma_separated.split(",")
+    a = [
+        {
+            "food_name": "\uc54c\ubc25",
+            "energy_kcal": "607",
+            "weight_g": "400",
+            "carbohydrates_g": "92",
+            "protein_g": "15",
+            "fat_g": "3",
+            "diabetes_risk_classification": "0",
+        },
+        {
+            "food_name": "\uc794\uce58\uad6d\uc218",
+            "energy_kcal": "484",
+            "weight_g": "600",
+            "carbohydrates_g": "90",
+            "protein_g": "17",
+            "fat_g": "5",
+            "diabetes_risk_classification": "0",
+        },
+        {
+            "food_name": "TOTAL",
+            "energy_kcal": "1091",
+            "weight_g": "1000",
+            "carbohydrates_g": "182",
+            "protein_g": "32",
+            "fat_g": "8",
+        },
+    ]
+    food_info = meal.result.result_changeable_food_info[-1]
+    meal.total_carbohydrates = int(food_info["carbohydrates_g"])
+    meal.total_protein = int(food_info["protein_g"])
+    # meal.total_fat = sum(int(food["fat_g"]) for food in food_info)
+    meal.total_fat = int(food_info["fat_g"])
     return render(request, "users/food_detail.html", {"meal": meal})
 
 

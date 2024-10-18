@@ -36,6 +36,7 @@ logging.info("Loaded the model.")
 
 def save_annotated_image(image, result, path, pred_result):
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+    # image = cv2.resize(image, (640, 640))
     label = result.boxes.cls  # 모델이 예측한 레이블 결과 ex) 30, 11, 2, 15
     fontpath = "models/Pretendard-Bold.ttf"
     font = ImageFont.truetype(fontpath, 25)
@@ -60,7 +61,6 @@ def save_annotated_image(image, result, path, pred_result):
         width = right - left
         height = bottom - top
         text_size = [width, height]  # 텍스트 가로, 세로 길이
-
         cv2.rectangle(
             overlay,
             (x - (text_size[0] // 2 + 5), y - (text_size[1] // 2 + 5)),
@@ -94,7 +94,9 @@ def get_food_info(label):
     with open("food_calories.csv", encoding="utf-8") as file:
         reader = csv.reader(file)
         next(reader)
+        # for n, row in enumerate(reader):
         for row in reader:
+            # if n == label:
             if row[0] == label:
                 return {
                     "food_name": row[0],
@@ -110,6 +112,16 @@ def get_food_info(label):
 @app.get("/")
 async def root():
     return {"message": str(model)}
+
+
+@app.get("/nutrition_data")
+def get_nutrition_data():
+    nutrition_data = []
+    with open("food_calories.csv", "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            nutrition_data.append(row)
+    return nutrition_data
 
 
 @app.post("/predict")

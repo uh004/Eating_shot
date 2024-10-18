@@ -33,7 +33,7 @@ urlpatterns = [
     ),
     path("delete/<str:menu>/<int:id>/", views.delete_request, name="delete"),
     path(
-        "mod/<int:meal_id>/<str:nutrient_name>/",
+        "mod/<int:meal_id>/<str:existing_food_name>/",
         views.update_meal,
         name="update_meal",
     ),

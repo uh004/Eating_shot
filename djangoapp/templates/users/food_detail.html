@@ -8,7 +8,7 @@
 
 {% csrf_token %}
 <div class="main_container2">
-    <img src="{% static 'img/back.png' %}" onclick="window.history.back()" alt="" class="back">
+    <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'index' %}'" alt="" class="back">
     <div class="meal_info2">
         <h2>아침</h2>
         <div class="meal_revise">
@@ -24,17 +24,17 @@
         <ul class="tdj">
             <li>
                 <p class="tandanji">탄수화물</p>
-                <p class="gram">30g</p>
+                <p class="gram">{{ meal.total_carbohydrates }}g</p>
             </li>
 
             <li>
                 <p class="tandanji">단백질</p>
-                <p class="gram">30g</p>
+                <p class="gram">{{ meal.total_protein }}g</p>
             </li>
 
             <li>
                 <p class="tandanji">지방</p>
-                <p class="gram">30g</p>
+                <p class="gram">{{ meal.total_fat }}g</p>
             </li>
         </ul>
 
@@ -60,7 +60,7 @@
                             삭제
                         </button>
                         <button type="button" class="confirm_meal" onclick="modifyMealName2(
-                                {{ meal.id }}, '{{ nutrient }}') {# TODO: Kcal #}
+                                {{ meal.id }}, '{{ nutrient }}')
                                 ">확인
                         </button>
                     </div>

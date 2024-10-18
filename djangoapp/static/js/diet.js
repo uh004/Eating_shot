@@ -99,7 +99,7 @@ function deleteMealName2(mealId, nutrientName) {
                 headers: {
                     'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
                 },
-                body: JSON.stringify({name: nutrientName}) // TODO: Kcal 추가
+                body: JSON.stringify({name: nutrientName})
             })
                 .then(response => {
                     if (!response.ok) {
@@ -142,7 +142,7 @@ function modifyMealName2(mealId, nutrientName) {
             'Content-Type': 'application/json',
             'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
         },
-        body: JSON.stringify({name: newNutrientName}) // TODO: Kcal 추가
+        body: JSON.stringify({name: newNutrientName})
     })
         .then(response => {
             if (!response.ok) {
@@ -222,7 +222,7 @@ function modifyMealName3(mealId) {
             'Content-Type': 'application/json',
             'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
         },
-        body: JSON.stringify({name: newNutrientName}) // TODO: Kcal 추가
+        body: JSON.stringify({name: newNutrientName})
     })
         .then(response => {
             if (!response.ok) {
