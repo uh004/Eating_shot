@@ -6,6 +6,8 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from datetime import date
 
+from django_resized import ResizedImageField
+
 
 def diet_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<id>/<filename>
@@ -91,7 +93,8 @@ class Diet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     meal_type = models.CharField(max_length=10)
     date = models.DateField()
-    image = models.ImageField(upload_to=diet_image_path)
+    # image = models.ImageField(upload_to=diet_image_path)
+    image = ResizedImageField(size=[640, 640], upload_to=diet_image_path)
     result = models.ForeignKey(
         "ai_workload.InferenceResult", on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -157,7 +160,6 @@ class Exercise(models.Model):
     #     return [exercise[2] for exercise in cls.exercise_types]
 
 
-# UNUSED BUT KEPT FOR REFERENCE
 class FoodCalories(models.Model):
     food_name = models.CharField(max_length=100)
     energy_kcal = models.IntegerField()
