@@ -11,6 +11,11 @@
 - `python manage.py migrate` : 마이그레이션 적용
 - `python manage.py runserver` : 서버 실행
 
+
+- `./manage.py import_food_kaloh` : 칼로리 데이터 불러오기(추론 서버 동시에 켜야 함)
+- `celery -A core worker -l info -Q ai_queue -c 1`: ai worker
+- `celery -A core worker -l info`: ai 제외 알림 스케줄링 등 worker
+
 ## 명령어 (도커)
 
 ### 하기 전에
@@ -42,6 +47,8 @@ for volume in caddy_data caddy_config esdata certs; do
   docker volume create $volume
 done
 ```
+
+# docker
 
 - `docker compose up -f docker-compose.dev.yml -d` : 개발용 실행(~~카프카~~redis, 임시db)
 
