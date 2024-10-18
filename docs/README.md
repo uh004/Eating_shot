@@ -190,6 +190,30 @@ may be better off sticking with one cloud provider. done!
 3. ???
 4. password reset (with email)
 
+# gomin 3.5 아 아서 귑지안네 칼로리랑 개별 음식
+
+해결!
+
+```python
+ # remove this after edit.
+# {
+# "predictions": [
+# {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.49618, "box": {"x1": 0.0, "y1": 2.75024, "x2": 630.64661, "y2": 465.27628}},
+# {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.42703, "box": {"x1": 0.0, "y1": 2.15228, "x2": 623.83264, "y2": 468.37524}}
+# ],
+# "food_info": [
+# {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
+# {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
+# ]
+# }
+# TODO: when result_predictions saves, automatically change result_names_comma_separated!
+# TODO: if there is a better method than this...
+```
+
+# 일단 위의 고민이 결론이 나면 이거 밑에 적힌거 해
+
+# views파일 수정하기..
+
 ### passwords to copy yada yada
 
 ```shell
