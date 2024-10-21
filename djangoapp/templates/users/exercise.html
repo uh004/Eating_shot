@@ -1,11 +1,10 @@
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 {% endblock %}
 
-<div id="exercise">
-    <div class="banner">
         <div class="slide" id="exercise_info">
 
             <div class="cal_info">
@@ -14,6 +13,7 @@
                 <p class="cal_result"><span>사과 한 알</span>(약 96kcal)
             </div>
 
+            <div class="ex_list">
             {% for exercise in exercises %}
                 <div class="ex">
 
@@ -44,13 +44,12 @@
             
 
             {% endfor %}
-        </div>
+            </div>
 
-        <button type="button" class="plus">
-            <img src="{% static 'img/plus-sign.png' %}" width="50px"
-                 onclick="window.location.href = {% url 'exercise_list' %}" alt="">
-        </button>
-    </div>
-</div>
+            <button type="button" class="plus">
+                <img src="{% static 'img/plus-sign.png' %}" width="50px"
+                     onclick="window.location.href = {% url 'exercise_list' %}" alt="">
+            </button>
+        </div>
 
 

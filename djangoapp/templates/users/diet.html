@@ -3,35 +3,46 @@
     <link rel="stylesheet" href="{% static 'css/diet.css' %}">
 {% endblock %}
 
-<div class="banner" id="food">
     <div class="slide" id="food_detail">
+        <button class="menu_recommend">
+            <img src="{% static 'img/check_circle.png' %}">
+            <p>음식 추천 서비스</p>
+        </button>
+        <div class="recommend_result">
+            <p>당신을 위한 오늘의 추천 식단은</p>
+            <p>치아씨드 & 아몬드</p>
+            <br>
+            <p>오늘의 건강 조언</p>
+            <p>단백질이 부족하시네요! 아몬드로 보충해보세요!</p>
+        </div>
+
         <div class="all_kcal">
-            <p style="font-size: 20px; margin: 5px 0;">누적 칼로리 <span style="float: right;"><span style="color: #00BCD4;">800</span> / 1,416 kcal</span>
+            <p class="sum_kcal">누적 칼로리 <span style="float: right;"><span style="color: #00BCD4;">800</span> / 1,416 kcal</span>
             </p>
             <progress value="800" max="1416"></progress>
-            <p>탄수화물 <span style="float: right;"><span style="color: #00BCD4;">0</span> / 195 g</span></p>
-            <p>단백질 <span style="float: right;"><span style="color: #00BCD4;">19</span> / 71 g</span></p>
-            <p style="margin-bottom: 0px;">지방 <span style="float: right;"><span style="color: #00BCD4;">13</span> / 39 g</span>
+            <p class="nutrient_g">탄수화물 <span style="float: right;"><span style="color: #00BCD4;">0</span> / 195 g</span></p>
+            <p class="nutrient_g">단백질 <span style="float: right;"><span style="color: #00BCD4;">19</span> / 71 g</span></p>
+            <p class="nutrient_g" style="margin-bottom: 0px;">지방 <span style="float: right;"><span style="color: #00BCD4;">13</span> / 39 g</span>
             </p>
         </div>
-        {#        TODO: all kcal #}
 
-        {% for meal in meals %}
-            {#            {% if meal.result.status == "PENDING" %}#} {# TODO: inference status check in profile?? #}
+        <div class="all_meal">
+            {% for meal in meals %}
             <div class="meals">
                 <button type="button" style="display: flex;" class="meals_btn" onclick="window.location.href = '{% url 'food_detail' meal.id %}'">
                     <img src="/photos/{{ meal.image.name }}" alt="">
                     <div class="img_info">
                         <p id="meal_type">{{ meal.meal_type }} (<span>509</span>kcal)</p>
-                        <p id="meal_detail" style="font-size: 14px;">{{ meal.result.result_data }}</p>
+                        <p id="meal_detail">{{ meal.result.result_data }}</p>
                     </div>
-
                 </button>
-        {% endfor %}
-    </div>
+            </div>
 
-    <button type="button" class="plus">
-        <img src="{% static 'img/plus-sign.png' %}" width="50px" onclick="window.location.href = '{% url 'diet_form' %}'"
-             alt="">
-    </button>
-</div>
+            {% endfor %}
+        </div>
+        
+        <button type="button" class="plus">
+            <img src="{% static 'img/plus-sign.png' %}"
+            onclick="window.location.href = '{% url 'diet_form' %}'">
+        </button>
+    </div>

@@ -5,23 +5,22 @@
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
 {% endblock %}
 {% block content %}
-    <div class="main_container">
-        <div class="fade-out-box">
-            <img src="{% static 'img/main_page.png' %}" width="480px" height="900px" id="main_page" alt="">
-        </div>
-        
+    <div class="fade-out-box">
+        <img src="{% static 'img/main_page.png' %}" id="main_page" alt="">
+    </div>
+    <div class="main_container"> 
         <div class="banner" id="forms">
-            <img src="{% static 'img/chara1.png' %}" width="150px" alt="">
-            <p id="login_title">로그인</p>
-            <div class="forms">
+            <div class="login_forms">
+                <img src="{% static 'img/chara1.png' %}" class="login_chara" alt="">
+                <p id="login_title">로그인</p>
                 <form action="{% url 'login' %}" method="POST">
                     {% csrf_token %}
                     <!-- Username Field -->
-                    <h3>{{ form.username.label }}</h3>
+                    <p>{{ form.username.label }}</p>
                     {{ form.username }}
 
                     <!-- Password Field -->
-                    <h3>{{ form.password.label }}</h3>
+                    <p>{{ form.password.label }}</p>
                     {{ form.password }}
 
                     <!-- Submit Button -->

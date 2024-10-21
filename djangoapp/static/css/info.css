@@ -1,63 +1,256 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
 .main_container {
-    width: 480px;
-    height: 900px;
+    width: 100%;
+    height: 100%;
     margin: 0 auto;
     background-size: contain;
     background-repeat: no-repeat;
-    border: 1px solid;
+    zoom: 100%;
+    align-content: center;
 }
 
 .banner {
     align-items: center;
     justify-content: center;
-    margin-top: 60px;
     overflow: hidden;
+    align-content: center;
 }
 
-.banner img {
+.chara_img {
     display: flex;
     margin: auto;
-    margin-bottom: 40px;
+    width: 20%;
 }
 
-.forms .slide {
-    height: 540px;
-    padding: 30px;
-    width: 420px;
+.forms {
+    width: 300%;
+    margin-top: 5%;
 }
 
+@media (min-width: 768px) and (max-width: 1024px) {
 
-.slide input {
-    width: 400px;
-    height: 40px;
-    border: 2px solid #d1d1d1;
-    border-radius: 10px;
-    font-size: 20px;
-    padding: 10px;
-    margin: 15px 0px;
+    .forms .slide {
+        width: 88%;
+        padding: 0 6%;
+    }
+
+    label {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    .slide input {
+        width: 95%;
+        height: 40px;
+        border: 2px solid #d1d1d1;
+        border-radius: 10px;
+        font-size: 20px;
+        padding: 10px;
+        margin: 15px 0px;
+    }
+
+    .slide .kgcm input {
+        width: 43%;
+        height: 40px;
+        border: 2px solid #d1d1d1;
+        border-radius: 10px;
+        font-size: 20px;
+        padding: 10px;
+        margin: 15px 0px;
+    }
+
+    .slide .radio_label {
+        border-radius: 30px;
+        border: 2px solid #d1d1d1;
+        text-align: center;
+        width: 46%;
+        height: 24%;
+        background-color: white;
+    }    
+
+    .slide .radio_label1 {
+        border-radius: 30px;
+        background-color: #b3dee3;
+        text-align: center;
+        width: 100%;
+        height: 20%;
+        line-height: 50px;
+        margin-bottom: 15px;
+        font-size: 18px;
+    }
+
+    .slide .radio_label2 {
+        border-radius: 30px;
+        background-color: #b3dee3;
+        text-align: center;
+        width: 45%;
+        height: 20%;
+        line-height: 50px;
+        font-size: 18px;
+        display: inline-block;
+    }
+
+    .choose_status {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        width: 20%;
+        margin-top: 20px;
+        margin-left: 6%;
+    }
+
+    #form3 p {
+        align-content: center;
+        font-size: 2rem;
+    }
+
+    .slide input[type=submit] {
+        width: 420px;
+        height: 60px;
+        border-radius: 10px;
+        font-size: 20px;
+        padding: 10px;
+        margin: 15px 0px;
+        background-color: #00BCD4;
+        border: none;
+        color: white;
+    }
+
+    #form3 {
+        text-align: center;
+        padding-top: 5%;
+    }
+    
 }
 
-.slide .kgcm input {
-    width: 180px;
-    height: 40px;
-    border: 2px solid #d1d1d1;
-    border-radius: 10px;
-    font-size: 20px;
-    padding: 10px;
-    margin: 15px 0px;
+/* 스마트폰 기준  */
+
+@media all and (max-width: 479px) {
+    .slide {
+        width: 29.5%;
+        padding: 0 2%;
+    }
+
+    form {
+        height: 50%;
+    }
+
+    label {
+        font-size: 1rem;
+        margin-top: 2%;
+    }
+
+    .slide input {
+        width: 93%;
+        height: 5%;
+        border: 2px solid #d1d1d1;
+        border-radius: 10px;
+        font-size: 1rem;
+        padding: 10px;
+        margin: 15px 0px;
+    }
+
+    .slide .kgcm input {
+        width: 40%;
+        height: 10%;
+        border: 2px solid #d1d1d1;
+        border-radius: 10px;
+        font-size: 1rem;
+        padding: 10px;
+        margin: 5% 0px;
+    }
+
+    .slide .radio_label {
+        border-radius: 20px;
+        border: 2px solid #d1d1d1;
+        text-align: center;
+        width: 46%;
+        height: 24%;
+        background-color: white;
+    }
+
+    .goal1, .goal2 {
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+
+    .slide .radio_label1 {
+        border-radius: 30px;
+        background-color: #b3dee3;
+        text-align: center;
+        width: 100%;
+        height: 20%;
+        line-height: 50px;
+        margin-bottom: 5px;
+        font-size: 1rem;
+    }
+
+    .slide .radio_label2 {
+        border-radius: 30px;
+        background-color: #b3dee3;
+        text-align: center;
+        width: 45%;
+        height: 20%;
+        line-height: 50px;
+        font-size: 18px;
+    }
+    
+    .choose_status {
+        justify-content: space-between;
+        margin-bottom: 0;
+        display: flex;
+        margin-top: 2%;
+        margin-bottom: 2%;
+    }
+
+    .disease_type {
+        color: gray;
+        margin: 2% 0;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        width: 20%;
+        margin-top: 0.5%;
+        margin-left: 6%;
+    }
+
+    #form3 p {
+        align-content: center;
+        font-size: 1rem;
+    }
+
+    .slide input[type=submit] {
+        width: 80%;
+        height: 10%;
+        border-radius: 10px;
+        font-size: 1rem;
+        padding: 10px;
+        margin: 15px 0px;
+        background-color: #00BCD4;
+        border: none;
+        color: white;
+    }
+
+    #form3 {
+        text-align: center;
+        padding-top: 10%;
+    }
 }
 
-.slide input[type=submit] {
-    width: 420px;
-    height: 60px;
-    border-radius: 10px;
-    font-size: 20px;
-    padding: 10px;
-    margin: 15px 0px;
-    background-color: #00BCD4;
-    border: none;
-    color: white;
+.kgcm {
+    justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 input[type=radio] {
@@ -68,35 +261,12 @@ input[type=checkbox] {
     display: none;
 }
 
-.slide .radio_label {
-    border-radius: 30px;
-    border: 2px solid #d1d1d1;
-    text-align: center;
-    width: 200px;
-    height: 150px;
-    background-color: white;
+.choose_gender {
+    display: flex; 
+    margin-top: 10px;
+    justify-content: space-between;
 }
 
-.slide .radio_label1 {
-    border-radius: 30px;
-    background-color: #b3dee3;
-    text-align: center;
-    width: 420px;
-    height: 50px;
-    line-height: 50px;
-    margin-bottom: 15px;
-    font-size: 18px;
-}
-
-.slide .radio_label2 {
-    border-radius: 30px;
-    background-color: #b3dee3;
-    text-align: center;
-    width: 200px;
-    height: 50px;
-    line-height: 50px;
-    font-size: 18px;
-}
 
 button {
     background: transparent;
@@ -104,18 +274,10 @@ button {
     border: none;
     margin-top: 10px;
     font-style: italic;
-    width: 150px;
 }
 
 button:active {
     color: #00BCD4;
-}
-
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 20px;
 }
 
 #prev-btn, #next-btn {
@@ -140,6 +302,8 @@ button:active {
     background-color: #00BCD4;
 }
 
-label {
-    font-size: 20px;
+
+.gender_img {
+    width: 40%;
+    margin: 2% 30%;
 }

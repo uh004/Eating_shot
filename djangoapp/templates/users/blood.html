@@ -5,7 +5,7 @@
 
 
 <div id="blood">
-    <div class="banner" id="indicator">
+    <div class="slide" id="indicator">
 
         <button type="button" class="blood_btn" id="blood_btn1">
             <img src="{% static 'img/check_circle.png' %}">
@@ -14,7 +14,7 @@
 
         <div class="for_indicator">
             {% for data in blood1_data %}
-                <div class="slide">
+                <div class="slide2">
                     <div class="blood">
                         <p style="margin: 14px 0;"> {{ data.time }} |
                             <span style="color: red;">{{ data.blood_sugar }}</span>mg/DL</p>
@@ -38,7 +38,7 @@
 
         <div class="for_indicator">
             {% for data in blood2_data %}
-                <div class="slide">
+                <div class="slide2">
                     <div class="blood" style="display: flex; justify-content: space-between;">
                         <p style="margin: 14px 0;">
                             <span style="color: red;">{{ data.systolic }}</span>/<span
@@ -62,7 +62,7 @@
 
         <div class="for_indicator">
             {% for data in blood3_data %}
-                <div class="slide">
+                <div class="slide2">
                     <div class="blood" style="display: flex; justify-content: space-between;">
                         <p style="margin: 14px 0;">
                             <span style="color: red;">{{ data.hba1c }}</span>%</p>
@@ -81,21 +81,23 @@
             <img src="{% static 'img/plus-sign.png' %}" width="50px" alt="" id="target_popup_button">
         </button>
 
-    </div>
-    
-    <div id="popup3" class="popup-overlay3">
-        <div class="popup-content3">
-            <ul>
-                <li style="display: flex;" onclick="window.location.href = {% url 'blood1' %}"><img
-                        src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈당
-                </li>
-                <li style="display: flex;" onclick="window.location.href = {% url 'blood2' %}"><img
-                        src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈압
-                </li>
-                <li style="display: flex;" onclick="window.location.href = {% url 'blood3' %}"><img
-                        src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">당화혈색소
-                </li>
-            </ul>
+        <div id="popup3" class="popup-overlay3">
+            <div class="popup-content3">
+                <ul>
+                    <li style="display: flex;" onclick="window.location.href = {% url 'blood1' %}"><img
+                            src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈당
+                    </li>
+                    <li style="display: flex;" onclick="window.location.href = {% url 'blood2' %}"><img
+                            src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈압
+                    </li>
+                    <li style="display: flex;" onclick="window.location.href = {% url 'blood3' %}"><img
+                            src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">당화혈색소
+                    </li>
+                </ul>
+            </div>
         </div>
+
+
     </div>
+
 </div>

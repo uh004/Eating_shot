@@ -3,13 +3,7 @@
     <link rel="stylesheet" href="{% static 'css/report.css' %}">
 {% endblock %}
 <!-- 보고서 -->
-<div class="banner" id="report">
-    
-    {#    <ul class="tabnav">#}
-    {#        <li><a href="#tab01">일일보고서</a></li>#}
-    {#        <li><a href="#tab02">주간보고서</a></li>#}
-    {#    </ul>#}
-    
+   
     <div class="tabcontent">
         <input type="radio" name="tab" id="tabmenu01" checked>
         <label for="tabmenu01">일일보고서</label>
@@ -18,7 +12,7 @@
 
         <div id="tab01" class="contents">
             <div class="diet_report">
-                <h3>오늘 하루 식단</h3>
+                <p class="report_sub_title">오늘 하루 식단</p>
 
                 <p class="main_info">총 섭취 <span>1200 </span>kcal</p>
 
@@ -28,116 +22,118 @@
                     <p><span style="background-color: #AAD9BB;">지</span> 36g</p>
                 </div>
 
-                    <div style="text-align: center;">
-                        <img src="{% static 'img/report_diet.png' %}" style="padding: 0px 10px;" alt="">
-                    </div>
-                    
+                <div class="report_img">
+                    <img src="{% static 'img/report_diet.png' %}">
+                </div>
 
-                <p style="font-size: 20px;"><span style="color: white;">300 </span>kcal 더 먹을 수 있어요!</p>
+                <p class="report_review"><span style="color: white;">300 </span>kcal 더 먹을 수 있어요!</p>
+                <p class="report_review">단백질을 더 섭취해보는 건 어떨까요?</p>
 
             </div>
 
             <div class="exercise_report">
-                <h3>오늘 하루 운동량</h3>
+                <p class="report_sub_title">오늘 하루 운동량</p>
                 
                 <p class="main_info">총 소모 칼로리 <span>300 </span>kcal</p>
                 <p class="main_info">총 운동 시간 <span>40 </span>분</p>
 
-                <div style="text-align: center;">
-                    <img src="{% static 'img/report_ex.png' %}" style="padding: 0px 10px;" alt="">
+                <div class="report_img2">
+                    <img src="{% static 'img/report_ex.png' %}">
                 </div>
 
-                <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
+                <p class="report_review">현재 당신의 운동량은</p>
+                <p class="report_review">전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
 
             </div>
 
-                <div class="blood_report1">
-                    <h3>오늘 하루 당뇨 지표</h3>
-                    
-                    <div class="mini_title">
-                        <p>혈당 <span class="status">경계</span></p>
-                    </div>
-
-                    <ul class="blood_result">
-                        <li>
-                            <p class="time">최저</p>
-                            <p><span>100</span>mg / dL</p>
-                        </li>
-                        <li>
-                            <p class="time">최고</p>
-                            <p><span>100</span>mg / dL</p>
-                        </li>
-                        <li style="border: none;">
-                            <p class="time">평균</p>
-                            <p><span>100</span>mg / dL</p>
-                        </li>
-                    </ul>
-
-                    <div class="mini_title">
-                        <p>혈압 <span class="status2">주의</span></p>
-                    </div>
-
-                    <ul class="blood_result">
-                        <li>
-                            <p class="time">최저</p>
-                            <p><span>120-80</span> mmHg</p>
-                        </li>
-                        <li>
-                            <p class="time">최고</p>
-                            <p><span>120-80</span> mmHg</p>
-                        </li>
-                        <li style="border: none;">
-                            <p class="time">평균</p>
-                            <p><span>120-80</span> mmHg</p>
-                        </li>
-                    </ul>
-
-                    <div class="mini_title">
-                        <p>당화혈색소 <span class="status2">주의</span></p>
-                    </div>
-                    <p class="sakso"><span>6.5</span>%</p>
-
-
+            <div class="blood_report1">
+                <p class="report_sub_title">오늘 하루 당뇨 지표</p>
+                <br>
+                <div class="mini_title">
+                    <p>혈당 <span class="status">경계</span></p>
                 </div>
+
+                <ul class="blood_result">
+                    <li>
+                        <p class="time">최저</p>
+                        <p><span>100</span>mg / dL</p>
+                    </li>
+                    <li>
+                        <p class="time">최고</p>
+                        <p><span>100</span>mg / dL</p>
+                    </li>
+                    <li style="border: none;">
+                        <p class="time">평균</p>
+                        <p><span>100</span>mg / dL</p>
+                    </li>
+                </ul>
+
+                <div class="mini_title">
+                    <p>혈압 <span class="status2">주의</span></p>
+                </div>
+
+                <ul class="blood_result">
+                    <li>
+                        <p class="time">최저</p>
+                        <p><span>120-80</span> mmHg</p>
+                    </li>
+                    <li>
+                        <p class="time">최고</p>
+                        <p><span>120-80</span> mmHg</p>
+                    </li>
+                    <li style="border: none;">
+                        <p class="time">평균</p>
+                        <p><span>120-80</span> mmHg</p>
+                    </li>
+                </ul>
+
+                <div class="mini_title">
+                    <p>당화혈색소 <span class="status2">주의</span></p>
+                </div>
+                <p class="sakso"><span>6.5</span>%</p>
+
+
             </div>
-            
-            <div id="tab02" class="contents">
-                <div class="diet_report">
-                    <h3>일주일 영양소 섭취량</h3>
-                    
-                    <p class="main_info">총 섭취 <span>10000 </span>kcal</p>
+        </div>
+                
+        <div id="tab02" class="contents">
+            <div class="diet_report">
+                <p class="report_sub_title">일주일 영양소 섭취량</p>
+
+                <p class="main_info">총 섭취 <span>1200 </span>kcal</p>
 
                 <div class="nutrient">
-                    <p><span style="background-color: #F2F597;">탄</span> 146g</p>
-                    <p><span>단</span> 126g</p>
-                    <p><span style="background-color: #AAD9BB;">지</span> 136g</p>
+                    <p><span style="background-color: #F2F597;">탄</span> 46g</p>
+                    <p><span>단</span> 26g</p>
+                    <p><span style="background-color: #AAD9BB;">지</span> 36g</p>
                 </div>
 
-                    <div style="text-align: center;">
-                        <img src="{% static 'img/report_diet.png' %}" style="padding: 0px 10px;" alt="">
-                    </div>
-                    
+                <div class="report_img">
+                    <img src="{% static 'img/report_diet.png' %}">
+                </div>
 
-                <p style="font-size: 20px;">너무 많이 먹었어요!</p>
+                <p class="report_review"><span style="color: white;">300 </span>kcal 더 먹을 수 있어요!</p>
+                <p class="report_review">단백질을 더 섭취해보는 건 어떨까요?</p>
 
             </div>
 
             <div class="exercise_report">
-                <h3>일주일 총 운동량</h3>
+                <p class="report_sub_title">일주일 총 운동량</p>
                 
-                <p class="main_info">총 소모 칼로리 <span>1300 </span>kcal</p>
-                <p class="main_info">총 운동 시간 <span>160 </span>분</p>
+                <p class="main_info">총 소모 칼로리 <span>300 </span>kcal</p>
+                <p class="main_info">총 운동 시간 <span>40 </span>분</p>
 
-                    <div style="text-align: center;">
-                        <img src="{% static 'img/report_ex.png' %}" style="padding: 0px 10px;" alt="">
-                    </div>
+                <div class="report_img2">
+                    <img src="{% static 'img/report_ex.png' %}">
+                </div>
 
-                <p style="font-size: 20px;">현재 당신의 운동량은 <br> 전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
+                <p class="report_review">현재 당신의 운동량은</p>
+                <p class="report_review">전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
 
             </div>
 
             <div class="blood_report2">
-                <h3>일주일 당뇨 지표</h3>
+                <p class="report_sub_title">일주일 당뇨 지표</p>
                 <select id="options" onchange="showButton()">
                     <option name="options" value="option1">혈당</option>
                     <option name="options" value="option2">혈압</option>
@@ -159,13 +155,11 @@
                     <option value="diastolic">이완기</option>
                 </select>
 
-                <div style="width: 400px; height: 330px; background-color: white; border-radius: 20px;">
+                <div class="for_canvas">
                     <canvas id="canvas" width="400px" height="30px"></canvas>
                 </div>
 
             </div>
         </div>
+        
     </div>
-
-</div>
-

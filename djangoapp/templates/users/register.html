@@ -8,23 +8,23 @@
 {% block content %}
     <div class="main_container">
         <div class="banner">
-            <img src="{% static 'img/back.png' %}" onclick="window.location.href = {% url 'login' %}" class="back">
-            <img src="{% static 'img/register_form.png' %}" width="250px" height="100px" class="register_img">
-            <p style="font-size: 30px; margin : 10px auto 30px auto;">회원가입</p>
-            <div class="forms">
+            <div class="register_form">
+                <img src="{% static 'img/back.png' %}" onclick="window.location.href = {% url 'login' %}" class="back">
+                <img src="{% static 'img/register_form.png' %}" class="register_img">
+                <p class="register_title">회원가입</p>
                 <form id="registerForm" action="{% url 'register' %}" method="POST">
                     {% csrf_token %}
                     <!-- Email Field -->
-                    <h3>{{ form.email.label }}</h3>
+                    <p>{{ form.email.label }}</p>
                     {{ form.email }}
                     <!-- Username Field -->
-                    <h3>{{ form.username.label }}</h3>
+                    <p>{{ form.username.label }}</p>
                     {{ form.username }}
 
                     <!-- Password Field -->
-                    <h3>{{ form.password1.label }}</h3>
+                    <p>{{ form.password1.label }}</p>
                     {{ form.password1 }}
-                    <h3>{{ form.password2.label }}</h3>
+                    <p>{{ form.password2.label }}</p>
                     {{ form.password2 }}
 
                     <input type="submit" value="회원가입">
