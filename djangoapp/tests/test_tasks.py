@@ -1,4 +1,4 @@
-# tests/test_async.py
+# events/test_async.py
 from django.test import TestCase
 from unittest.mock import patch
 from ai_workload.tasks import process_inference_task

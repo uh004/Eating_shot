@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+# from celery.schedules import crontab
 
 if not os.environ.get("DJANGO_ENV") == "production":
     from dotenv import load_dotenv
@@ -37,15 +38,27 @@ if os.environ.get("DJANGO_ENV") == "production":
     ]
     CSRF_TRUSTED_ORIGINS = [  # for django 4.0 and above
         "https://eatingshot.jonngwanma.de",
+        "https://localhost:8080",
     ]
 else:
     DEBUG = True
     ALLOWED_HOSTS = []
 
+
+if DEBUG:
+    INFERENCE_SERVER_URL = "http://localhost:8099"  # the dummy fastapi
+else:
+    INFERENCE_SERVER_URL = "http://inferenceapp:8099"  # the dummy fastapi server
+
 # Application definition
+
+WSGI_APPLICATION = "core.wsgi.application"
+
+ASGI_APPLICATION = "core.asgi.application"
 
 INSTALLED_APPS = [
     # 'django.contrib.admin', # disable admin pages for production!
+    "daphne",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -56,9 +69,15 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "drf_spectacular",
     # "widget_tweaks",
+    "django_eventstream",
+    # "channels",
+    "django_celery_beat",
+    "django_celery_results",
+    "django_resized",
     "users.apps.UsersConfig",
     "ai_workload.apps.AiWorkloadConfig",
     "webapp.apps.WebappConfig",
+    "events.apps.EventsConfig",
 ]
 
 MIDDLEWARE = [
@@ -78,6 +97,13 @@ REST_FRAMEWORK = {
         # "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+        "django_eventstream.renderers.SSEEventRenderer",
+        "django_eventstream.renderers.BrowsableAPIEventStreamRenderer",
+        # Add other renderers as needed
+    ],
 }
 SPECTACULAR_SETTINGS = {
     "TITLE": "Project EatingShot's API",
@@ -94,6 +120,13 @@ SIMPLE_JWT = {
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": True,
 }
+
+EVENTSTREAM_REDIS = {
+    "host": "localhost" if DEBUG else "redis",
+    "port": 6379,
+    "db": 0,
+}
+EVENTSTREAM_STORAGE_CLASS = "django_eventstream.storage.DjangoModelStorage"
 
 ROOT_URLCONF = "core.urls"
 
@@ -113,27 +146,27 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "core.wsgi.application"
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {  # modify as needed
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.environ.get("POSTGRES_DB"),
-#         "USER": os.environ.get("POSTGRES_USER"),
-#         "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-#         "HOST": "db" if os.environ.get("DJANGO_ENV") == "production" else "localhost",
-#         "PORT": 5432,
-#     }
-# }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("POSTGRES_DB"),
+            "USER": os.environ.get("POSTGRES_USER"),
+            "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+            "HOST": "db",
+            "PORT": 5432,
+        }
+    }
 
 LOGIN_URL = "login"
 # LOGIN_REDIRECT_URL = "home"
@@ -185,15 +218,33 @@ MEDIA_ROOT = BASE_DIR / "photos"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_RESULT_EXTENDED = True
+
 if os.environ.get("DJANGO_ENV") == "production":
-    KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
+    # KAFKA_BOOTSTRAP_SERVERS = "kafka:29092"  # for docker
+    CELERY_BROKER_URL = "redis://redis:6379/0"  # for docker
 else:
-    KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
-    # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!! (TODO: how to handle this?)
+    # KAFKA_BOOTSTRAP_SERVERS = "localhost:29092"
+    # PLAINTEXT_HOST://kafka:29092 at docker-compose.yml too!!
+    CELERY_BROKER_URL = "redis://localhost:6379/0"
+
+# run celery beat to do this
+# CELERY_BEAT_SCHEDULE = {
+#     "sync-nutrition-data": {
+#         "task": "your_app.tasks.sync_nutrition_data",
+#         "schedule": crontab(hour="*/6"),  # Run every 6 hours
+#     },
+# }
 
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
+    "loggers": {
+        "asyncio": {
+            "level": "WARNING",
+        },
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",

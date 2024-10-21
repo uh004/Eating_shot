@@ -1,4 +1,4 @@
-# tests/test_performance.py
+# events/test_performance.py
 from django.test import TestCase
 from django.utils import timezone
 from users.models import BloodSugar

@@ -6,7 +6,14 @@ kafka-python
 requests
 drf-spectacular
 celery
+redis
+daphne
+channels
+django-celery-beat
+django-celery-results
+django-eventstream[drf]
 pillow
 python-logstash
-uvicorn
 psycopg2-binary
+flower
+httpx

@@ -6,7 +6,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.http import JsonResponse
 
-from ai_workload.kafka.producer import send_inference_task
+# from ai_workload.kafka.producer import send_inference_task
+from ai_workload.tasks import process_inference_task
+
 from ai_workload.models import InferenceTask, InferenceResult
 from users.models import (
     Exercise,
@@ -16,7 +18,9 @@ from users.models import (
     BloodPressure,
     HbA1c,
     CustomUser,
+    FoodCalories,
 )
+from events.models import PillAlarm, HospitalAlarm
 from .forms import (
     CustomUserCreationForm,
     CustomAuthenticationForm,
@@ -27,8 +31,10 @@ from .forms import (
     ExerciseForm,
     DietForm,
     MyPageReviseForm,
+    PillAlarmForm,
+    HospitalAlarmForm,
 )
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 @login_required
@@ -93,6 +99,16 @@ def logout_view(request):
 
 
 # TODO: change password
+def change_password(request):
+    user = request.user
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        form = CustomUserCreationForm(instance=user)
+    return render(request, "users/change_password.html", {"form": form})
 
 
 #
@@ -102,12 +118,269 @@ def load_content(request, menu):
 
     context = {}
 
+    # TODO: reducing duplicate code
     match menu:
+        case "report":
+            meals = Diet.objects.filter(user=request.user).prefetch_related("result")
+            exercises = Exercise.objects.filter(user=request.user)
+            blood_sugar = BloodSugar.objects.filter(user=request.user)
+            blood_pressure = BloodPressure.objects.filter(user=request.user)
+            hba1c = HbA1c.objects.filter(user=request.user)
+
+            context["max_calories"] = 0
+            # not used
+            context["max_carbohydrates"] = 0
+            context["max_protein"] = 0
+            context["max_fat"] = 0
+
+            context["total_calories"] = 0
+            context["total_carbohydrates"] = 0
+            context["total_protein"] = 0
+            context["total_fat"] = 0
+
+            context["total_calories_week"] = 0
+            context["total_carbohydrates_week"] = 0
+            context["total_protein_week"] = 0
+            context["total_fat_week"] = 0
+
+            context["total_exercise_calories"] = 0
+            context["total_exercise_time"] = 0
+
+            context["total_exercise_calories_week"] = 0
+            context["total_exercise_time_week"] = 0
+
+            context["mean_blood_sugar"] = 0
+            context["max_blood_sugar"] = 0
+            context["min_blood_sugar"] = 0
+
+            if len(meals) > 0:
+                # meal data
+                context["meals"] = meals
+
+                max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
+                context["max_calories"] = max_calories
+                context["max_carbohydrates"] = 100  # fixed value
+                context["max_protein"] = int(
+                    CustomUser.objects.get(id=request.user.id).weight
+                    * 0.8  # for proteins, 0.8g per kg
+                )
+                context["max_fat"] = 50  # fixed value
+
+                # {
+                # "predictions": [
+                # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
+                # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
+                # ],
+                # "food_info": [
+                # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
+                # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
+                # ]
+                # }
+
+                total_calories = 0
+                total_carbohydrates = 0
+                total_protein = 0
+                total_fat = 0
+
+                meal_calories = {}
+
+                for meal in meals:
+                    food_info = meal.result.result_data["food_info"]
+                    meal_total_calories = sum(
+                        int(food["energy_kcal"]) for food in food_info
+                    )
+                    meal_calories[meal.id] = meal_total_calories
+                    total_calories += sum(
+                        int(food["energy_kcal"]) for food in food_info
+                    )
+                    total_carbohydrates += sum(
+                        int(food["carbohydrates_g"]) for food in food_info
+                    )
+                    total_protein += sum(int(food["protein_g"]) for food in food_info)
+                    total_fat += sum(int(food["fat_g"]) for food in food_info)
+
+                context["total_calories"] = total_calories
+                context["total_carbohydrates"] = total_carbohydrates
+                context["total_protein"] = total_protein
+                context["total_fat"] = total_fat
+                context["meal_calories"] = meal_calories
+
+                # weekly data
+                total_calories_week = 0
+                total_carbohydrates_week = 0
+                total_protein_week = 0
+                total_fat_week = 0
+
+                meals_last_week = Diet.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=7)
+                ).prefetch_related("result")
+
+                for meal in meals_last_week:
+                    food_info = meal.result.result_data["food_info"]
+                    total_calories_week += sum(
+                        int(food["energy_kcal"]) for food in food_info
+                    )
+                    total_carbohydrates_week += sum(
+                        int(food["carbohydrates_g"]) for food in food_info
+                    )
+                    total_protein_week += sum(
+                        int(food["protein_g"]) for food in food_info
+                    )
+                    total_fat_week += sum(int(food["fat_g"]) for food in food_info)
+
+                context["total_calories_week"] = total_calories_week
+                context["total_carbohydrates_week"] = total_carbohydrates_week
+                context["total_protein_week"] = total_protein_week
+                context["total_fat_week"] = total_fat_week
+
+            if len(exercises) > 0:
+                # exercise data
+                context["total_exercise_calories"] = sum(
+                    [
+                        exercise.exercise_calories
+                        for exercise in Exercise.objects.filter(user=request.user)
+                    ]
+                )
+                context["total_exercise_time"] = sum(
+                    [
+                        exercise.exercise_time
+                        for exercise in Exercise.objects.filter(user=request.user)
+                    ]
+                )
+
+                # weekly exercise data
+                context["total_exercise_calories_week"] = sum(
+                    [
+                        exercise.exercise_calories
+                        for exercise in Exercise.objects.filter(
+                            user=request.user,
+                            date__gte=datetime.now() - timedelta(days=7),
+                        )
+                    ]
+                )
+                context["total_exercise_time_week"] = sum(
+                    [
+                        exercise.exercise_time
+                        for exercise in Exercise.objects.filter(
+                            user=request.user,
+                            date__gte=datetime.now() - timedelta(days=7),
+                        )
+                    ]
+                )
+
+            if len(blood_sugar) > 0:
+                # blood data for today(under 24 hours)
+                blood_sugar = BloodSugar.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
+                )
+                blood_pressure = BloodPressure.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
+                )
+                hba1c = HbA1c.objects.filter(
+                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
+                )
+
+                mean_blood_sugar = sum(
+                    [data.blood_sugar for data in blood_sugar]
+                ) / len(blood_sugar)
+                max_blood_sugar = max([data.blood_sugar for data in blood_sugar])
+                min_blood_sugar = min([data.blood_sugar for data in blood_sugar])
+
+                context["mean_blood_sugar"] = int(mean_blood_sugar)
+                context["max_blood_sugar"] = max_blood_sugar
+                context["min_blood_sugar"] = min_blood_sugar
+
+            if len(blood_pressure) > 0:
+                # mean_blood_pressure: blood pressure instances which
+                mean_blood_pressure_systolic = sum(
+                    [data.systolic for data in blood_pressure]
+                ) / len(blood_pressure)
+                mean_blood_pressure_diastolic = sum(
+                    [data.diastolic for data in blood_pressure]
+                ) / len(blood_pressure)
+                max_blood_pressure_systolic = max(
+                    [data.systolic for data in blood_pressure]
+                )
+                max_blood_pressure_diastolic = max(
+                    [data.diastolic for data in blood_pressure]
+                )
+                min_blood_pressure_systolic = min(
+                    [data.systolic for data in blood_pressure]
+                )
+                min_blood_pressure_diastolic = min(
+                    [data.diastolic for data in blood_pressure]
+                )
+                context["mean_blood_pressure_systolic"] = int(
+                    mean_blood_pressure_systolic
+                )
+                context["mean_blood_pressure_diastolic"] = int(
+                    mean_blood_pressure_diastolic
+                )
+                context["max_blood_pressure_systolic"] = max_blood_pressure_systolic
+                context["max_blood_pressure_diastolic"] = max_blood_pressure_diastolic
+                context["min_blood_pressure_systolic"] = min_blood_pressure_systolic
+                context["min_blood_pressure_diastolic"] = min_blood_pressure_diastolic
+
+            if len(hba1c) > 0:
+                context["hb1ac"] = hba1c[0].hba1c  # only one data per day
+
         case "diet":
-            meals = Diet.objects.filter(user=request.user)
+            meals = Diet.objects.filter(user=request.user).prefetch_related("result")
             context["meals"] = meals
+
+            max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
+            context["max_calories"] = max_calories
+            context["max_carbohydrates"] = 100  # fixed value
+            context["max_protein"] = int(
+                CustomUser.objects.get(id=request.user.id).weight
+                * 0.8  # for proteins, 0.8g per kg
+            )
+            context["max_fat"] = 50  # fixed value
+
+            # {
+            # "predictions": [
+            # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
+            # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
+            # ],
+            # "food_info": [
+            # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
+            # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
+            # ]
+            # }
+
+            total_calories = 0
+            total_carbohydrates = 0
+            total_protein = 0
+            total_fat = 0
+
+            meal_calories = {}
+
+            for meal in meals:
+                food_info = meal.result.result_data["food_info"]
+                meal_total_calories = sum(
+                    int(food["energy_kcal"]) for food in food_info
+                )
+                meal_calories[meal.id] = meal_total_calories
+                total_calories += sum(int(food["energy_kcal"]) for food in food_info)
+                total_carbohydrates += sum(
+                    int(food["carbohydrates_g"]) for food in food_info
+                )
+                total_protein += sum(int(food["protein_g"]) for food in food_info)
+                total_fat += sum(int(food["fat_g"]) for food in food_info)
+
+            context["total_calories"] = total_calories
+            context["total_carbohydrates"] = total_carbohydrates
+            context["total_protein"] = total_protein
+            context["total_fat"] = total_fat
+            context["meal_calories"] = meal_calories
         case "exercise":
             context["exercises"] = Exercise.objects.filter(user=request.user)
+            context["total_calories"] = sum(
+                [
+                    exercise.exercise_calories
+                    for exercise in Exercise.objects.filter(user=request.user)
+                ]
+            )
         case "blood":
             # get all blood related data(blood sugar, blood pressure, hba1c) and align all in one list
 
@@ -118,14 +391,6 @@ def load_content(request, menu):
             context["blood1_data"] = blood_sugar
             context["blood2_data"] = blood_pressure
             context["blood3_data"] = hba1c
-        case "report":
-            pass
-            # 주간, 일간 <- 이건 jquery의 ajax로 처리함.
-
-            # 총 섭취 n kcal(탄, 단, 지)
-            # 총 소모 n kcal
-            # 총 운동시간 n 분
-            # 당뇨지표(top 3가 혈당이 가장 높아요!) -> 혈압, 당화혈색소, 현재 당신의 상태는 <> 입니다.
         case "mypage":
             user_info = request.user
             context["user_info"] = user_info
@@ -143,6 +408,23 @@ def load_content(request, menu):
             context["health_conditions"] = [
                 conversion_table[condition] for condition in health_conditions
             ]
+            weekday_conversion_table = {
+                "mon": "월",
+                "tue": "화",
+                "wed": "수",
+                "thu": "목",
+                "fri": "금",
+                "sat": "토",
+                "sun": "일",
+            }
+            alarm_object = PillAlarm.objects.filter(user=request.user)
+            for alarm in alarm_object:
+                alarm.weekday = [
+                    weekday_conversion_table[day] for day in alarm.weekday.split(",")
+                ]
+            context["pill_alarm"] = alarm_object
+            context["hospital_alarm"] = HospitalAlarm.objects.filter(user=request.user)
+            context["weekdays"] = ["월", "화", "수", "목", "금", "토"]
         case _:
             pass
 
@@ -152,8 +434,6 @@ def load_content(request, menu):
 @login_required
 def exercise_list(request):
     exercises_by_type = ExerciseType.objects.annotate(exercise_count=Count("exercise"))
-
-    # print(exercises_by_type.values())
 
     return render(
         request,
@@ -182,7 +462,8 @@ def diet_form(request, id=None):
             )
 
             # Queue the inference task
-            send_inference_task(inference_task.id)
+            # send_inference_task(inference_task.id) # Kafka
+            process_inference_task.delay(inference_task.id)  # Celery
 
             # Wait for the inference result to be ready
             inference_task.refresh_from_db()
@@ -199,8 +480,31 @@ def diet_form(request, id=None):
     return render(request, "users/diet_form.html", {"form": form})
 
 
+def get_nutrition_data(food_name):
+    food_data = {
+        "food_name": "",
+        "energy_kcal": 0,
+        "weight_g": 0,
+        "carbohydrates_g": 0,
+        "protein_g": 0,
+        "fat_g": 0,
+    }
+    try:
+        nutrition = FoodCalories.objects.get(food_name=food_name)
+        food_data["food_name"] = food_name
+        food_data["energy_kcal"] = nutrition.energy_kcal
+        food_data["weight_g"] = nutrition.weight_g
+        food_data["carbohydrates_g"] = nutrition.carbohydrates_g
+        food_data["protein_g"] = nutrition.protein_g
+        food_data["fat_g"] = nutrition.fat_g
+    except FoodCalories.DoesNotExist:
+        return False
+
+    return food_data
+
+
 @login_required
-def update_meal(request, meal_id, nutrient_name):
+def update_meal(request, meal_id, existing_food_name):
     """
 
     :param request:
@@ -208,80 +512,80 @@ def update_meal(request, meal_id, nutrient_name):
     :param nutrient_name: target nutrient name
     :return:
     """
-    if request.method == "PUT":
-        data = json.loads(request.body)
-        name = data.get("name")
-        kcal = data.get("kcal", 0)
+    try:
+        target_big = InferenceResult.objects.get(
+            id=Diet.objects.get(id=meal_id).result_id
+        )
+        changeable_food_info_names = [
+            x["food_name"]
+            for x in target_big.result_changeable_food_info
+            if x["food_name"] != "TOTAL"
+        ]
 
-        try:
-            target_big = InferenceResult.objects.get(
-                id=Diet.objects.get(id=meal_id).result_id
-            )
-            comma_separated = target_big.result_names_comma_separated
-            if nutrient_name in comma_separated.split(","):
-                comma_separated = comma_separated.replace(nutrient_name, name)
-                target_big.result_names_comma_separated = comma_separated
-                target_big.save()
-                # TODO: Kcal update
+        if request.method == "PUT":
+            # when editing food name
+            data = json.loads(request.body)
+            name = data.get("name")
+
+            to_food_info = get_nutrition_data(name)
+            if to_food_info:
+                if existing_food_name in changeable_food_info_names:
+                    target_big.result_changeable_food_info = [
+                        item
+                        for item in target_big.result_changeable_food_info
+                        if item.get("food_name") != existing_food_name
+                    ]
+                    target_big.result_changeable_food_info.append(to_food_info)
+                else:
+                    return JsonResponse(
+                        {"success": False, "message": "Already exists"}, status=304
+                    )
             else:
                 return JsonResponse(
-                    {"success": False, "message": "Already exists"}, status=304
+                    {"success": False, "message": "No Such Food Exist"}, status=404
                 )
+            target_big.save()
             return JsonResponse({"success": True}, status=200)
-        except Diet.DoesNotExist:
-            return JsonResponse(
-                {"success": False, "message": "Meal not found"}, status=404
-            )
-    # TODO: reduce duplicate code
-    elif request.method == "DELETE":
-        data = json.loads(request.body)
-        name = data.get("name")
-        kcal = data.get("kcal", 0)
 
-        try:
-            target_big = InferenceResult.objects.get(
-                id=Diet.objects.get(id=meal_id).result_id
-            )
-            comma_separated = target_big.result_names_comma_separated
-            if len(comma_separated.split(",")) == 1:
+        elif request.method == "DELETE":
+            # when deleting food names
+            if len(changeable_food_info_names) == 1:
                 return JsonResponse(
                     {"success": False, "message": "마지막 음식은 삭제할 수 없습니다."},
                     status=400,
                 )
-            if nutrient_name in comma_separated.split(","):
-                # if comma_separated == nutrient_name:
-                #     comma_separated = ""
-                # else:
-                comma_separated = comma_separated.replace(nutrient_name + ",", "")
-                target_big.result_names_comma_separated = comma_separated
-                target_big.save()
+            if existing_food_name in changeable_food_info_names:
+                target_big.result_changeable_food_info = [
+                    item
+                    for item in target_big.result_changeable_food_info
+                    if item.get("food_name") != existing_food_name
+                ]
             else:
                 return JsonResponse(
                     {"success": False, "message": "Not found"}, status=404
                 )
-            return JsonResponse({"success": True}, status=200)
-        except Diet.DoesNotExist:
-            return JsonResponse(
-                {"success": False, "message": "Meal not found"}, status=404
-            )
-    elif request.method == "POST":
-        data = json.loads(request.body)
-        name = data.get("name")
-        kcal = data.get("kcal", 0)
-
-        try:
-            target_big = InferenceResult.objects.get(
-                id=Diet.objects.get(id=meal_id).result_id
-            )
-            comma_separated = target_big.result_names_comma_separated
-            comma_separated += f",{name}"
-            target_big.result_names_comma_separated = comma_separated
             target_big.save()
             return JsonResponse({"success": True}, status=200)
-        except Diet.DoesNotExist:
-            return JsonResponse(
-                {"success": False, "message": "Meal not found"}, status=404
-            )
+
+        elif request.method == "POST":
+            # when adding food names
+            data = json.loads(request.body)
+            name = data.get("name")
+
+            to_food_info = get_nutrition_data(name)
+            if to_food_info:
+                target_big.result_changeable_food_info.append(to_food_info)
+            else:
+                return JsonResponse(
+                    {"success": False, "message": "No Such Food Exist"}, status=404
+                )
+            target_big.save()
+            return JsonResponse({"success": True}, status=200)
+    except Diet.DoesNotExist:
+        return JsonResponse(
+            {"success": False, "message": "something went wrong. no meal record found"},
+            status=404,
+        )
 
     return JsonResponse(
         {"success": False, "message": "Invalid request method"}, status=400
@@ -449,6 +753,10 @@ def get_chart_data(request, chart_type, detail_type):
         "lunch_after": "점심 식후",
         "dinner_after": "저녁 식후",
         "vacant": "공복",
+        # separate
+        "systolic": "systolic",
+        "diastolic": "diastolic",
+        "default": "default",
     }
     detail_type = converison_table.get(detail_type, -1)
     if detail_type == -1:
@@ -457,7 +765,6 @@ def get_chart_data(request, chart_type, detail_type):
     match (chart_type, detail_type):
         case "option1", detail_type:
             blood_sugar = BloodSugar.objects.filter(user=request.user, time=detail_type)
-            print(blood_sugar)
             labels = [datetime.strftime(data.date, "%Y%m%d") for data in blood_sugar]
             data = [data.blood_sugar for data in blood_sugar]
         case "option2", detail_type:
@@ -487,8 +794,88 @@ def get_chart_data(request, chart_type, detail_type):
             }
         ],
     }
-    print(fdata)
     return JsonResponse(fdata)
+
+
+@login_required
+def food_detail(request, id):
+    meal = get_object_or_404(Diet, pk=id)
+    meal.image.name = meal.image.name.split(".")[0] + "_anno.jpg"
+    meal.result_names_list = meal.result.result_names_comma_separated.split(",")
+    a = [
+        {
+            "food_name": "\uc54c\ubc25",
+            "energy_kcal": "607",
+            "weight_g": "400",
+            "carbohydrates_g": "92",
+            "protein_g": "15",
+            "fat_g": "3",
+            "diabetes_risk_classification": "0",
+        },
+        {
+            "food_name": "\uc794\uce58\uad6d\uc218",
+            "energy_kcal": "484",
+            "weight_g": "600",
+            "carbohydrates_g": "90",
+            "protein_g": "17",
+            "fat_g": "5",
+            "diabetes_risk_classification": "0",
+        },
+        {
+            "food_name": "TOTAL",
+            "energy_kcal": "1091",
+            "weight_g": "1000",
+            "carbohydrates_g": "182",
+            "protein_g": "32",
+            "fat_g": "8",
+        },
+    ]
+    food_info = meal.result.result_changeable_food_info[-1]
+    meal.total_carbohydrates = int(food_info["carbohydrates_g"])
+    meal.total_protein = int(food_info["protein_g"])
+    # meal.total_fat = sum(int(food["fat_g"]) for food in food_info)
+    meal.total_fat = int(food_info["fat_g"])
+    return render(request, "users/food_detail.html", {"meal": meal})
+
+
+@login_required
+def pill_alarm(request, id=None):
+    if id:
+        alarm = get_object_or_404(PillAlarm, pk=id)
+    else:
+        alarm = PillAlarm(user=request.user)
+
+    if request.method == "POST":
+        form = PillAlarmForm(request.POST, instance=alarm)
+        if form.is_valid():
+            alarm = form.save(commit=False)
+            alarm.user = request.user
+            alarm.save()
+            return redirect("index")
+    else:
+        form = PillAlarmForm(instance=alarm)
+
+    return render(request, "users/pill_alarm.html", {"form": form})
+
+
+@login_required
+def hospital_alarm(request, id=None):
+    if id:
+        alarm = get_object_or_404(HospitalAlarm, pk=id)
+    else:
+        alarm = HospitalAlarm(user=request.user)
+
+    if request.method == "POST":
+        form = HospitalAlarmForm(request.POST, instance=alarm)
+        if form.is_valid():
+            alarm = form.save(commit=False)
+            alarm.user = request.user
+            alarm.save()
+            return redirect("index")
+    else:
+        form = HospitalAlarmForm(instance=alarm)
+
+    return render(request, "users/hospital_alarm.html", {"form": form})
 
 
 @login_required
@@ -496,7 +883,6 @@ def delete_request(request, menu, id):
     if request.method == "DELETE":
         match menu:
             case "meal":
-                print("deleting diet with id", id)
                 Diet.objects.filter(id=id).delete()
             case "exercise":
                 Exercise.objects.filter(id=id).delete()
@@ -506,21 +892,11 @@ def delete_request(request, menu, id):
                 BloodPressure.objects.filter(id=id).delete()
             case "blood3":
                 HbA1c.objects.filter(id=id).delete()
+            case "pill_alarm":
+                PillAlarm.objects.filter(id=id).delete()
+            case "hospital_alarm":
+                HospitalAlarm.objects.filter(id=id).delete()
             case _:
                 pass
         return JsonResponse({"message": "Deleted successfully."}, status=200)
     return JsonResponse({"error": "Invalid method."}, status=400)
-
-
-def food_detail(request, id):
-    meal = get_object_or_404(Diet, pk=id)
-    meal.result_names_list = meal.result.result_names_comma_separated.split(",")
-    return render(request, "users/food_detail.html", {"meal": meal})
-
-
-def pill_alarm(request):
-    return render(request, "users/pill_alarm.html", {})
-
-
-def hospital_alarm(request):
-    return render(request, "users/hospital_alarm.html", {})
