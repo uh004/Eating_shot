@@ -72,7 +72,7 @@ used djangorestframework_simplejwt instead of just pyjwt and the large amount of
     2. added logging stack (elk)
     3. ~~added monitoring stack (prometheus, grafana)~~
     4. ???
-    5. TODO: SSL everything
+    5. ~~SSL everything~~
 
 ## plan 2.2 (hardening website)
 
@@ -164,7 +164,55 @@ may be better off sticking with one cloud provider. done!
         2. infinitity problem
             1. upload size
             2. upload count
+        3. preventing XSS
     2. ???
+
+# plan 3.6
+
+1. completed setting up the environment variables for secrets
+2. completed deployment setup (aws ec2)
+3. completed stuff below
+    - a bad apple pizza
+    - removed age from input form
+    - pill alarm storage
+    - hospital appointment data storage
+    - graph for blood stats
+    - form errrors
+    - any maybe few other things
+
+# plan 3.8 (doing this before plan 3.5)
+
+1. switched from kafka to redis with celery for ai workload, since kafka is overkill and not fit for this purpose
+2. added a new django app for SSE (name 'events')
+    3. currently has /events/ endpoint for the frontend to connect to
+    4. you can test notifications by going to /events/trigger_test_alarm/
+    5. specialized js is in `home.html` for now
+3. ???
+4. password reset (with email)
+
+# gomin 3.5 아 아서 귑지안네 칼로리랑 개별 음식
+
+해결!
+
+```python
+ # remove this after edit.
+# {
+# "predictions": [
+# {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.49618, "box": {"x1": 0.0, "y1": 2.75024, "x2": 630.64661, "y2": 465.27628}},
+# {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.42703, "box": {"x1": 0.0, "y1": 2.15228, "x2": 623.83264, "y2": 468.37524}}
+# ],
+# "food_info": [
+# {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
+# {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
+# ]
+# }
+# TODO: when result_predictions saves, automatically change result_names_comma_separated!
+# TODO: if there is a better method than this...
+```
+
+# 일단 위의 고민이 결론이 나면 이거 밑에 적힌거 해
+
+# views파일 수정하기..
 
 ### passwords to copy yada yada
 
@@ -184,7 +232,7 @@ elasticsearch 컨테이너로 가서 `bin/elasticsearch-reset-password auto [-u 
 
 가동될때까지 노트북에서 70초, 성능좋은 데탑에서 30초정도 걸림
 
-## reset kafka topic
+## ~~reset kafka topic~~
 
 ```shell
 docker-compose exec kafka kafka-topics --delete --topic inference_tasks --bootstrap-server localhost:9092 #(or 
@@ -192,6 +240,8 @@ kafka:9092)
 ```
 
 #### query dsl
+
+이거랑 message, container.name
 
 ```json
 {
@@ -210,12 +260,12 @@ kafka:9092)
         },
         {
           "match_phrase": {
-            "container.name": "kafka_consumer"
+            "container.name": "celery-worker"
           }
         },
         {
           "match_phrase": {
-            "container.name": "nginx"
+            "container.name": "caddy"
           }
         }
       ],

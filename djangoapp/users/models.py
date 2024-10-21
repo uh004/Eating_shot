@@ -6,10 +6,12 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from datetime import date
 
+from django_resized import ResizedImageField
+
 
 def diet_image_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/<id>/<filename>
-    print(instance.user.id)
+    # print(instance.user.id)
     return os.path.join(str(instance.user.id), filename)
 
 
@@ -91,7 +93,8 @@ class Diet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     meal_type = models.CharField(max_length=10)
     date = models.DateField()
-    image = models.ImageField(upload_to=diet_image_path)
+    # image = models.ImageField(upload_to=diet_image_path)
+    image = ResizedImageField(size=[640, 640], upload_to=diet_image_path)
     result = models.ForeignKey(
         "ai_workload.InferenceResult", on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -155,3 +158,16 @@ class Exercise(models.Model):
     # @classmethod
     # def get_exercise_types(cls):
     #     return [exercise[2] for exercise in cls.exercise_types]
+
+
+class FoodCalories(models.Model):
+    food_name = models.CharField(max_length=100)
+    energy_kcal = models.IntegerField()
+    weight_g = models.IntegerField()
+    carbohydrates_g = models.FloatField()
+    protein_g = models.FloatField()
+    fat_g = models.FloatField()
+    diabetes_risk_classification = models.IntegerField()
+
+    def __str__(self):
+        return self.food_name

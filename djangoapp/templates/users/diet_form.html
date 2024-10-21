@@ -55,7 +55,10 @@
 </div>
 {% block script %}
     <script>
+
         document.addEventListener('DOMContentLoaded', function () {
+
+
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
         });

@@ -74,8 +74,12 @@
         // Show the relevant element based on the selected option
         if (selectedOption === 'option1' && blood1Check) {
             blood1Check.style.display = "block";
+            let defaultOption = document.getElementById('blood1_check').value;
+            fetchChartData(selectedOption, defaultOption);
         } else if (selectedOption === 'option2' && blood2Check) {
             blood2Check.style.display = "block";
+            let defaultOption = document.getElementById('blood2_check').value;
+            fetchChartData(selectedOption, defaultOption);
         }
 
         // Fetch chart data based on the selected option and detail type

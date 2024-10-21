@@ -8,9 +8,15 @@
 {% block content %}
     <div class="main_container" id="main">
         <div class="for_list">
+<<<<<<< HEAD
             <img src="{% static 'img/back.png' %}" class="back_img"
                  onclick="window.history.back()" alt="">
             <p>운동 목록</p>
+=======
+            <img src="{% static 'img/back.png' %}" width="36px" height="36px" style="padding: 10px 0;"
+                 onclick="window.location = '{% url 'index' %}'">
+            <h2>운동 목록</h2>
+>>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
         </div>
         
         <div class="exercise_list">

@@ -1,20 +1,33 @@
-import requests
-from django.conf import settings
+import httpx
 
-if settings.DEBUG:
-    INFERENCE_SERVER_URL = "http://localhost:8099/predict"  # the dummy fastapi
-else:
-    INFERENCE_SERVER_URL = (
-        "http://inferenceapp:8099/predict"  # the dummy fastapi server
-    )
+# import requests
+import logging
 
-print(INFERENCE_SERVER_URL)
+from core.settings import INFERENCE_SERVER_URL
+
+
+timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
 
 
 def run_inference(image_path):
+    print(INFERENCE_SERVER_URL)
+
+    # with open(image_path, "rb") as img:
+    #     files = {"file": img}
+    #     encoded_path = urllib.parse.quote(image_path)
+    #     data = {"path": encoded_path}
+    #     response = requests.post(INFERENCE_SERVER_URL, files=files, data=data)
     with open(image_path, "rb") as img:
         files = {"file": img}
-        response = requests.post(INFERENCE_SERVER_URL, files=files)
+        data = {"path": image_path}
+        with httpx.Client() as client:
+            response = client.post(
+                f"{INFERENCE_SERVER_URL}/predict",
+                files=files,
+                data=data,
+                timeout=timeout,
+            )
+            logging.info(response.json())
 
     if response.status_code == 200:
         return response.json()

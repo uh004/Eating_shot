@@ -14,6 +14,9 @@ function deleteBoard(id) {
             $.ajax({
                 url: `/delete/exercise/${id}/`,
                 type: 'DELETE',
+                headers: {
+                    'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+                },
                 success: function (response) {
                     Swal.fire('삭제되었습니다!', '', 'success').then(() => {
                         location.reload();

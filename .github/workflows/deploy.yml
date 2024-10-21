@@ -26,7 +26,7 @@ jobs:
       - name: copy source via ssh key
         uses: burnett01/rsync-deployments@master
         with:
-          switches: -avzr --delete --exclude 'db_data' --exclude '.env' --exclude 'models'
+          switches: -avzr --delete --exclude 'db_data' --exclude '.env' --exclude 'models' --exclude 'inference_photos' --exclude 'redis_data'
           path: .
           remote_path: /home/ubuntu/deployment
           remote_host: ${{ secrets.HOST }}
@@ -41,5 +41,8 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             cd /home/ubuntu/deployment
-            docker compose down
+            for volume in caddy_data caddy_config esdata certs; do
+              docker volume create $volume
+            done
+            docker compose down -v --remove-orphans
             docker compose up --build -d

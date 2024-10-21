@@ -1,4 +1,4 @@
-# tests/test_integration.py
+# events/test_integration.py
 from django.test import TestCase
 from rest_framework.test import APIClient
 from users.models import CustomUser

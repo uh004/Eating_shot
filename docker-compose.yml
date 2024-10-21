@@ -19,11 +19,11 @@ services:
     #      args:
     #        - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
     container_name: django_app
-    command: uvicorn core.asgi:application --host 0.0.0.0 --port 8000
+    command: daphne -b 0.0.0.0 -p 8000 core.asgi:application #uvicorn core.asgi:application --host 0.0.0.0 --port 8000
     env_file:
       - .env
     volumes:
-      #      - static_volume:/app/static
+      - staticfiles:/app/staticfiles
       #      - ./djangoapp/db.sqlite3:/app/db.sqlite3
       #      - ./djangoapp/db.sqlite3:/app/db.sqlite3
       - ./inference_photos:/app/photos
@@ -32,8 +32,9 @@ services:
     depends_on:
       #      - nginx
       - caddy
-      - zookeeper
-      - kafka
+      #      - zookeeper
+      #      - kafka
+      - redis
       - db
     networks:
       - internal
@@ -62,12 +63,13 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
       - ./inference_photos:/usr/share/caddy/media
-      - ./djangoapp/static:/usr/share/caddy/static
+      - staticfiles:/usr/share/caddy/static
     networks:
       - internal
 
@@ -76,6 +78,7 @@ services:
     container_name: inference_app
     volumes:
       - ./models:/app/models
+      - ./inference_photos:/app/photos
     #    ports:
     #      - "8099:8099"
     logging:
@@ -86,13 +89,11 @@ services:
     networks:
       - internal
 
-  kafka-consumer:
+  celery-worker1:
     build:
       context: ./djangoapp
-    #      args:
-    #        - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
-    container_name: kafka_consumer
-    command: [ "sh", "-c", "sleep 3 && python run_consumer.py" ] # Introduce a delay
+    container_name: celery_ai_worker1
+    command: celery -A core worker -l info -Q ai_queue -c 1
     env_file:
       - .env
     volumes:
@@ -102,45 +103,169 @@ services:
       - DJANGO_SETTINGS_MODULE=core.settings
       - PYTHONPATH=/app
     depends_on:
-      kafka:
-        condition: service_healthy
+      - redis
     networks:
       - internal
-  #      djangoapp:
-  #        condition: service_healthy
 
-  zookeeper:
-    image: confluentinc/cp-zookeeper:latest
-    container_name: zookeeper
+  celery-worker2:
+    build:
+      context: ./djangoapp
+    container_name: celery_ai_worker2
+    command: celery -A core worker -l info -Q ai_queue -c 1
+    env_file:
+      - .env
+    volumes:
+      - ./djangoapp:/app
+      - ./inference_photos:/app/photos
     environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - 22181:2181
-    networks:
-      - internal
-
-  kafka:
-    image: confluentinc/cp-kafka:latest
-    container_name: kafka
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - PYTHONPATH=/app
     depends_on:
-      - zookeeper
-    ports:
-      - 29092:29092
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://kafka:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-    healthcheck:
-      test: [ "CMD", "nc", "-z", "kafka", "9092" ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      - redis
     networks:
       - internal
+
+  celery-worker3:
+    build:
+      context: ./djangoapp
+    container_name: celery_ai_worker3
+    command: celery -A core worker -l info -Q ai_queue -c 1
+    env_file:
+      - .env
+    volumes:
+      - ./djangoapp:/app
+      - ./inference_photos:/app/photos
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - PYTHONPATH=/app
+    depends_on:
+      - redis
+    networks:
+      - internal
+
+  celery-worker4:
+    build:
+      context: ./djangoapp
+    container_name: celery_ai_worker4
+    command: celery -A core worker -l info -Q ai_queue -c 1
+    env_file:
+      - .env
+    volumes:
+      - ./djangoapp:/app
+      - ./inference_photos:/app/photos
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - PYTHONPATH=/app
+    depends_on:
+      - redis
+    networks:
+      - internal
+
+  celery-worker-10:
+    build:
+      context: ./djangoapp
+    container_name: celery_worker
+    command: celery -A core worker -l info
+    env_file:
+      - .env
+    volumes:
+      - ./djangoapp:/app
+      - ./inference_photos:/app/photos
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - PYTHONPATH=/app
+    depends_on:
+      - redis
+    networks:
+      - internal
+
+  #  kafka-consumer:
+  #    build:
+  #      context: ./djangoapp
+  #    #      args:
+  #    #        - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+  #    container_name: kafka_consumer
+  #    command: [ "sh", "-c", "sleep 3 && python run_consumer.py" ] # Introduce a delay
+  #    env_file:
+  #      - .env
+  #    volumes:
+  #      - ./djangoapp:/app
+  #      - ./inference_photos:/app/photos
+  #    environment:
+  #      - DJANGO_SETTINGS_MODULE=core.settings
+  #      - PYTHONPATH=/app
+  #    depends_on:
+  #      kafka:
+  #        condition: service_healthy
+  #    networks:
+  #      - internal
+
+  #  zookeeper:
+  #    image: confluentinc/cp-zookeeper:latest
+  #    container_name: zookeeper
+  #    environment:
+  #      ZOOKEEPER_CLIENT_PORT: 2181
+  #      ZOOKEEPER_TICK_TIME: 2000
+  #    ports:
+  #      - 22181:2181
+  #    networks:
+  #      - internal
+  #
+  #  kafka:
+  #    image: confluentinc/cp-kafka:latest
+  #    container_name: kafka
+  #    depends_on:
+  #      - zookeeper
+  #    ports:
+  #      - 29092:29092
+  #    environment:
+  #      KAFKA_BROKER_ID: 1
+  #      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  #      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://kafka:29092
+  #      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+  #      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+  #      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  #    healthcheck:
+  #      test: [ "CMD", "nc", "-z", "kafka", "9092" ]
+  #      interval: 30s
+  #      timeout: 10s
+  #      retries: 5
+  #    networks:
+  #      - internal
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - internal
+  #    healthcheck:
+  #        test: [ "CMD", "redis-cli", "ping" ]
+  #        interval: 30s
+  #        timeout: 10s
+  #        retries: 5
+
+  celery-flower:
+    build: ./djangoapp
+    container_name: celery-flower
+    command: celery -A core flower --port=5555
+    env_file:
+      - .env
+    volumes:
+      - ./djangoapp:/app
+      - ./inference_photos:/app/photos
+    environment:
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - PYTHONPATH=/app
+    depends_on:
+      - redis
+    ports:
+      - "5555:5555"
+    networks:
+      - internal
+
   #
   setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}
@@ -340,14 +465,14 @@ services:
       - certs:/usr/share/kibana/config/certs:ro
     environment:
       - ELASTICSEARCH_HOSTS=https://elasticsearch:9200
-      - ELASTICSEARCH_USERNAME=kibana
+      - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=${KIBANA_PASSWORD}
       - ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES=config/certs/ca/ca.crt
       - SERVER_SSL_ENABLED=true
       - SERVER_SSL_CERTIFICATE=/usr/share/kibana/config/certs/kibana/kibana.crt
       - SERVER_SSL_KEY=/usr/share/kibana/config/certs/kibana/kibana.key
-    #    ports:
-    #      - "5601:5601"
+    ports:
+      - "5601:5601"
     networks:
       - elk
 
@@ -367,11 +492,15 @@ services:
 #    networks:
 #      - monitoring
 volumes:
+  staticfiles: # must do docker compose down -v
   caddy_data:
+    external: true
   caddy_config:
+    external: true
   esdata:
+    external: true
   certs:
-#  static_volume: # instead of doing docker compose down -v...
+    external: true
 
 networks:
   elk:
