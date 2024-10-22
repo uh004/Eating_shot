@@ -126,7 +126,7 @@ html, body {
     border-radius: 20px;
 }
 
-.mini_title status3 {
+.mini_title .status3 {
     background-color: rgb(159, 255, 159);
     color: rgb(0, 123, 0);
     padding: 2px 10px;

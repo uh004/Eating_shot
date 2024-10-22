@@ -22,28 +22,17 @@
                     <p><span>단</span> {{ total_protein }}g</p>
                     <p><span style="background-color: #AAD9BB;">지</span> {{ total_fat }}g</p>
                 </div>
-
-<<<<<<< HEAD
                 <div class="report_img">
                     <img src="{% static 'img/report_diet.png' %}">
                 </div>
 
-                <p class="report_review"><span style="color: white;">300 </span>kcal 더 먹을 수 있어요!</p>
-                <p class="report_review">단백질을 더 섭취해보는 건 어떨까요?</p>
-=======
-                <div style="text-align: center;">
-                    <img src="{% static 'img/report_diet.png' %}" style="padding: 0px 10px;" alt="">
-                </div>
-
                 {% if total_calories > max_calories %}
-                    <p style="font-size: 20px;">너무 많이 먹었어요!</p>
+                    <p class="report_review">너무 많이 먹었어요!</p>
                 {% else %}
-                    <p style="font-size: 20px;">아직<span style="color: white;">
+                    <p class="report_review">아직<span style="color: white;">
                         {{ max_calories|subtract:total_calories }}
                 </span>kcal 더 먹을 수 있어요!</p>
                 {% endif %}
-
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
 
             </div>
 
@@ -63,14 +52,8 @@
             </div>
 
             <div class="blood_report1">
-<<<<<<< HEAD
                 <p class="report_sub_title">오늘 하루 당뇨 지표</p>
                 <br>
-                <div class="mini_title">
-                    <p>혈당 <span class="status">경계</span></p>
-=======
-                <h3>오늘 하루 당뇨 지표</h3>
-
                 <div class="mini_title">
                     {% if max_blood_sugar >= 126 %}
                         <p>혈당 <span class="status">위험</span></p>
@@ -79,23 +62,11 @@
                     {% else %}
                         <p>혈당 <span class="status3">정상</span></p>
                     {% endif %}
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
                 </div>
 
                 <ul class="blood_result">
                     <li>
                         <p class="time">최저</p>
-<<<<<<< HEAD
-                        <p><span>100</span>mg / dL</p>
-                    </li>
-                    <li>
-                        <p class="time">최고</p>
-                        <p><span>100</span>mg / dL</p>
-                    </li>
-                    <li style="border: none;">
-                        <p class="time">평균</p>
-                        <p><span>100</span>mg / dL</p>
-=======
                         <p><span>{{ min_blood_sugar }}</span>mg / dL</p>
                     </li>
                     <li>
@@ -105,14 +76,10 @@
                     <li style="border: none;">
                         <p class="time">평균</p>
                         <p><span>{{ mean_blood_sugar }}</span>mg / dL</p>
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
                     </li>
                 </ul>
 
                 <div class="mini_title">
-<<<<<<< HEAD
-                    <p>혈압 <span class="status2">주의</span></p>
-=======
                     {# max 기준 #}
                     {% if max_blood_pressure_systolic >= 140 or max_blood_pressure_diastolic >= 90 %}
                         <p>혈압 <span class="status">위험</span></p>
@@ -121,23 +88,11 @@
                     {% else %}
                         <p>혈압 <span class="status3">정상</span></p>
                     {% endif %}
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
                 </div>
 
                 <ul class="blood_result">
                     <li>
                         <p class="time">최저</p>
-<<<<<<< HEAD
-                        <p><span>120-80</span> mmHg</p>
-                    </li>
-                    <li>
-                        <p class="time">최고</p>
-                        <p><span>120-80</span> mmHg</p>
-                    </li>
-                    <li style="border: none;">
-                        <p class="time">평균</p>
-                        <p><span>120-80</span> mmHg</p>
-=======
                         <p><span>{{ min_blood_pressure_systolic }}-{{ min_blood_pressure_diastolic }}</span> mmHg</p>
                     </li>
                     <li>
@@ -147,16 +102,10 @@
                     <li style="border: none;">
                         <p class="time">평균</p>
                         <p><span>{{ mean_blood_pressure_systolic }}-{{ mean_blood_pressure_diastolic }}</span> mmHg</p>
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
                     </li>
                 </ul>
 
                 <div class="mini_title">
-<<<<<<< HEAD
-                    <p>당화혈색소 <span class="status2">주의</span></p>
-                </div>
-                <p class="sakso"><span>6.5</span>%</p>
-=======
                     {% if hb1ac >= 7 %}
                         <p>당화혈색소 <span class="status">위험</span></p>
                     {% elif hb1ac >= 6.5 %}
@@ -166,33 +115,14 @@
                     {% endif %}
                 </div>
                 <p class="sakso"><span>{{ hb1ac }}</span>%</p>
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
 
 
             </div>
         </div>
-<<<<<<< HEAD
-                
+
         <div id="tab02" class="contents">
             <div class="diet_report">
                 <p class="report_sub_title">일주일 영양소 섭취량</p>
-
-                <p class="main_info">총 섭취 <span>1200 </span>kcal</p>
-
-                <div class="nutrient">
-                    <p><span style="background-color: #F2F597;">탄</span> 46g</p>
-                    <p><span>단</span> 26g</p>
-                    <p><span style="background-color: #AAD9BB;">지</span> 36g</p>
-                </div>
-
-                <div class="report_img">
-                    <img src="{% static 'img/report_diet.png' %}">
-                </div>
-=======
-
-        <div id="tab02" class="contents">
-            <div class="diet_report">
-                <h3>일주일 영양소 섭취량</h3>
 
                 <p class="main_info">총 섭취 <span>{{ total_calories_week }} </span>kcal</p>
 
@@ -202,11 +132,9 @@
                     <p><span style="background-color: #AAD9BB;">지</span> {{ total_fat_week }}g</p>
                 </div>
 
-                <div style="text-align: center;">
-                    <img src="{% static 'img/report_diet.png' %}" style="padding: 0px 10px;" alt="">
+                <div class="report_img">
+                    <img src="{% static 'img/report_diet.png' %}" alt="">
                 </div>
-
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
 
                 <p class="report_review"><span style="color: white;">300 </span>kcal 더 먹을 수 있어요!</p>
                 <p class="report_review">단백질을 더 섭취해보는 건 어떨까요?</p>
@@ -216,19 +144,12 @@
             <div class="exercise_report">
                 <p class="report_sub_title">일주일 총 운동량</p>
                 
-<<<<<<< HEAD
-                <p class="main_info">총 소모 칼로리 <span>300 </span>kcal</p>
-                <p class="main_info">총 운동 시간 <span>40 </span>분</p>
-
-                <div class="report_img2">
-                    <img src="{% static 'img/report_ex.png' %}">
-=======
                 <p class="main_info">총 소모 칼로리 <span>{{ total_exercise_calories_week }} </span>kcal</p>
                 <p class="main_info">총 운동 시간 <span>{{ total_exercise_time_week }} </span>분</p>
 
-                <div style="text-align: center;">
-                    <img src="{% static 'img/report_ex.png' %}" style="padding: 0px 10px;" alt="">
->>>>>>> a8107559694d0793a496d8042010bbd145d5eb77
+                <div class="report_img2">
+                    <img src="{% static 'img/report_ex.png' %}">
+
                 </div>
 
                 <p class="report_review">현재 당신의 운동량은</p>
