@@ -127,6 +127,16 @@ def load_content(request, menu):
             blood_pressure = BloodPressure.objects.filter(user=request.user)
             hba1c = HbA1c.objects.filter(user=request.user)
 
+            last_day_blood_sugar = BloodSugar.objects.filter(
+                user=request.user, date__gte=datetime.now() - timedelta(days=1)
+            )
+            last_day_blood_pressure = BloodPressure.objects.filter(
+                user=request.user, date__gte=datetime.now() - timedelta(days=1)
+            )
+            last_day_hba1c = HbA1c.objects.filter(
+                user=request.user, date__gte=datetime.now() - timedelta(days=1)
+            )
+
             context["max_calories"] = 0
             # not used
             context["max_carbohydrates"] = 0
@@ -268,18 +278,8 @@ def load_content(request, menu):
                     ]
                 )
 
-            if len(blood_sugar) > 0:
+            if len(last_day_blood_sugar) > 0:
                 # blood data for today(under 24 hours)
-                blood_sugar = BloodSugar.objects.filter(
-                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
-                )
-                blood_pressure = BloodPressure.objects.filter(
-                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
-                )
-                hba1c = HbA1c.objects.filter(
-                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
-                )
-
                 mean_blood_sugar = sum(
                     [data.blood_sugar for data in blood_sugar]
                 ) / len(blood_sugar)
@@ -290,8 +290,8 @@ def load_content(request, menu):
                 context["max_blood_sugar"] = max_blood_sugar
                 context["min_blood_sugar"] = min_blood_sugar
 
-            if len(blood_pressure) > 0:
-                # mean_blood_pressure: blood pressure instances which
+            if len(last_day_blood_pressure) > 0:
+                # blood data for today(under 24 hours)
                 mean_blood_pressure_systolic = sum(
                     [data.systolic for data in blood_pressure]
                 ) / len(blood_pressure)
@@ -321,7 +321,8 @@ def load_content(request, menu):
                 context["min_blood_pressure_systolic"] = min_blood_pressure_systolic
                 context["min_blood_pressure_diastolic"] = min_blood_pressure_diastolic
 
-            if len(hba1c) > 0:
+            if len(last_day_hba1c) > 0:
+                # blood data for today(under 24 hours)
                 context["hb1ac"] = hba1c[0].hba1c  # only one data per day
 
         case "diet":
@@ -509,7 +510,7 @@ def update_meal(request, meal_id, existing_food_name):
 
     :param request:
     :param meal_id: target meal id
-    :param nutrient_name: target nutrient name
+    :param existing_food_name: target nutrient name
     :return:
     """
     try:
