@@ -13,6 +13,9 @@ eatingshot.jonngwanma.de {
 }
 
 localhost:8080 {
+    tls internal {
+        on_demand
+    }
     reverse_proxy http://djangoapp:8000
 
     handle_path /photos/* {

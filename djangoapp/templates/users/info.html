@@ -17,19 +17,19 @@
                         <label>키와 체중을 입력해주세요</label>
                         <div style="display: flex;" class="kgcm">
                             
-                                <input type="number" name="{{ form.height.name }}" placeholder="cm"
+                            <input type="number" name="{{ form.height.name }}" placeholder="cm"
                                     {% if form.height.errors %}
-                                    class="general-error" {% endif %}>
+                                   class="general-error" {% endif %}>
                             
                             
-                                <input type="number" name="{{ form.weight.name }}" placeholder="kg"
-                                       {% if form.weight.errors %}class="general-error"{% endif %}>
-                            
+                            <input type="number" name="{{ form.weight.name }}" placeholder="kg"
+                                   {% if form.weight.errors %}class="general-error"{% endif %}>
+
                         </div>
 
                         <label>생년월일을 입력해주세요</label>
                         <input type="date" name="{{ form.birthdate.name }}"
-                                   {% if form.birthdate.errors %}class="general-error"{% endif %}>
+                               {% if form.birthdate.errors %}class="general-error"{% endif %}>
 
                         <label>성별을 선택해주세요</label>
                         {% if form.gender.errors %}
@@ -135,6 +135,26 @@
             integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if the browser supports notifications and service workers
+            if ('Notification' in window && 'serviceWorker' in navigator) {
+                // Add event listener to the form submission
+                const form = document.querySelector('form');
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault(); // Prevent the default form submission
+
+                    // Request permission to show notifications
+                    Notification.requestPermission().then(permission => {
+                        if (permission === 'granted') {
+                            console.log('Permission granted');
+                            form.submit(); // Submit the form
+                        } else {
+                            alert('원활한 서비스 이용을 위해 알림 권한을 허용해주세요.');
+                        }
+                    });
+                });
+            }
+        });
         $(document).ready(function () {
             let now = 1;
 
@@ -161,14 +181,6 @@
                     $('#chara').css('visibility', 'visible');
                     $('#next').css('visibility', 'visible');
                 }
-                /*
-                if (now == 1) {
-                    window.location.href =
-
-                {% url 'register' %}
-                }
-                */
-
             });
 
             function updateButtons() {
@@ -206,5 +218,6 @@
             });
 
         });
+
     </script>
 {% endblock %}

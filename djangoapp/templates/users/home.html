@@ -9,6 +9,7 @@
 
 {% block content %}
     <div class="main_container" id="main">
+        <!--<div id="notification-status">Permission: <span id="permission-status"></span></div>-->
         <div class="menu">
             <img src="{% static 'img/logo.jpg' %}" width="100px" alt="" id="menu_logo">
             <ul>
@@ -27,93 +28,155 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
-    <script src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
-    <script>
-        const userId = '{{ request.user.id }}';  // Assuming you're passing the user ID to the template
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
+<script src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
+<script>
+    const userId = '{{ request.user.id }}';  // Assuming you're passing the user ID to the template
 
-        const es = new ReconnectingEventSource(`/events/?channel=alarms&user_id=${userId}`);
+    const sse = new EventSource(`/events/?channel=alarms&user_id=${userId}`);
 
-        es.onopen = function () {
-            console.log('connection open');
-        };
-
-        es.onerror = function () {
-            console.log('connection error');
-        };
-
-        es.addEventListener('stream-reset', function (e) {
-            e = JSON.parse(e.data);
-            console.log('stream reset: ' + JSON.stringify(e.channels));
-        }, false);
-
-        es.addEventListener('stream-error', function (e) {
-            // hard stop
-            es.close();
-            e = JSON.parse(e.data);
-            console.log('stream error: ' + JSON.stringify(e));
-        }, false);
-
-        es.addEventListener('test_alarm', function (e) {
-            console.log('message: ' + e.data);
-        }, false);
-
-    {#let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');#}
-
-    $(document).ready(function () {
-    let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
-    let previousTab = null;
-    const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
-
-    $(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the current menu
-
-    function loadContent(tabIndex) {
-    const insert = $('#insert');
-    $.ajax({
-    url: `/load_content/${arr[tabIndex]}/`,
-    success: function (data) {
-    insert.empty().html(data); // Clear previous content and load new content
-    if (previousTab !== null) {
-    console.log(`Purge ${arr[previousTab]}.js`); // Log the previous page
-    insert.off(); // Remove previously attached event handlers
-    }
-    clearScripts(); // Clear previously loaded scripts
-    loadScript(arr[tabIndex]); // Load the corresponding script
-    console.log(`Load ${arr[tabIndex]}.js`); // Log the current page
-    }
+    // request noficication permission every click on every element under document
+    document.addEventListener('click', function () {
+        Notification.requestPermission().then(function (permission) {
+            console.log('Notification permission:', permission);
+            updateNotificationStatus();
+        });
     });
+
+    function updateNotificationStatus() {
+        // const statusElement = document.getElementById('permission-status');
+        // statusElement.textContent = Notification.permission;
     }
 
-    function loadScript(tabName) {
-    const scriptUrl = `{% static 'js/' %}${tabName}.js`;
-    $.getScript(scriptUrl)
-    .done(function (script, textStatus) {
-    console.log(`${tabName}.js loaded successfully`);
-    })
-    .fail(function (jqxhr, settings, exception) {
-    console.error(`Failed to load ${tabName}.js`);
-    });
+    updateNotificationStatus();
+
+    sse.onopen = function () {
+        console.log('connection open');
+    };
+/*
+ * The event "message" is a special case, as it
+ * will capture events without an event field
+ * as well as events that have the specific type
+ * `event: message` It will not trigger on any
+ * other event type.
+ */
+function showNotification(title, options) {
+    console.log('Notification permission:', Notification.permission);
+    if (Notification.permission === 'granted') {
+        navigator.serviceWorker.ready.then(function (registration) {
+            registration.showNotification(title, options);
+        });
     }
+}
 
-    function clearScripts() {
-    $('script[src*="{% static 'js/' %}"]').remove(); // Remove previously loaded scripts
-    }
+sse.addEventListener('test_alarm', function (e) {
+    const data = JSON.parse(e.data);
+    const title = data.title;
+    const options = {
+        body: data.message,
+        icon: '/static/images/icons/icon-128x128.png'
+    };
+    showNotification(title, options);
+});
 
-    loadContent(now);
+   /*
+    // Connect to the SSE URL
+    const es = new ReconnectingEventSource(`/events/?channel=alarms&user_id=${userId}`);
 
-    $('ul li').on('click', function () {
-    $(`#menu${now} img`).css('background-color', ''); // Reset previous menu background
-    previousTab = now;
-    now = $(this).attr('id').replace('menu', '');
-    localStorage.setItem('currentTab', now);  // Save the current tab index
-    $(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the new menu
-    loadContent(now);
+    es.onopen = function () {
+        console.log('connection open');
+    };
+
+    es.onerror = function () {
+        console.log('connection error');
+    };
+
+    es.addEventListener('stream-reset', function (e) {
+        e = JSON.parse(e.data);
+        console.log('stream reset: ' + JSON.stringify(e.channels));
+    }, false);
+
+    es.addEventListener('stream-error', function (e) {
+        // hard stop
+        es.close();
+        e = JSON.parse(e.data);
+        console.log('stream error: ' + JSON.stringify(e));
+    }, false);
+
+    es.addEventListener('test_alarm', function (e) {
+        console.log('message: ' + e.data);
+        const data = JSON.parse(e.data);
+
+        console.log('Notification permission:', Notification.permission);
+
+        if (Notification.permission === 'granted') {
+            // Show a notification
+            navigator.serviceWorker.ready.then(registration => {
+                registration.showNotification(data.title, {
+                    body: data.message,
+                    icon: '/static/images/icons/icon-128x128.png'
+                });
+            });
+        } else {
+            console.log('Notification permission not granted.');
+        }
     });
-    });
-    </script>
+    */
+
+$(document).ready(function () {
+let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
+let previousTab = null;
+const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
+
+$(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the current menu
+
+function loadContent(tabIndex) {
+const insert = $('#insert');
+$.ajax({
+url: `/load_content/${arr[tabIndex]}/`,
+success: function (data) {
+insert.empty().html(data); // Clear previous content and load new content
+if (previousTab !== null) {
+console.log(`Purge ${arr[previousTab]}.js`); // Log the previous page
+insert.off(); // Remove previously attached event handlers
+}
+clearScripts(); // Clear previously loaded scripts
+loadScript(arr[tabIndex]); // Load the corresponding script
+console.log(`Load ${arr[tabIndex]}.js`); // Log the current page
+}
+});
+}
+
+function loadScript(tabName) {
+const scriptUrl = `{% static 'js/' %}${tabName}.js`;
+$.getScript(scriptUrl)
+.done(function (script, textStatus) {
+console.log(`${tabName}.js loaded successfully`);
+})
+.fail(function (jqxhr, settings, exception) {
+console.error(`Failed to load ${tabName}.js`);
+});
+}
+
+function clearScripts() {
+$('script[src*="{% static 'js/' %}"]').remove(); // Remove previously loaded scripts
+}
+
+loadContent(now);
+
+$('ul li').on('click', function () {
+$(`#menu${now} img`).css('background-color', ''); // Reset previous menu background
+previousTab = now;
+now = $(this).attr('id').replace('menu', '');
+localStorage.setItem('currentTab', now);  // Save the current tab index
+$(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the new menu
+loadContent(now);
+});
+});
+</script>
 {% endblock %}
 
