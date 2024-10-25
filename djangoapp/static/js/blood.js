@@ -14,7 +14,7 @@ function deleteBoard(num, id) {
             fetch(`/delete/blood${num}/${id}/`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRFToken': csrfToken
+                    'X-CSRFToken': document.querySelector('[name=csrf-token]').content
                 }
             })
                 .then(response => {
