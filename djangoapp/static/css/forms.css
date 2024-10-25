@@ -66,7 +66,7 @@ html, body {
 }
 
 /* 태블릿 사이즈 */
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 768px) {
     .login_forms, .register_form {
         padding: 4%;
         width: 60%;

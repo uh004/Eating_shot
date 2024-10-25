@@ -11,7 +11,7 @@
         <img src="{% static 'img/profile.png' %}" alt="">
         <div class="profile_detail">
             <p class="nickname">{{ user_info.username }}</p>
-            <div>
+            <div style="display: flex;">
                 <p id="modify_myinfo" onclick="window.location.href = {% url 'mypage_revise_form' %}">내 정보 수정하기</p>
                 <p id="logout" onclick="window.location.href = {% url 'logout' %}">로그아웃</p>
             </div>

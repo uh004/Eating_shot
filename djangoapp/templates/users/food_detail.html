@@ -4,20 +4,21 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/diet.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
 
 {% csrf_token %}
 <div class="main_container2">
     <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'index' %}'" alt="" class="back">
     <div class="meal_info2">
-        <h2>아침</h2>
+        <p class="eat_time">아침</p>
         <div class="meal_revise">
             <button type="button" onclick="window.location.href = '{% url 'diet_form_edit' meal.id %}'">수정
             </button>
             <button type="button" onclick="deleteBoard({{ meal.id }})">삭제</button>
         </div>
 
-        <img src="/photos/{{ meal.image.name }}" alt="">
+        <img src="{% static 'img/sigpan.jpg' %}" alt="">
         <p class="topic">식단 영양소 정보</p>
         <hr>
 

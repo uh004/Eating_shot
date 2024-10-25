@@ -2,17 +2,18 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/diet.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
 
 <div class="main_container" id="main">
     <div class="deco">
         <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
         {% if form.instance.pk %}
-            <h2>식단 기록 수정하기</h2>
+            <p class="form_title">식단 기록 수정하기</p>
         {% else %}
-            <h2>식단 기록하기</h2>
+            <p class="form_title">식단 기록하기</p>
         {% endif %}
-        <p style="margin: 10px;">보다 자세한 결과를 위해!</p>
+
         <img src="{% static 'img/diet_form.png' %}" class="deco_chara">
     </div>
     
@@ -23,7 +24,7 @@
             <div class="error-message">이 필드는 필수 항목입니다.</div>
         {% endif %}
         {#        {{ form.meal_type }}#}
-        <div class="mealtimes" style="display: flex; justify-content: space-between;">
+        <div class="mealtimes">
             <p>먹은 시간</p>
 
             <div class="check_meal_time">
@@ -42,7 +43,7 @@
 
         <div class="upload-box" onclick="document.getElementById('chooseFile').click();">
             <div id="drop-file" class="drag-file">
-                <img src="{% static 'img/salad.png' %}" width="40px" height="40px" alt="">
+                <img src="{% static 'img/salad.png' %}" class="photo_input_img">
                 <label class="file-label" for="chooseFile" style="margin-top: 0;"
                        {% if form.image.errors %}class="error-message"{% endif %}>식단 사진을 업로드해주세요.</label>
                 <img src="" alt="미리보기 이미지" class="preview" id="image_preview">

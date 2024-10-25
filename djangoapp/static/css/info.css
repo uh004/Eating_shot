@@ -32,7 +32,7 @@ html, body {
     margin-top: 5%;
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
+@media (min-width: 768px) {
 
     .forms .slide {
         width: 88%;

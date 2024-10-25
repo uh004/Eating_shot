@@ -26,8 +26,7 @@ html, body {
 }
 
 .banner2 {
-    max-width: 480px;
-    max-height: 960px;
+    width: 100%;
     margin: 0 auto;
     background-size: contain;
     background-repeat: no-repeat;
@@ -39,36 +38,271 @@ html, body {
     display: none;
 }
 
-.blood_btn {
-    width: 100%;
-    height: 15%;
-    background-color: #00BCD4;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
-    color: white;
-    display: flex;
-    border: none;
-    margin-bottom: 4%;
+@media all and (max-width: 479px) { 
+
+    .blood_btn {
+        width: 100%;
+        height: 15%;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
+        color: white;
+        display: flex;
+        border: none;
+        margin-bottom: 4%;
+    }
+
+    .blood_btn img {
+        width: 10%;
+        margin: 2.5% 2.5% 2.5% 1%;
+    }
+    
+    .blood_btn p {
+        font-size: 16px;
+        margin: 0px;
+        line-height: 48px;
+    }
+
+    .blood {
+        height: 15%;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
+        justify-content: space-between;
+        display: flex;
+        padding: 1% 4%;
+        margin-bottom: 3%;
+    }
+    
+    .blood button {
+        margin: 15px 0px;
+        background:transparent;
+        color: gray;
+        border: none;
+        padding: 1px 0px 1px 6px;
+    }
+
+    .popup-content3 {
+        width: 71%;
+        height: 66%;
+        padding: 1% 6%;
+        border-radius: 5px;
+        margin: 0 0 0 129%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        background-color: white;
+    }
+
+    .popup-content3 li {
+        list-style-type: none;
+        font-size: 16px;
+        margin: 15% 0%;
+    }
+
+    #blood {
+        max-height: 85%;
+        overflow: scroll;
+    }
+
+    .plus img {
+        width: 60%;
+        border: none;
+        background: transparent;
+        float: right;
+    }
+
+    .plus {
+        position: absolute;
+        bottom: 24px;
+        right: 10px;
+        border: none;
+        background: transparent;
+        margin: 40px 0px 40px 10px;
+    }
+
+    .deco {
+        background-color: #006D83;
+        padding: 0 4%;
+    }    
+    
+    .form_title {
+        text-align: center;
+        margin: 0 0 3% 0;
+        font-size: 1.2rem;
+    }
+    
+    .back {
+        width: 10%;
+        padding: 10px 0px 8px 0px;
+    }
+
+    input {
+        background-color: #F2F4F5;
+        border: none;
+        width: 96%;
+        height: 60px;
+        border-radius: 15px;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    form {
+        padding: 4%
+    }
 }
 
-.blood_btn img {
-    width: 10%;
-    margin: 2.5% 2.5% 2.5% 1%;
+@media (min-width: 768px) { 
+
+    .form_title {
+        text-align: center;
+        margin: 0 0 3% 0;
+        font-size: 1.7rem;
+    }
+
+    form {
+        padding: 4% 15%;
+        text-align: center;
+    }
+
+    .deco {
+        background-color: #006D83;
+        padding: 0 4%;
+    }
+    
+    .deco h2 {
+        text-align: center;
+        margin: 20px 0px;
+        color: white;
+    }
+    
+    .back {
+        width: 6%;
+        padding: 2% 0px 2% 0px;
+    }
+
+    .plus {
+        position: absolute;
+        bottom: 13px;
+        right: 10px;
+        border: none;
+        background: transparent;
+        margin: 40px 9px 40px 10px;
+    }
+
+    .plus img {
+        width: 110%;
+        border: none;
+        background: transparent;
+        float: right;
+    }
+
+    .blood_btn {
+        width: 100%;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
+        color: white;
+        display: flex;
+        border: none;
+        padding: 1%;
+        margin-bottom: 3%;
+    }
+
+    .blood_btn img {
+        width: 5%;
+        margin: 1.5% 1%;
+    }
+    
+    .blood_btn p {
+        font-size: 1.5rem;
+        margin: auto 1%;
+    }
+
+    .blood {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
+        justify-content: space-between;
+        display: flex;
+        padding: 1.5% 4%;
+        margin-bottom: 3%;
+        font-size: 1.5rem;
+    }
+    
+    .blood button {
+        margin: 15px 0px;
+        background:transparent;
+        color: gray;
+        border: none;
+        padding: 1px 0px 1px 6px;
+        font-size: 1.5rem;
+    }
+
+    .popup-content3 {
+        width: 50%;
+        height: 55%;
+        padding: 4% 5%;
+        border-radius: 5px;
+        margin: 28% 0 0 155%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        background-color: white;
+    }
+
+    .popup-content3 li {
+        list-style-type: none;
+        font-size: 1.5rem;
+        margin: 15% 0%;
+    }
+
+    #blood {
+        max-height: 85%;
+        overflow: scroll;
+        padding: 1%;
+    }
+
+    input {
+        background-color: #F2F4F5;
+        border: none;
+        width: 100%;
+        border-radius: 15px;
+        font-size: 1.7rem;
+        margin-bottom: 4%;
+        padding: 4%;
+    }
+
+    input[type="submit"] {
+        background-color: #006D83;
+        border: none;
+        width: 99%;
+        border-radius: 20px;
+        padding: 4%;
+        font-size: 1.7rem;
+        margin: 0 auto;
+        color: white;
+    }
+
+    .blood_result {
+        font-size: 2rem;
+        padding: 8% 0;
+        text-align: center;
+    }
+
+    .danger-message {
+        font-size: 2rem;
+        color: green;
+    }
+
 }
 
-.blood_btn p {
-    font-size: 16px;
-    margin: 0px;
-    line-height: 48px;
+.deco .deco_chara {
+    bottom: 0;
+    width: 30%;
+    display: block;
+    margin: 0 auto;
 }
 
 #for_indicator_info1, #for_indicator_info2, #for_indicator_info3 {
     display: none;
-}
-
-#blood {
-    max-height: 85%;
-    overflow: scroll;
 }
 
 #blood::-webkit-scrollbar {
@@ -92,97 +326,12 @@ html, body {
     transition: visibility 0s, opacity 0.5s ease;
 }
 
-.popup-content3 {
-    width: 80%;
-    height: 70%;
-    padding: 5% 10%;
-    border-radius: 5px;
-    margin: 0 0 0 110%;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    background-color: white;
-}
-
 .popup-content3 ul {
     padding: 0;
     margin: 0px;
 }
 
-.popup-content3 li {
-    list-style-type: none;
-    font-size: 1.2rem;
-    margin: 15% 0%;
-}
-
-.plus {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    border: none;
-    background: transparent;
-    margin: 40px 0px 40px 10px;
-}
-
-.blood {
-    height: 15%;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
-    justify-content: space-between;
-    display: flex;
-    padding: 1% 4%;
-    margin-bottom: 3%;
-}
-
-.blood button {
-    margin: 15px 0px;
-    background:transparent;
-    color: gray;
-    border: none;
-    padding: 1px 0px 1px 6px;
-}
-
 /* blood_form css */
-
-form {
-    padding: 30px;
-}
-
-.deco {
-    background-color: #006D83;
-    height: 220px;
-    padding: 0px 20px;
-}
-
-.deco h2 {
-    text-align: center;
-    margin: 20px 0px;
-    color: white;
-}
-
-.deco .deco_chara {
-    bottom: 0;
-    width: 150px;
-    height: 98px;
-    display: block; 
-    margin: 0 auto;
-}
-
-.back {
-    width:36px;
-    height:36px;
-    padding: 10px 0px 8px 0px;
-}
-
-input {
-    background-color: #F2F4F5;
-    border: none;
-    width: 420px;
-    height: 60px;
-    border-radius: 15px;
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 20px;
-}
 
 input#blood_1 {
     height: 100px;
@@ -230,16 +379,4 @@ select {
     margin: 0px;
     line-height: 80px;
     color: #979CA9;
-}
-
-input[type="submit"] {
-    background-color: #006D83;
-    border: none;
-    width: 420px;
-    height: 60px;
-    border-radius: 30px;
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 30px;
-    color: white;
 }

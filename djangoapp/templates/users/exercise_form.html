@@ -5,13 +5,14 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
 
 <div class="main_container" id="main">
     <div class="deco">
         <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'exercise_list' %}'" class="back">
-        <h2>{{ exercise_name }}</h2>
-        <p>유산소</p>
+        <p class="ex_title">{{ exercise_name }}</p>
+        <p class="ex_type2">유산소</p>
         <img src="{% static 'img/exercise_form.png' %}" class="deco_chara">
     </div>
     

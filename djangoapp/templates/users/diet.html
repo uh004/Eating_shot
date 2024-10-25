@@ -36,17 +36,17 @@
         <div class="all_meal">
             {% for meal in meals %}
             <div class="meals">
-            <button type="button" style="display: flex;" class="meals_btn"
+                <button type="button" style="display: flex;" class="meals_btn"
                     onclick="window.location.href = '{% url 'food_detail' meal.id %}'">
                 <img src="/photos/{{ meal.image.name }}" alt="">
                 <div class="img_info">
                     <p id="meal_type">{{ meal.meal_type }}
                         (<span>{{ meal_calories|get_item:meal.id }}</span> kcal)</p>
-                    <p id="meal_detail" style="font-size: 14px;">{{ meal.result.result_names_comma_separated }}</p>
+                    <p id="meal_detail">{{ meal.result.result_names_comma_separated }}</p>
                 </div>
-
-            </button>
-        {% endfor %}
+                </button>
+            </div>
+            {% endfor %}
         </div>
 
         <button type="button" class="plus">
@@ -55,4 +55,3 @@
                  alt="">
         </button>
     </div>
-</div>
