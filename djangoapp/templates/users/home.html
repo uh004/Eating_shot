@@ -28,9 +28,8 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script src="{% static 'django_eventstream/eventsource.min.js' %}"></script>
 <script src="{% static 'django_eventstream/reconnecting-eventsource.js' %}"></script>
@@ -57,31 +56,31 @@
     sse.onopen = function () {
         console.log('connection open');
     };
-/*
- * The event "message" is a special case, as it
- * will capture events without an event field
- * as well as events that have the specific type
- * `event: message` It will not trigger on any
- * other event type.
- */
-function showNotification(title, options) {
-    console.log('Notification permission:', Notification.permission);
-    if (Notification.permission === 'granted') {
-        navigator.serviceWorker.ready.then(function (registration) {
-            registration.showNotification(title, options);
-        });
+    /*
+     * The event "message" is a special case, as it
+     * will capture events without an event field
+     * as well as events that have the specific type
+     * `event: message` It will not trigger on any
+     * other event type.
+     */
+    function showNotification(title, options) {
+        console.log('Notification permission:', Notification.permission);
+        if (Notification.permission === 'granted') {
+            navigator.serviceWorker.ready.then(function (registration) {
+                registration.showNotification(title, options);
+            });
+        }
     }
-}
 
-sse.addEventListener('test_alarm', function (e) {
-    const data = JSON.parse(e.data);
-    const title = data.title;
-    const options = {
-        body: data.message,
-        icon: '/static/images/icons/icon-128x128.png'
-    };
-    showNotification(title, options);
-});
+    sse.addEventListener('test_alarm', function (e) {
+        const data = JSON.parse(e.data);
+        const title = data.title;
+        const options = {
+            body: data.message,
+            icon: '/static/images/icons/icon-128x128.png'
+        };
+        showNotification(title, options);
+    });
 
    /*
     // Connect to the SSE URL
@@ -127,56 +126,56 @@ sse.addEventListener('test_alarm', function (e) {
     });
     */
 
-$(document).ready(function () {
-let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
-let previousTab = null;
-const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
+    $(document).ready(function () {
+    let now = localStorage.getItem('currentTab') || 1;  // Get the saved tab index or default to 1
+    let previousTab = null;
+    const arr = ['', 'diet', 'exercise', 'blood', 'report', 'mypage'];
 
-$(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the current menu
+    $(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the current menu
 
-function loadContent(tabIndex) {
-const insert = $('#insert');
-$.ajax({
-url: `/load_content/${arr[tabIndex]}/`,
-success: function (data) {
-insert.empty().html(data); // Clear previous content and load new content
-if (previousTab !== null) {
-console.log(`Purge ${arr[previousTab]}.js`); // Log the previous page
-insert.off(); // Remove previously attached event handlers
-}
-clearScripts(); // Clear previously loaded scripts
-loadScript(arr[tabIndex]); // Load the corresponding script
-console.log(`Load ${arr[tabIndex]}.js`); // Log the current page
-}
-});
-}
+    function loadContent(tabIndex) {
+    const insert = $('#insert');
+    $.ajax({
+    url: `/load_content/${arr[tabIndex]}/`,
+    success: function (data) {
+    insert.empty().html(data); // Clear previous content and load new content
+    if (previousTab !== null) {
+    console.log(`Purge ${arr[previousTab]}.js`); // Log the previous page
+    insert.off(); // Remove previously attached event handlers
+    }
+    clearScripts(); // Clear previously loaded scripts
+    loadScript(arr[tabIndex]); // Load the corresponding script
+    console.log(`Load ${arr[tabIndex]}.js`); // Log the current page
+    }
+    });
+    }
 
-function loadScript(tabName) {
-const scriptUrl = `{% static 'js/' %}${tabName}.js`;
-$.getScript(scriptUrl)
-.done(function (script, textStatus) {
-console.log(`${tabName}.js loaded successfully`);
-})
-.fail(function (jqxhr, settings, exception) {
-console.error(`Failed to load ${tabName}.js`);
-});
-}
+    function loadScript(tabName) {
+    const scriptUrl = `{% static 'js/' %}${tabName}.js`;
+    $.getScript(scriptUrl)
+    .done(function (script, textStatus) {
+    console.log(`${tabName}.js loaded successfully`);
+    })
+    .fail(function (jqxhr, settings, exception) {
+    console.error(`Failed to load ${tabName}.js`);
+    });
+    }
 
-function clearScripts() {
-$('script[src*="{% static 'js/' %}"]').remove(); // Remove previously loaded scripts
-}
+    function clearScripts() {
+    $('script[src*="{% static 'js/' %}"]').remove(); // Remove previously loaded scripts
+    }
 
-loadContent(now);
+    loadContent(now);
 
-$('ul li').on('click', function () {
-$(`#menu${now} img`).css('background-color', ''); // Reset previous menu background
-previousTab = now;
-now = $(this).attr('id').replace('menu', '');
-localStorage.setItem('currentTab', now);  // Save the current tab index
-$(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the new menu
-loadContent(now);
-});
-});
+    $('ul li').on('click', function () {
+    $(`#menu${now} img`).css('background-color', ''); // Reset previous menu background
+    previousTab = now;
+    now = $(this).attr('id').replace('menu', '');
+    localStorage.setItem('currentTab', now);  // Save the current tab index
+    $(`#menu${now} img`).css('background-color', '#00BCD4'); // Highlight the new menu
+    loadContent(now);
+    });
+    });
 </script>
 {% endblock %}
 
