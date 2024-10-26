@@ -9,9 +9,9 @@
     <div class="deco">
         <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
         {% if form.instance.pk %}
-            <h2>혈압 기록 수정하기</h2>
+            <p class="form_title">혈압 기록 수정하기</p>
         {% else %}
-            <h2>혈압 기록하기</h2>
+            <p class="form_title">혈압 기록하기</p>
         {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
@@ -25,14 +25,14 @@
             <p>{{ form.systolic.label }}</p>
             <input type="number" name="{{ form.systolic.name }}" id="blood_2" placeholder="120"
                    value="{{ form.systolic.value }}" {% if form.systolic.errors %}class="general-error"{% endif %}>
-            <p style="width: 110px;">mmHg</p>
+            <p>mmHg</p>
         </div>
         
         <div class="blood_sugar">
             <p>{{ form.diastolic.label }}</p>
             <input type="number" name="{{ form.diastolic.name }}" id="blood_3" placeholder="80"
                    value="{{ form.diastolic.value }}" {% if form.diastolic.errors %}class="general-error"{% endif %}>
-            <p style="width: 110px;">mmHg</p>
+            <p>mmHg</p>
         </div>
 
         {% if form.errors %}
@@ -40,8 +40,7 @@
             <div class="error-message">{{ form.diastolic.errors }}</div>
         {% endif %}
 
-        <p style="font-size: 20px; padding: 40px 0; text-align: center;">혈압 수치는 <span class="danger-message" style="color: orange; 
-        font-size: 25px;">주의</span>입니다.</p>
+        <p class="blood_result">혈압 수치는 <span class="danger-message" style="color: orange;">주의</span>입니다.</p>
         
         <input type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}"/>
     </form>

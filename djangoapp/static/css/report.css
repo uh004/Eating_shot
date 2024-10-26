@@ -13,7 +13,7 @@ html, body {
     overflow: hidden; /* 슬라이드 내부에서 스크롤이 필요한 경우에만 스크롤 */
     padding: 0 4%;
     color: black;
-    height: 100%;
+    height: 108%;
 }
 
 .contents {
@@ -26,13 +26,347 @@ html, body {
     display: none;
 }
 
-.diet_report {
-    height: 30%;
-    padding: 3% 6%;
-    background-color: #82C8D2;
-    border-radius: 30px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
-    margin-bottom: 20px;
+
+
+@media (min-width: 768px) {
+
+    .tabcontent label {
+        font-size: 2rem;
+    }
+
+    input[type="radio"] + label {
+        display: inline-block;
+        padding: 3% 0;
+        width: 49.5%;
+        text-align: center;
+        border-top: 5px solid white;
+    }
+
+    .diet_report {
+        padding: 3% 20%;
+        background-color: #82C8D2;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+        margin-bottom: 4%;
+    }
+
+    .main_info {
+        font-size: 2.5rem;
+        text-align: center;
+        margin: 2%;
+    }
+    
+    .main_info span {
+        font-size: 2.5rem;
+        color: white;
+    }
+
+    .nutrient {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 9%;
+    }
+    
+    .nutrient p {
+        font-size: 2.5rem;
+        margin-top: 2%;
+    }
+    
+    .nutrient span {
+        background-color: white;
+        border-radius: 70px;
+        padding: 3px 7px;
+        font-size: 2.5rem;
+    }
+
+    .exercise_report {
+        padding: 3% 15%;
+        background-color: #82C8D2;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+        margin-bottom: 4%;
+    }
+    
+    .report_review {
+        margin: 3%;
+        text-align: center;
+        font-size: 2rem;
+    }
+
+    .food_type_count li p {
+        margin: 2% 0;
+        font-size: 2rem;
+    }
+    
+    .food_type_count li img {
+        width: 36%;
+    }
+    
+    .food_type_count .count {
+        font-size: 2.2rem;
+        color: #236771;
+    }
+
+    .food_type_count ul{
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        width: 100%;
+        margin: 0 0 3% 0;
+    }
+
+    .ex_type_count li p {
+        margin: 2% 0;
+        font-size: 2rem;
+    }
+    
+    .ex_type_count li img {
+        width: 36%;
+    }
+    
+    .ex_type_count .count {
+        font-size: 2.2rem;
+        color: #236771;
+    }
+
+    .ex_type_count ul{
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        width: 80%;
+        margin: 4% auto;
+    }
+
+    .blood_report1 {
+        padding: 3% 20%;
+        background-color: #82C8D2;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+    }
+    
+    .blood_report2 {
+        padding: 3% 20%;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+        background-color: #82C8D2;
+    }
+
+    .blood_report1 p {
+        margin: 3% 0;
+        font-size: 2rem;
+    }
+
+    /* .blood_result p {
+        color: black;
+        font-size: 2rem;
+        text-align: center;
+    } */
+
+    .blood_result li {
+        list-style-type: none;
+        font-size: 2rem;
+        border-right: 3px solid gray;
+        text-align: center;
+        width: 32%;
+    }
+
+    .sakso {
+        background-color: white;
+        text-align: center;
+        padding: 3% 0;
+        border-radius: 10px;
+    }
+
+    select {
+        border: none;
+        border-radius: 15px;
+        width: 100%;
+        padding: 2%;
+        font-size: 2rem;
+        margin-bottom: 4%;
+    }
+}
+
+@media all and (max-width: 479px) { 
+
+    select {
+        border: none;
+        border-radius: 15px;
+        width: 100%;
+        padding: 10px;
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .sakso {
+        background-color: white;
+        text-align: center;
+        padding: 10px 0px;
+        border-radius: 10px;
+    }
+
+    .blood_result li {
+        list-style-type: none;
+        font-size: 0.9rem;
+        border-right: 3px solid gray;
+        text-align: center;
+        width: 32%;
+    }
+
+    .blood_result p {
+        color: black;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .blood_report1 p {
+        margin: 5px 5px 5px 0px;
+    }
+
+    .blood_report1 {
+        height: 30%;
+        padding: 3% 6%;
+        background-color: #82C8D2;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+    }
+    
+    .blood_report2 {
+        height: 30%;
+        padding: 3% 6%;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+        background-color: #82C8D2;
+    }
+
+    .ex_type_count ul{
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        width: 80%;
+        margin: 0 auto 4% auto;
+    }
+
+    .ex_type_count li p {
+        margin: 2% 0;
+        font-size: 1rem;
+    }
+    
+    .ex_type_count li img {
+        width: 36%;
+    }
+    
+    .ex_type_count .count {
+        font-size: 1.2rem;
+        color: #236771;
+    }
+
+    .food_type_count ul{
+        display: flex;
+        justify-content: space-between;
+        padding: 0;
+        width: 100%;
+    }
+
+    .food_type_count li p {
+        margin: 2% 0;
+        font-size: 1rem;
+    }
+    
+    .food_type_count li img {
+        width: 36%;
+    }
+    
+    .food_type_count .count {
+        font-size: 1.2rem;
+        color: #236771;
+    }
+
+    .report_review {
+        margin: 3%;
+        text-align: center;
+    }
+
+    .exercise_report {
+        height: 30%;
+        padding: 3% 6%;
+        background-color: #82C8D2;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+        margin-bottom: 20px;
+    }    
+
+    .nutrient {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 20px;
+    }
+    
+    .nutrient p {
+        font-size: 1.2rem;
+        margin: 2%;
+    }
+    
+    .nutrient span {
+        background-color: white;
+        border-radius: 70px;
+        padding: 3px 7px;
+    }
+
+    .main_info {
+        font-size: 1.2rem;
+        text-align: center;
+        margin: 10px;
+    }
+    
+    .main_info span {
+        font-size: 1.2rem;
+        color: white;
+    }
+
+    input[type="radio"] + label {
+        display: inline-block;
+        color: black;
+        cursor: pointer;
+        padding: 4% 0;
+        width: 49%;
+        text-align: center;
+        border-top: 5px solid white;
+    }
+
+    .diet_report {
+        height: 30%;
+        padding: 3% 6%;
+        background-color: #82C8D2;
+        border-radius: 30px;
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
+        margin-bottom: 20px;
+    }
+}
+
+.report_review span {
+    color: #F2F597;
+}
+
+.food_type_count li{
+    list-style-type: none;
+    text-align: center;
+    background-color: white;
+    width: 27%;
+    padding: 2%;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.35);
+}
+
+
+.ex_type_count li{
+    list-style-type: none;
+    text-align: center;
+    background-color: white;
+    width: 36%;
+    padding: 2%;
+    border-radius: 10px;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.35);
 }
 
 .report_sub_title {
@@ -40,22 +374,6 @@ html, body {
     margin: 3% 0;
 }
 
-.nutrient {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 20px;
-}
-
-.nutrient p {
-    font-size: 1.4rem;
-    margin-top: 10px;
-}
-
-.nutrient span {
-    background-color: white;
-    border-radius: 70px;
-    padding: 3px 7px;
-}
 
 .report_img {
     text-align: center;
@@ -65,47 +383,12 @@ html, body {
     width: 30%;
 }
 
-.report_review {
-    margin: 3%;
-    text-align: center;
-}
-
-.exercise_report {
-    height: 30%;
-    padding: 3% 6%;
-    background-color: #82C8D2;
-    border-radius: 30px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
-    margin-bottom: 20px;
-}
-
 .report_img2 {
     text-align: center;
 }
 
 .report_img2 img {
     width: 35%;
-}
-
-
-.blood_report1 {
-    height: 30%;
-    padding: 3% 6%;
-    background-color: #82C8D2;
-    border-radius: 30px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
-}
-
-.blood_report2 {
-    height: 30%;
-    padding: 3% 6%;
-    border-radius: 30px;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.15);
-    background-color: #82C8D2;
-}
-
-.blood_report1 p {
-    margin: 5px 5px 5px 0px;
 }
 
 .mini_title {
@@ -137,37 +420,15 @@ html, body {
 .blood_result {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 2%;
     margin: 2px 0 15px 0;
     background-color: white;
-    border-radius: 20px;
-    text-align: center;
-}
-
-
-.blood_result li {
-    list-style-type: none;
-    font-size: 0.9rem;
-    border-right: 3px solid gray;
+    border-radius: 10px;
     text-align: center;
 }
 
 .blood_result span {
     color: #006D83;
-}
-
-.blood_result p {
-    color: black;
-    font-size: 1rem;
-    text-align: center;
-}
-
-.sakso {
-    background-color: white;
-    text-align: center;
-    padding: 10px 0px;
-    border-radius: 10px;
-    font-size: 18px;
 }
 
 .sakso span {
@@ -177,16 +438,6 @@ html, body {
 input[type="radio"] {
     display: none;
     margin: 0;
-}
-
-input[type="radio"] + label {
-    display: inline-block;
-    color: black;
-    cursor: pointer;
-    padding: 4% 0;
-    width: 49%;
-    text-align: center;
-    border-top: 5px solid white;
 }
 
 .tabcontent input[type = "radio"]:checked + label {
@@ -209,26 +460,6 @@ input[id="tabmenu02"]:checked ~ #tab02 {
 
 .tabcontent h3 {
     margin-top: 0;
-}
-
-.main_info {
-    font-size: 1.4rem;
-    text-align: center;
-    margin: 10px;
-}
-
-.main_info span {
-    font-size: 1.4rem;
-    color: white;
-}
-
-select {
-    border: none;
-    border-radius: 15px;
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    margin-bottom: 15px;
 }
 
 #blood2_check {
