@@ -11,7 +11,9 @@
     </button>
     <div class="recommend_result">
         <p>당신을 위한 오늘의 추천 식단은</p>
-        <p>치아씨드 & 아몬드</p>
+        {% for meal in recommendation_foods %}
+            <p>{{ meal }}</p>
+        {% endfor %}
         <br>
         <p>오늘의 건강 조언</p>
         <p>단백질이 부족하시네요! 아몬드로 보충해보세요!</p>
@@ -37,21 +39,21 @@
         {% for meal in meals %}
             <div class="meals">
                 <button type="button" style="display: flex;" class="meals_btn"
-                    onclick="window.location.href = '{% url 'food_detail' meal.id %}'">
-                <img src="/photos/{{ meal.image.name }}" alt="">
-                <div class="img_info">
-                    <p id="meal_type">{{ meal.meal_type }}
-                        (<span>{{ meal_calories|get_item:meal.id }}</span> kcal)</p>
-                    <p id="meal_detail">{{ meal.result.result_names_comma_separated }}</p>
-                </div>
+                        onclick="window.location.href = '{% url 'food_detail' meal.id %}'">
+                    <img src="/photos/{{ meal.image.name }}" alt="">
+                    <div class="img_info">
+                        <p id="meal_type">{{ meal.meal_type }}
+                            (<span>{{ meal_calories|get_item:meal.id }}</span> kcal)</p>
+                        <p id="meal_detail">{{ meal.result.result_names_comma_separated }}</p>
+                    </div>
                 </button>
             </div>
-            {% endfor %}
-        </div>
-
-        <button type="button" class="plus">
-            <img src="{% static 'img/plus-sign.png' %}" width="50px"
-                 onclick="window.location.href = '{% url 'diet_form' %}'"
-                 alt="">
-        </button>
+        {% endfor %}
     </div>
+
+    <button type="button" class="plus">
+        <img src="{% static 'img/plus-sign.png' %}" width="50px"
+             onclick="window.location.href = '{% url 'diet_form' %}'"
+             alt="">
+    </button>
+</div>

@@ -1,14 +1,16 @@
 import json
 
+import httpx
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.http import JsonResponse
 
+from core.settings import INFERENCE_SERVER_URL
+
 # from ai_workload.kafka.producer import send_inference_task
 from ai_workload.tasks import process_inference_task
-
 from ai_workload.models import InferenceTask, InferenceResult
 from users.models import (
     Exercise,
@@ -35,6 +37,8 @@ from .forms import (
     HospitalAlarmForm,
 )
 from datetime import datetime, timedelta
+
+timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
 
 
 @login_required
@@ -118,7 +122,6 @@ def load_content(request, menu):
 
     context = {}
 
-    # TODO: reducing duplicate code
     match menu:
         case "report":
             meals = Diet.objects.filter(user=request.user).prefetch_related("result")
@@ -169,7 +172,9 @@ def load_content(request, menu):
 
                 max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
                 context["max_calories"] = max_calories
-                context["max_carbohydrates"] = 100  # fixed value
+                context["max_carbohydrates"] = (
+                    max_calories / 8
+                )  # fixed value -> /= 8 of today's eaten calories
                 context["max_protein"] = int(
                     CustomUser.objects.get(id=request.user.id).weight
                     * 0.8  # for proteins, 0.8g per kg
@@ -330,13 +335,16 @@ def load_content(request, menu):
             context["meals"] = meals
 
             max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
+            max_carbohydrates = (
+                max_calories / 8
+            )  # fixed value -> /= 8 of today's eaten calories
+            max_protein = int(CustomUser.objects.get(id=request.user.id).weight * 0.8)
+            max_fat = 50
+
             context["max_calories"] = max_calories
-            context["max_carbohydrates"] = 100  # fixed value
-            context["max_protein"] = int(
-                CustomUser.objects.get(id=request.user.id).weight
-                * 0.8  # for proteins, 0.8g per kg
-            )
-            context["max_fat"] = 50  # fixed value
+            context["max_carbohydrates"] = max_carbohydrates
+            context["max_protein"] = max_protein
+            context["max_fat"] = max_fat
 
             # {
             # "predictions": [
@@ -374,6 +382,53 @@ def load_content(request, menu):
             context["total_protein"] = total_protein
             context["total_fat"] = total_fat
             context["meal_calories"] = meal_calories
+
+            # TODO: fix possible bugs
+            # {
+            #     "remaining_calories": 520,
+            #     "remaining_carbs": 50,
+            #     "remaining_protein": 20,
+            #     "remaining_fat": 15,
+            #     "고기_count": 2,
+            #     "채소_count": 1,
+            #     "해산물_count": 0
+            # }
+            remaining_calories = max_calories - total_calories
+            remaining_carbs = max_carbohydrates - total_carbohydrates
+            remaining_protein = max_protein - total_protein
+            remaining_fat = max_fat - total_fat
+
+            meat_count = 0
+            veg_count = 0
+            seafood_count = 0
+
+            for meal in meals:
+                food_info = meal.result.result_data["food_info"]
+                for food in food_info:
+                    if food["is_meat"] == 1.0:
+                        meat_count += 1
+                    if food["is_veg"] == 1.0:
+                        veg_count += 1
+                    if food["is_seafood"] == 1.0:
+                        seafood_count += 1
+
+            data = {
+                "remaining_calories": remaining_calories,
+                "remaining_carbs": remaining_carbs,
+                "remaining_protein": remaining_protein,
+                "remaining_fat": remaining_fat,
+                "meat_count": meat_count,
+                "veg_count": veg_count,
+                "seafood_count": seafood_count,
+            }
+            print(data)
+            with httpx.Client() as client:
+                response = client.post(
+                    f"{INFERENCE_SERVER_URL}/recommendation_score_foods",
+                    json=data,
+                    timeout=timeout,
+                )
+            context["recommendation_foods"] = response.json()
         case "exercise":
             context["exercises"] = Exercise.objects.filter(user=request.user)
             context["total_calories"] = sum(

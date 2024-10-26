@@ -4,3 +4,6 @@ ultralytics
 PyYAML
 python-multipart
 ujson
+pandas
+joblib
+scikit-learn
