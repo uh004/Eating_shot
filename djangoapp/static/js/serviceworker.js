@@ -51,28 +51,28 @@ self.addEventListener('activate', event => {
 });
 
 // Serve from Cache
-self.addEventListener("fetch", event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                return response || fetch(event.request);
-            })
-            .catch(() => {
-                return caches.match('/offline/');
-            })
-    )
-});
+// self.addEventListener("fetch", event => {
+//     event.respondWith(
+//         caches.match(event.request)
+//             .then(response => {
+//                 return response || fetch(event.request);
+//             })
+//             .catch(() => {
+//                 return caches.match('/offline/');
+//             })
+//     )
+// });
 
 // Handle push notifications
-// TODO: check this again
-self.addEventListener('push', event => {
-    const data = event.data.json();
-    const options = {
-        body: data.message,
-        icon: '/static/img/icons/icon-128x128.png',
-        badge: '/static/img/icons/icon-128x128.png'
-    };
-    event.waitUntil(
-        self.registration.showNotification(data.title, options)
-    );
-});
+// // TODO: check this again
+// self.addEventListener('push', event => {
+//     const data = event.data.json();
+//     const options = {
+//         body: data.message,
+//         icon: '/static/img/icons/icon-128x128.png',
+//         badge: '/static/img/icons/icon-128x128.png'
+//     };
+//     event.waitUntil(
+//         self.registration.showNotification(data.title, options)
+//     );
+// });
