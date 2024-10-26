@@ -57,12 +57,12 @@
                         {% if form.goal.errors %}
                             <div class="error-message">이 필드는 필수 항목입니다.</div>
                         {% endif %}
-                        <div style="display: flex;" class="goal1">
+                        <div style="display: flex;" class="goal">
                             <input id="radio3" type="radio" name="{{ form.goal.name }}" value="chronic_disease">
                             <label for="radio3" class="radio_label1">만성질환</label>
                         </div>
 
-                        <div style="display: flex;" class="goal2">
+                        <div style="display: flex;" class="goal">
                             <input id="radio4" type="radio" name="{{ form.goal.name }}" value="healthy_diet">
                             <label for="radio4" class="radio_label1">건강한 식습관, 체중 감량</label>
                         </div>
@@ -131,12 +131,9 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Check if the browser supports notifications and service workers
+        $(document).ready(function () {
             if ('Notification' in window && 'serviceWorker' in navigator) {
                 // Add event listener to the form submission
                 const form = document.querySelector('form');
@@ -154,8 +151,8 @@
                     });
                 });
             }
-        });
-        $(document).ready(function () {
+
+
             let now = 1;
 
             $('#next').on('click', function () {

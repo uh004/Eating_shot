@@ -71,7 +71,7 @@ html, body {
         width: 46%;
         height: 24%;
         background-color: white;
-    }    
+    }
 
     .slide .radio_label1 {
         border-radius: 30px;
@@ -129,7 +129,7 @@ html, body {
         text-align: center;
         padding-top: 5%;
     }
-    
+
 }
 
 /* 스마트폰 기준  */
@@ -178,7 +178,7 @@ html, body {
         background-color: white;
     }
 
-    .goal1, .goal2 {
+    .goal {
         margin-top: 2%;
         margin-bottom: 2%;
     }
@@ -203,7 +203,7 @@ html, body {
         line-height: 50px;
         font-size: 18px;
     }
-    
+
     .choose_status {
         justify-content: space-between;
         margin-bottom: 0;
@@ -262,7 +262,7 @@ input[type=checkbox] {
 }
 
 .choose_gender {
-    display: flex; 
+    display: flex;
     margin-top: 10px;
     justify-content: space-between;
 }
