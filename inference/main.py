@@ -1,6 +1,6 @@
 import io
 
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, File, UploadFile, Form, Query
 from fastapi.responses import UJSONResponse
 
 # TODO: if we were hosting this on a separate server from django...
@@ -117,12 +117,14 @@ def get_food_info(label):
 def get_closest_food(user_input, n=5):
     scaler = StandardScaler()
 
-    df = pd.read_csv("food_calories.csv", encoding="utf-8")
+    df = pd.read_csv("food_calories.csv", encoding="utf-8").drop(
+        columns=["에너지(kcal)"]
+    )
 
     normalized_data = scaler.fit_transform(
         df[
             [
-                "에너지(kcal)",
+                # "에너지(kcal)", # excluded
                 "탄수화물(g)",
                 "단백질(g)",
                 "지방(g)",
@@ -138,12 +140,12 @@ def get_closest_food(user_input, n=5):
 
     distances = np.linalg.norm(normalized_data - normalized_user_input, axis=1)
 
-    # return the top n closest foods
-    return df.iloc[distances.argsort()[:n]]
+    # return the top n closest foods (without the new healthy foods from food_calories2)
+    return df.iloc[distances.argsort()[:n]].dropna().to_dict("records")
 
 
 def food_recommendation(user_input):
-    df = pd.read_csv("food_calories.csv", encoding="utf-8")
+    df = pd.read_csv("food_calories1-2.csv", encoding="utf-8")
 
     # based on the manual.txt...
     max_count = max(
@@ -183,7 +185,9 @@ def food_recommendation(user_input):
 
         Finally, we combine the nutritional score and category weight to get the recommendation score.
 
-        score = 0.64 * (cal_score + carb_score + protein_score + fat_score) / 4 + 0.46 * category_weight
+        score = (preferred portion) * (cal_score + carb_score + protein_score + fat_score) / 4
+                +
+                (preferred portion) * category_weight
         (you can adjust the weights based on the importance of nutritional fit vs. category preference)
 
         :param row:
@@ -218,10 +222,13 @@ def food_recommendation(user_input):
             + row["해산물"] * seafood_weight
         )
 
+        # add in diabetes friendliness as a factor
+        category_weight = category_weight * (row["Diabetes_Friendliness"] + 1) / 3
+
         # adjust the weights on your preference
         return (
-            0.32 * (cal_score + carb_score + protein_score + fat_score) / 4
-            + 0.68 * category_weight
+            0.62 * (cal_score + carb_score + protein_score + fat_score) / 4
+            + 0.38 * category_weight
         )
 
     df["Recommendation_Score"] = df.apply(calculate_score, axis=1)
@@ -253,7 +260,7 @@ def food_recommendation(user_input):
         if (
             total_calories + food_calories <= remaining_calories
             and total_carbs + food_carbs <= remaining_carbs
-            or total_protein + food_protein <= remaining_protein
+            and total_protein + food_protein <= remaining_protein
             and total_fat + food_fat <= remaining_fat
         ):
             # Add food to selected list and update totals
@@ -263,7 +270,7 @@ def food_recommendation(user_input):
             total_protein += food_protein
             total_fat += food_fat
 
-    return selected_foods
+    return [selected_foods[0]]  # return the first food item added to the list
 
 
 @app.get("/")
@@ -292,7 +299,10 @@ def get_recommendation0(user_input: dict):
 
 
 @app.post("/recommendation_closest_food")
-def get_recommendation1(user_input: dict):
+def get_recommendation1(
+    user_input: dict,
+    n: int = Query(..., description="Number of closest foods to return"),
+):
     """
     # find food within this dataset that is closest to a food where it...
     user_input2 = {
@@ -305,10 +315,11 @@ def get_recommendation1(user_input: dict):
         '해산물': 0.0  # is not a seafood dish
     }
 
+    :param n:
     :param user_input:
     :return: top 5 closest foods
     """
-    return get_closest_food(user_input)
+    return get_closest_food(user_input, n)
 
 
 @app.post("/recommendation_least_dangerous")
@@ -338,7 +349,7 @@ def get_recommendation2(user_input: dict):
             "채소",
             "해산물",
         ]
-    ]  # will adding 고기 채소 해산물 make sense?
+    ]  # will adding 고기 채소 해산물 make sense? 머 없는거보다는 낫지 아늘까?
     scaler.fit(X)
 
     # get the data for the user input(food names)
