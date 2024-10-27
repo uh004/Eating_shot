@@ -424,7 +424,7 @@ def load_content(request, menu):
                 ]
             context["pill_alarm"] = alarm_object
             context["hospital_alarm"] = HospitalAlarm.objects.filter(user=request.user)
-            context["weekdays"] = ["월", "화", "수", "목", "금", "토"]
+            context["weekdays"] = ["월", "화", "수", "목", "금", "토", "일"]
         case _:
             pass
 

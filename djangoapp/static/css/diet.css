@@ -38,14 +38,14 @@ html, body {
     }
 
     .nutrient_g {
-        margin: 10px 0px;
+        margin: 2% 0px;
         display: flex;
         justify-content: space-between;
-        font-size: 1.3rem;
+        font-size: 1.7rem;
     }
 
     .sum_kcal {
-        font-size: 1.7rem; 
+        font-size: 2rem; 
         margin: 5px 0;
     }
 
@@ -60,7 +60,7 @@ html, body {
     #meal_type {
         margin-bottom: 10px;
         margin-top: 4px;
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
 
     .meals_btn {
@@ -75,8 +75,8 @@ html, body {
 
     #meal_detail {
         color: rgb(186, 185, 185);
-        margin-bottom: 10px;
-        font-size: 1.4rem;
+        margin: 7% 0;
+        font-size: 1.7rem;
     }
 
     .recommend {
@@ -119,7 +119,7 @@ html, body {
     }
     
     .menu_recommend p {
-        font-size: 1.5rem;
+        font-size: 2rem;
         margin: auto 1%;
     }    
 
@@ -142,12 +142,12 @@ html, body {
     }
     
     .mealtimes {
-        width: 96%;
+        width: 94%;
         height: 55px;
         background-color: #F2F4F5;
         border: none;
-        border-radius: 15px;
-        padding: 2%;
+        border-radius: 13px;
+        padding: 3% 3%;
         font-size: 1rem;
         margin-bottom: 4%;
         display: flex;
@@ -162,13 +162,13 @@ html, body {
     form {
         padding: 4% 15%;
         text-align: center;
-        height: 69%;
+        height: 68%;
         margin: 0;
         align-content: center;
     }
 
     .mealtimes p {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         margin: auto 5% auto 0;
         color: #979CA9;
     }
@@ -214,7 +214,7 @@ html, body {
     .topic {
         margin: 2% 0px;
         color: gray;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
 
     .main_container2 {
@@ -230,7 +230,7 @@ html, body {
     }
 
     .tdj p {
-        font-size: 1rem;
+        font-size: 1.4rem;
         margin: 10px 0px;
     }
 
@@ -238,7 +238,7 @@ html, body {
         list-style-type: none;
         height: 32px;
         line-height: 32px;
-        padding: 2%;
+        padding: 3%;
         display: flex;
         justify-content: space-between;
         background-color: #F3F3F3;
@@ -246,7 +246,7 @@ html, body {
     }
     
     .nutrient_info li p {
-        font-size: 1rem;
+        font-size: 1.4rem;
         margin: 0px;
     }
 
@@ -255,7 +255,7 @@ html, body {
         border: none;
         width: 100%;
         border-radius: 15px;
-        font-size: 1.7rem;
+        font-size: 2rem;
         margin-bottom: 4%;
         padding: 4%;
     }
@@ -266,8 +266,9 @@ html, body {
         width: 99%;
         border-radius: 20px;
         padding: 4%;
-        font-size: 1.7rem;
-        margin: 0 auto;
+        font-size: 2rem;
+        margin: 4% auto 0 auto;
+        color: white;
     }
 
     .upload-box .file-label {
@@ -275,16 +276,92 @@ html, body {
         text-align: center;
         padding: 5px 0;
         color: rgb(201, 200, 200);
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
 
     .photo_input_img {
         width: 10%;
     }
     
+    .all_kcal progress {
+        appearance: none;
+        width: 100%;
+        height: 25px;
+        margin: 1% 0;
+    }
+
+    .btns button {
+        border: none;
+        color: gray;
+        background: transparent;
+        font-size: 1.4rem;
+    }
+
+    #add_meal {
+        width: 100%;
+        padding: 3%;
+        border: none;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        color: white;
+        margin: auto;
+        font-size: 1.7rem;
+    }
+
+    .upload-box .drag-file {
+        position: relative;
+        width: 98%;
+        height: 37%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 3px dashed #dbdbdb;
+        border-radius: 10px;
+        margin: 0% auto;
+        display: flex;
+    }
+
 }
 
 @media all and (max-width: 479px) { 
+
+    .upload-box .drag-file {
+        position: relative;
+        width: 98%;
+        height: 37%;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 3px dashed #dbdbdb;
+        border-radius: 10px;
+        margin: 0% auto 4% auto;
+        display: flex;
+    }
+
+    #add_meal {
+        width: 100%;
+        height: 50px;
+        padding: 5px;
+        border: none;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        color: white;
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+
+    .btns button {
+        border: none;
+        color: gray;
+        background: transparent;
+    }
+
+    .all_kcal progress {
+        appearance: none;
+        width: 100%;
+        height: 13px;
+        margin: 1% 0;
+    }
 
     .photo_input_img {
         width: 40px;
@@ -541,16 +618,11 @@ html, body {
     }
 }
 
-.all_kcal progress {
-    appearance: none;
-    width: 100%;
-}
 
 .all_kcal progress::-webkit-progress-bar {
     background: #f0f0f0;
     border-radius: 12px;
     border: 1px solid #eeeeee;
-    height: 15px;
     width: 100%;
     overflow: hidden;
 }
@@ -558,8 +630,6 @@ html, body {
 .all_kcal progress::-webkit-progress-value {
     background: #00BCD4;
     border-radius: 0px;
-    height: 15px;
-    width: 48px;
 }
 
 .all_meal::-webkit-scrollbar {
@@ -652,18 +722,6 @@ body::-webkit-scrollbar {
     margin: auto 0;
 }
 
-#add_meal {
-    width: 100%;
-    height: 50px;
-    padding: 5px;
-    border: none;
-    background-color: #00BCD4;
-    border-radius: 10px;
-    color: white;
-    margin-bottom: 10px;
-    font-size: 1rem;
-}
-
 .add_meal_form {
     padding: 10px;
     background-color: #F3F3F3;
@@ -709,12 +767,6 @@ body::-webkit-scrollbar {
 
 .btns {
     display: flex;
-}
-
-.btns button {
-    border: none;
-    color: gray;
-    background: transparent;
 }
 
 .img_info p {
@@ -783,19 +835,6 @@ select {
 
 .upload-box {
     margin: 0 auto;
-}
-
-.upload-box .drag-file {
-    position: relative;
-    width: 98%;
-    height: 37%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 3px dashed #dbdbdb;
-    border-radius: 10px;
-    margin-bottom: 4%;
-    display: flex;
 }
 
 .upload-box .file {

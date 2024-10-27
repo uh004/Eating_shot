@@ -4,75 +4,567 @@
 }
 
 html, body {
-    height: 100%;
+    height: 98%;
     margin: 0;
     padding: 0;
 }
 
-.banner {
-    width: 92%;
-    height: 100%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    zoom: 100%;
-    background-color: #e8f5f8;
-    padding: 0 4%;
+.banner::-webkit-scrollbar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+
+    .profile img {
+        border-radius: 70px;
+        border: 3px solid black;
+        width: 15%;
+        margin: 0 2% 0 0;
+        text-align: center;
+        background-color: white;
+    }
+
+    .banner {
+        width: 70%;
+        height: 106%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        zoom: 100%;
+        background-color: #e8f5f8;
+        padding: 2% 15% 4% 15%;
+        overflow: scroll;
+    }
+
+    .profile {
+        text-align: center;
+        border-radius: 20px;
+        width: 100%;
+        display: flex;
+        height: 10%;
+    }
+
+    .profile_detail {
+        margin: auto 5px;
+        text-align: left;
+        height: 80%;
+    }
+    
+    .nickname {
+        font-size: 2rem;
+        margin: 0px 0px 7% 0px;
+    }
+
+    #modify_myinfo {
+        margin: 0px 10px 0px 0px;
+        color: darkgray;
+        line-height: 1;
+        font-size: 1.5rem;
+    }
+    
+    #logout {
+        font-size: 1.5rem;
+        margin: 0px;
+        color: darkgray;
+        line-height: 1;
+    }
+
+    .personal_info {
+        background-color: white;
+        border-radius: 10px;
+        padding: 5% 5% 2% 5%;
+        margin-top: 3%;
+        width: 90%;
+    }
+    
+    .personal_info li {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+    }
+    
+    .personal_info li p {
+        font-size: 1.7rem;
+    }
+
+    .myinfo {
+        font-size: 1.7rem;
+        margin: 0 0 4% 0;
+    }
+
+    #disease p {
+        padding: 3px;
+        font-size: 1.7rem;
+        align-content: center;
+        background-color: #00BCD4;
+        border-radius: 20px;
+        margin: auto 0;
+        text-align: center;
+        width: 28%;
+        height: 60%;
+    }
+
+    .alarm p {
+        color: white;
+        font-size: 1.7rem;
+        margin: 3%;
+    }
+    
+    .alarm img {
+        width: 40px;
+        margin: auto 0;
+    }
+
+    .alarm {
+        width: 100%;
+        padding: 2% 3%;
+        border: none;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        display: flex;
+        margin-top: 15px;
+        justify-content: space-between;
+    }
+
+    .back {
+        width: 6%;
+        padding: 2% 0px 2% 0px;
+    }
+
+    form {
+        padding: 4% 15%;
+        height: 68%;
+        margin: 0;
+        align-content: center;
+    }
+
+    .form_title {
+        text-align: center;
+        margin: 0 0 3% 0;
+        font-size: 2rem;
+        margin: 5% 0;
+    }
+
+    input[type="email"], input[type="number"], input[type="time"], input[type="text"],input[type="date"] {
+        background-color: #F2F4F5;
+        border: none;
+        width: 100%;
+        border-radius: 15px;
+        font-size: 1.7rem;
+        margin: 0.5% 0 4% 0;
+        padding: 4%;
+    }
+
+    label {
+        margin-left: 5px;
+        font-size: 1.5rem;
+    }
+
+    .check_disease {
+        display: flex;
+        background-color: #c2e8ff7c;
+        margin: 0.5% 0 4% 0;
+        border-radius: 10px;
+    }
+
+    .list {
+        padding: 4% 10%;
+        border-radius: 6px;
+        width: 30%;
+        margin: 0px;
+    }
+
+    .check--label-box {
+        display: flex;
+        align-self: center;
+        position: relative;
+        height: 1.7rem;
+        width: 1.7rem;
+        margin: 0px 0px 0px 5px;
+        border: 2px solid #3A6D8C;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .check--label-text {
+        display: flex;
+        align-self: center;
+        position: relative;
+        cursor: pointer;
+        padding: 6%;
+        font-size: 1.7rem;
+    }
+    
+    .hidden-box:checked + .check--label {
+        .check--label-box {
+            background-color: #3A6D8C;
+            &:after {
+                content: '';
+                display: block;
+                position: absolute;
+                top: 0px;
+                left: 6px;
+                width: 13px;
+                height: 15px;
+                border: 20px solid white;
+                border-width: 0 4px 4px 0;
+                transform: rotate(45deg);
+            }
+        }
+    }
+
+    input[type="submit"]{
+        background-color: #3A6D8C;
+        border: none;
+        width: 100%;
+        border-radius: 30px;
+        padding: 4%;
+        font-size: 1.7rem;
+        color: white;
+    }
+
+    .pill_alarm ul{
+        padding: 0 3%;
+        margin: 0px;
+        background-color: white;
+        width: 94%;
+    }
+
+    .hospital_alarm ul{
+        padding: 0 3%;
+        margin: 0px;
+        background-color: white;
+        width: 94%;
+    }
+
+    .pill_alarm .time span, .hospital_alarm .time span {
+        font-size: 2rem;
+    }
+
+    .pill_alarm li {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+        height: 4rem;
+        padding: 2% 0;
+    }
+
+    .weekday p {
+        line-height: 1;
+        margin: auto 5px auto 0px;
+        font-size: 1.5rem;
+    }
+
+    .revise_alarm button {
+        border: none;
+        color: #bab9b9;
+        background: transparent;
+        padding: 0px;
+        margin : auto 0px;
+        font-size: 1.3rem;
+    }
+
+    .hospital_info p {
+        margin: auto 0;
+        font-size: 1.7rem;
+    }
+
+    .hospital_alarm li {
+        list-style-type: none;
+        padding: 3% 0;
+    }
+
+    .hospital {
+        margin: 2% 0;
+        font-size: 1.7rem;
+        color: gray;
+    }
+
+    .revise_alarm2 button {
+        border: none;
+        color: #bab9b9;
+        background: transparent;
+        padding: 0px;
+        margin : auto 0px;
+        font-size: 1.5rem;
+    }
+
+}
+
+@media all and (max-width: 479px) {
+
+    .revise_alarm2 button {
+        border: none;
+        color: #bab9b9;
+        background: transparent;
+        padding: 0px;
+        margin : auto 0px;
+    }
+
+    .hospital {
+        margin: 2% 0;
+        font-size: 1rem;
+        color: gray;
+    }
+
+    .hospital_alarm li {
+        list-style-type: none;
+    }
+
+    .hospital_info p {
+        margin: auto 0;
+    }
+
+    .revise_alarm button {
+        border: none;
+        color: #bab9b9;
+        background: transparent;
+        padding: 0px;
+        margin : 17px 0px;
+    }
+
+    .weekday p {
+        line-height: 1;
+        margin: auto 5px auto 0px;
+    }
+
+    .pill_alarm li {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pill_alarm .time span, .hospital_alarm .time span {
+        font-size: 1.3rem;
+    }
+
+    .pill_alarm ul, .hospital_alarm ul{
+        padding: 1% 3%;
+        margin: 0px;
+        background-color: white;
+        width: 94%;
+    }
+
+    input[type="submit"]{
+        background-color: #3A6D8C;
+        border: none;
+        width: 100%;
+        height: 55px;
+        border-radius: 15px;
+        padding: 10px;
+        font-size: 16px;
+        margin-bottom: 30px;
+        color: white;
+    }
+    
+    .check--label-box {
+        display: flex;
+        align-self: center;
+        position: relative;
+        height: 15px;
+        width: 15px;
+        margin: 0px 0px 0px 5px;
+        border: 2px solid #3A6D8C;
+        border-radius: 2px;
+        cursor: pointer;
+    }
+    
+    .check--label-text {
+        display: flex;
+        align-self: center;
+        position: relative;
+        cursor: pointer;
+        padding: 10px;
+    }
+    
+    .hidden-box:checked + .check--label {
+        .check--label-box {
+            background-color: #3A6D8C;
+            &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: -1px;
+            left: 4px;
+            width: 6px;
+            height: 12px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+            }
+        }
+    }
+
+    .list {
+        padding: 0 15%;
+        border-radius: 6px;
+        width: 20%;
+        margin: 0px;
+    }
+
+    .check_disease {
+        display: flex;
+        background-color: #c2e8ff7c;
+        margin: 0.5% 0 4% 0;
+        border-radius: 10px;
+    }
+
+    label {
+        margin-left: 5px;
+    }
+
+    input[type="email"], input[type="number"], input[type="time"], input[type="text"],input[type="date"] {
+        background-color: #F2F4F5;
+        border: none;
+        width: 100%;
+        height: 55px;
+        border-radius: 15px;
+        font-size: 1rem;
+        margin: 0.5% 0 4% 0;
+        padding: 4%;
+    }
+
+    .form_title {
+        text-align: center;
+        margin: 0;
+        font-size: 1.2rem;
+        height: 50%;
+        align-content: center;
+    }
+
+    form {
+        padding: 4%;
+        margin: 0;
+        height: 72%;
+        align-content: center;
+    }
+
+    .back {
+        width: 10%;
+        height: 21%;
+        padding: 2% 0;
+    }
+
+    .alarm {
+        width: 100%;
+        padding: 1% 3%;
+        border: none;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        display: flex;
+        margin-top: 15px;
+        justify-content: space-between;
+    }
+    
+    .alarm p {
+        color: white;
+        font-size: 17px;
+        margin: 10px 0px;
+    }
+    
+    .alarm img {
+        width: 25px;
+        height: 25px;
+        margin: 7px 10px 0px 0px;
+    }
+
+    #disease p {
+        padding: 3px;
+        font-size: 0.9rem;
+        align-content: center;
+        background-color: #00BCD4;
+        border-radius: 20px;
+        margin : auto 0;
+        text-align: center;
+        width: 25%;
+        height: 60%;
+    }
+
+    .personal_info {
+        background-color: white;
+        border-radius: 10px;
+        padding: 1% 5% 2% 5%;
+        margin-top: 0px;
+        width: 90%;
+    }
+    
+    .personal_info li {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+    }
+
+    #modify_myinfo {
+        margin: 0px 10px 0px 0px;
+        color: darkgray;
+        line-height: 1;
+    }
+    
+    #logout {
+        margin: 0px;
+        color: darkgray;
+        line-height: 1;
+    }
+
+    .profile_detail {
+        margin: auto 5px;
+        text-align: left;
+    }
+    
+    .nickname {
+        font-size: 1.2rem;
+        margin: 0px 0px 10px 0px;
+    }
+
+    .profile {
+        text-align: center;
+        border-radius: 20px;
+        width: 100%;
+        display: flex;
+    }
+
+    .banner {
+        width: 92%;
+        height: 117%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        zoom: 100%;
+        background-color: #e8f5f8;
+        padding: 0 4% 4% 4%;
+        overflow: scroll;
+    }
+
+    .profile img {
+        border-radius: 70px;
+        border: 3px solid black;
+        width: 15%;
+        margin: 10px;
+        text-align: center;
+        background-color: white;
+    }
+
 }
 
 /* 마이페이지 css  */
 
-.profile {
-    text-align: center;
-    border-radius: 20px;
-    width: 100%;
-    display: flex;
-}
-
-.profile img {
-    border-radius: 70px;
-    border: 3px solid black;
-    width: 15%;
-    margin: 10px;
-    text-align: center;
-    background-color: white;
-}
-
-.profile_detail {
-    margin: auto 5px;
-    text-align: left;
-}
-
-.nickname {
-    font-size: 1.2rem;
-    margin: 0px 0px 10px 0px;
-}
-
-#modify_myinfo {
-    margin: 0px 10px 0px 0px;
-    color: darkgray;
-    line-height: 1;
-}
-
-#logout {
-    margin: 0px;
-    color: darkgray;
-    line-height: 1;
-}
-
-.personal_info {
-    background-color: white;
-    border-radius: 10px;
-    padding: 5% 5% 2% 5%;
-    margin-top: 0px;
-    width: 90%;
-}
-
-.personal_info li {
-    list-style-type: none;
+.day_check {
     display: flex;
     justify-content: space-between;
-    font-size: 0.9rem;
 }
+
+.deco {
+    background-color: #3A6D8C;
+    height: 25%;
+    color: white;
+    padding: 0 4%;
+}
+
+.alarm_title {
+    width: 60%;
+    display: flex;
+}
+
 
 #disease {
     display: flex;
@@ -85,28 +577,9 @@ html, body {
     display: none;
 }
 
-#disease p {
-    padding: 3px;
-    font-size: 0.9rem;
-    align-content: center;
-    background-color: #00BCD4;
-    border-radius: 20px;
-    margin : auto 0;
-    text-align: center;
-    width: 25%;
-    height: 60%;
-}
-
 #for_personal_info {
     width: 100%;
-    max-height: 100%;
-    overflow: scroll;
 }
-
-#for_personal_info::-webkit-scrollbar {
-    display: none;
-}
-
 
 .alarm1 {
     display: flex;
@@ -125,83 +598,39 @@ html, body {
     line-height: 35px;
 }
 
-.myinfo {
-    font-size: 1.2rem;
-    margin: 0;
-}
-
-.alarm {
-    width: 100%;
-    padding: 1% 3%;
-    border: none;
-    background-color: #00BCD4;
-    border-radius: 10px;
-    display: flex;
-    margin-top: 15px;
-}
-
-.alarm p {
-    color: white;
-    font-size: 17px;
-    margin: 10px 0px;
-}
-
-.alarm img {
-    width: 25px;
-    margin: 7px 10px 0px 0px;
-}
-
-.pill_alarm ul, .hospital_alarm ul{
-    padding: 3%;
-    margin: 0px;
-    background-color: white;
-    width: 94%;
-}
-
 .pill_alarm ul::-webkit-scrollbar, .hospital_alarm ul::-webkit-scrollbar {
     display: none;
 }
 
-.pill_alarm li:not(:last-child) {
-    list-style-type: none;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #EEEFF1;
+.pill_alarm li:not(:last-of-type){
+    border-bottom: 1px solid #d0d0d0;
 }
 
-.hospital_alarm li:not(:last-child) {
-    list-style-type: none;
-    border-bottom: 1px solid #EEEFF1;
+.hospital_alarm li:not(:last-of-type){
+    border-bottom: 1px solid #d0d0d0;
 }
 
 .pill_alarm .time, .hospital_alarm .time {
-    margin: 10px 0px;
+    margin: auto 0;
 }
 
-.pill_alarm .time span, .hospital_alarm .time span {
-    font-size: 25px;
+.hospital_info {
+    display: flex;
+    justify-content: space-between;
+    height: 2rem;
 }
 
-.hospital {
-    margin : 18px 0px 0px 5px;
+.revise_alarm {
+    margin: auto 0;
+}
+
+.revise_alarm2 {
+    margin: auto 0;
 }
 
 .weekday {
     display: flex;
     margin-right: 5px;
-}
-
-.weekday p {
-    line-height: 1;
-    margin: auto 5px auto 0px;
-}
-
-.revise_alarm button {
-    border: none;
-    color: #bab9b9;
-    background: transparent;
-    padding: 0px;
-    margin : 17px 0px;
 }
 
 .pill_button {
@@ -225,67 +654,11 @@ html, body {
     zoom: 100%;
 }
 
-form {
-    padding: 30px;
-}
-
-.deco {
-    background-color: #3A6D8C;
-    height: 220px;
-    color: white;
-    padding: 0px 20px;
-}
-
-.deco h2 {
-    margin: 40px 0px 0px 0px;
-    text-align: center;
-}
-
-.back {
-    width:36px;
-    height:36px;
-    padding: 10px 0px 8px 0px;
-}
-
-input[type="email"], input[type="number"], input[type="time"], input[type="text"],input[type="date"] {
-    background-color: #F2F4F5;
-    border: none;
-    width: 420px;
-    height: 60px;
-    border-radius: 15px;
-    font-size: 16px;
-    margin-bottom: 20px;
-    padding: 10px;
-}
-
-
-input[type="submit"]{
-    background-color: #3A6D8C;
-    border: none;
-    width: 420px;
-    height: 60px;
-    border-radius: 30px;
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 30px;
-    color: white;
-}
-
-label {
-    margin-left: 5px;
-}
 
 input[type="checkbox"] {
     border-radius: 30px;
     background-color: #b3dee3;
     text-align: center;
-}
-
-.list {
-    padding: 0px 40px;
-    border-radius: 6px;
-    width: 160px;
-    margin: 0px;
 }
 
 .list li {
@@ -302,51 +675,4 @@ input[type="checkbox"] {
     margin: 0;
     display: flex;
     align-items: center;
-}
-
-/* 체크박스 css */
-
-.check--label-box {
-    display: flex;
-    align-self: center;
-    position: relative;
-    height: 15px;
-    width: 15px;
-    margin: 0px 0px 0px 5px;
-    border: 2px solid #3A6D8C;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-.check--label-text {
-    display: flex;
-    align-self: center;
-    position: relative;
-    cursor: pointer;
-    padding: 10px;
-}
-
-.hidden-box:checked + .check--label {
-    .check--label-box {
-        background-color: #3A6D8C;
-        &:after {
-        content: '';
-        display: block;
-        position: absolute;
-        top: -1px;
-        left: 4px;
-        width: 6px;
-        height: 12px;
-        border: solid white;
-        border-width: 0 2px 2px 0;
-        transform: rotate(45deg);
-        }
-    }
-}
-
-.check_disease {
-    display: flex;
-    background-color: #c2e8ff7c;
-    margin: 0px 0px 20px 0px;
-    border-radius: 10px;
 }

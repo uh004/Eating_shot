@@ -13,8 +13,12 @@ html, body {
 
 .slide {
     height: 100%; /* 슬라이드의 높이를 100%로 설정 */
-    overflow: hidden; /* 슬라이드 내부에서 스크롤이 필요한 경우에만 스크롤 */
+    overflow: scroll; /* 슬라이드 내부에서 스크롤이 필요한 경우에만 스크롤 */
     padding: 15px;
+}
+
+.slide::-webkit-scrollbar {
+    display: none;
 }
 
 @media all and (max-width: 479px) {
@@ -38,9 +42,6 @@ html, body {
     }
 
     .ex_list {
-        max-height: 50%;
-        overflow: scroll;
-        overflow-y: auto;
         margin-top: 2%;
     }
 
@@ -118,7 +119,7 @@ html, body {
     form {
         padding: 4%;
         margin: 0;
-        height: 72%;
+        height: 65%;
         align-content: center;
     }
 
@@ -264,9 +265,9 @@ html, body {
     }
 
     .strengths p {
-        margin: 15px 1px; 
+        margin: auto 1px; 
         color: #979CA9;
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
 
     input {
@@ -275,7 +276,7 @@ html, body {
         width: 94%;
         height: 8%;
         border-radius: 15px;
-        font-size: 1.7rem;
+        font-size: 2rem;
         margin-bottom: 20px;
         padding: 10px;
     }
@@ -284,7 +285,7 @@ html, body {
         width: 94%;
         height: 8%;
         margin-bottom: 20px;
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
 
     .strengths {
@@ -328,19 +329,17 @@ html, body {
     }
 
     .ex_list {
-        max-height: 50%;
-        overflow: scroll;
-        overflow-y: auto;
+        margin-top: 2%;
     }
 
     .cal_info p {
         margin: 0;
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
     
     .cal_info span {
         color: #00bcd4;
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
     
     .cal_info img {
@@ -354,7 +353,7 @@ html, body {
 
     .ex p,span {
         margin: auto 0px;
-        font-size: 1.7rem;
+        font-size: 2rem;
     }
 
     .ex button {
@@ -391,8 +390,9 @@ html, body {
     }
     
     .for_list p {
-        width: 90%;
+        width: 88%;
         font-size: 2rem;
+        margin: auto 7% auto 0;
     }
 
     .ex_name {

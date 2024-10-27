@@ -49,8 +49,11 @@
         </ul>
 
         <button type="button" id="for_pill_alarm" class="alarm">
-            <img src="{% static 'img/pill.png' %}" alt="">
-            <p>약 알리미</p>
+            <div class="alarm_title">
+                <img src="{% static 'img/pill.png' %}" alt="">
+                <p>약 알리미</p>
+            </div>
+            <img src="{% static 'img/alarm_add.png' %}" onclick="window.location.href = {% url 'pill_alarm' %}">
         </button>
 
         <div class="pill_alarm">
@@ -58,8 +61,8 @@
 
                 {% for item in pill_alarm %}
                     <li>
-                        <p class="time">오전 <span>{{ item.time }}</span></p>
-                        <div style="display: flex;">
+                        <p class="time"><span>{{ item.time }}</span></p>
+                        <div class="day_check">
                             <div class="weekday">
                                 {% for day in weekdays %}
                                     <p style="color: {% if day in item.weekday %}#00BCD4{% else %}#000{% endif %}">{{ day }}</p>
@@ -73,16 +76,16 @@
                         </div>
                     </li>
                 {% endfor %}
-                <button type="button" class="pill_button" onclick="window.location.href = {% url 'pill_alarm' %}">
-                    추가하기
-                </button>
             </ul>
 
         </div>
 
         <button type="button" class="alarm" id="for_hospital_alarm">
-            <img src="{% static 'img/hospital.png' %}" alt="">
-            <p>병원 알리미</p>
+            <div class="alarm_title">
+                <img src="{% static 'img/hospital.png' %}" alt="">
+                <p>병원 알리미</p>
+            </div>
+            <img src="{% static 'img/alarm_add.png' %}" onclick="window.location.href = {% url 'hospital_alarm' %}">
         </button>
 
         <div class="hospital_alarm">
@@ -90,26 +93,20 @@
 
                 {% for item in hospital_alarm %}
                     <li>
-                        <div style="display: flex; justify-content: space-between;">
-                            <p>{{ item.date }}</p>
+                        <div class="hospital_info">
+                            <p>2024.10.31 {{ item.hospital_time }}</p>
 
-                            <div class="revise_alarm">
+                            <div class="revise_alarm2">
                                 <button onclick="window.location = '{% url 'hospital_alarm' item.id %}'">수정</button>
                                 <button onclick="deleteHospitalAlarm({{ item.id }})">삭제</button>
                             </div>
                         </div>
 
-                        <div style="display: flex;">
-                            <p class="time">{{ item.hospital_time }}</p>
-                            <p class="hospital">{{ item.hospital_name }}</p>
-                        </div>
+                        <p class="hospital">{{ item.hospital_name }}</p>
+                   
 
                     </li>
                 {% endfor %}
-                <button type="button" class="pill_button"
-                        onclick="window.location.href = {% url 'hospital_alarm' %}">
-                    추가하기
-                </button>
             </ul>
 
         </div>
@@ -119,36 +116,71 @@
 </div>
 {% block script %}
     <script>
-        function deleteAlarm(id) {
-            if (confirm("정말 삭제하시겠습니까?")) {
-                // DELETE request to delete/pill_alarm/id
-                fetch(`/delete/pill_alarm/${id}/`, {
-                    method: "DELETE",
-                    headers: {
-                        "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
-                    },
-                }).then((response) => {
-                    if (response.ok) {
-                        window.location.reload();
-                    }
-                });
-            }
-        }
 
         function deleteHospitalAlarm(id) {
-            if (confirm("정말 삭제하시겠습니까?")) {
-                // DELETE request to delete/hospital_alarm/id
-                fetch(`/delete/hospital_alarm/${id}/`, {
-                    method: "DELETE",
-                    headers: {
-                        "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
-                    },
-                }).then((response) => {
-                    if (response.ok) {
-                        window.location.reload();
-                    }
-                });
-            }
+            Swal.fire({
+                title: '<p style="margin: 0; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
+                text: "삭제하시면 다시 복구시킬 수 없습니다.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#00BCD4',
+                cancelButtonColor: '#e5e2e2',
+                confirmButtonText: '삭제',
+                cancelButtonText: '취소',
+                width: '400px'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: `/delete/hospital_alarm/${id}/`,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+                        },
+                        success: function (response) {
+                            Swal.fire('삭제되었습니다!', '', 'success').then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
+                        }
+                    });
+                }
+            });
         }
+
+
+        function deleteAlarm(id) {
+            Swal.fire({
+                title: '<p style="margin: 0; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
+                text: "삭제하시면 다시 복구시킬 수 없습니다.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#00BCD4',
+                cancelButtonColor: '#e5e2e2',
+                confirmButtonText: '삭제',
+                cancelButtonText: '취소',
+                width: '400px'
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        url: `/delete/pill_alarm/${id}/`,
+                        type: 'DELETE',
+                        headers: {
+                            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+                        },
+                        success: function (response) {
+                            Swal.fire('삭제되었습니다!', '', 'success').then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
+                        }
+                    });
+                }
+            });
+        }
+
     </script>
 {% endblock %}
