@@ -12,11 +12,9 @@
     <div class="recommend_result">
         <p>당신을 위한 오늘의 추천 식단은</p>
         {% for meal in recommendation_foods %}
-            <p>{{ meal }}</p>
+            <p class="reco_food">"{{ meal }}"</p>
         {% endfor %}
-        <br>
-        <p>오늘의 건강 조언</p>
-        <p>단백질이 부족하시네요! 아몬드로 보충해보세요!</p>
+        <img src="{% static 'img/reco_food.png' %}" class="reco_food_img">
     </div>
 
     <div class="all_kcal">

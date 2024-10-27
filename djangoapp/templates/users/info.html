@@ -112,8 +112,8 @@
                     </div>
 
                     <div class="slide" id="form3">
-                        <p>매일의 작은 변화가 큰 건강을 만듭니다.<br>당뇨병 관리, 저희가 도와드릴게요.
-                        </p>
+                        <img src="{% static 'img/chara1.png' %}" class="form3_img">
+                        <p>매일의 작은 변화가 큰 건강을 만듭니다.<br>당뇨병 관리, 저희가 도와드릴게요.</p>
                         <input type="submit" value="앱 시작하기">
                     </div>
 
@@ -163,7 +163,7 @@
                 }
 
                 if (now == 3) {
-                    $('#chara').css('visibility', 'hidden');
+                    $('.chara_img').css('display', 'none');
                     $('#next').css('visibility', 'hidden');
                 }
             });
@@ -175,7 +175,7 @@
                     $('form').css('transform', `translateX(-${(width * (now - 1))}px)`);
                 }
                 if (now < 3) {
-                    $('#chara').css('visibility', 'visible');
+                    $('.chara_img').css('visibility', 'visible');
                     $('#next').css('visibility', 'visible');
                 }
             });
@@ -189,10 +189,10 @@
 
                 if (now === totalSteps) {
                     $('#next-btn').css('display', 'none');
-                    $('#chara').css('visibility', 'hidden');
+                    $('.chara_img').css('visibility', 'hidden');
                 } else {
                     $('#next-btn').css('display', 'inline-block');
-                    $('#chara').css('visibility', 'visible');
+                    $('.chara_img').css('visibility', 'visible');
                 }
             }
 

@@ -127,11 +127,15 @@ html, body {
         background-color: white;
         border-radius: 10px;
         height: 30%;
+        padding: 4%;
         display: none;
+        text-align: center;
+        align-content: center;
     }
     
     .recommend_result p {
-        margin: 0;
+        margin: 0 0 2% 0;
+        font-size: 1.8rem;
     }
     
     .meals_btn img {
@@ -321,9 +325,22 @@ html, body {
         display: flex;
     }
 
+    .recommend_result .reco_food {
+        color: #00BCD4;
+        font-size: 2.2rem;
+    }
 }
 
 @media all and (max-width: 479px) { 
+
+    .reco_food_img {
+        width: 30%;    
+    }
+    
+    .recommend_result .reco_food {
+        color: #00BCD4;
+        font-size: 1.3rem;
+    }
 
     .upload-box .drag-file {
         position: relative;
@@ -564,10 +581,12 @@ html, body {
         height: 30%;
         padding: 4%;
         display: none;
+        text-align: center;
+        align-content: center;
     }
     
     .recommend_result p {
-        margin: 0;
+        margin: 0 0 2% 0;
     }
 
     #meal_detail {
