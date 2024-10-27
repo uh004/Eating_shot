@@ -17,3 +17,5 @@ python-logstash
 psycopg2-binary
 flower
 httpx
+django-resized
+django-pwa

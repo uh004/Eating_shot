@@ -15,7 +15,7 @@
                 <p id="modify_myinfo" onclick="window.location.href = {% url 'mypage_revise_form' %}">내 정보 수정하기</p>
                 <p id="logout" onclick="window.location.href = {% url 'logout' %}">로그아웃</p>
             </div>
-            
+
         </div>
     </div>
 
@@ -94,7 +94,7 @@
                 {% for item in hospital_alarm %}
                     <li>
                         <div class="hospital_info">
-                            <p>2024.10.31 {{ item.hospital_time }}</p>
+                            <p>{{ item.hospital_date }} {{ item.hospital_time }}</p>
 
                             <div class="revise_alarm2">
                                 <button onclick="window.location = '{% url 'hospital_alarm' item.id %}'">수정</button>
@@ -103,7 +103,7 @@
                         </div>
 
                         <p class="hospital">{{ item.hospital_name }}</p>
-                   
+
 
                     </li>
                 {% endfor %}
@@ -115,41 +115,8 @@
 
 </div>
 {% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script>
-
-        function deleteHospitalAlarm(id) {
-            Swal.fire({
-                title: '<p style="margin: 0; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
-                text: "삭제하시면 다시 복구시킬 수 없습니다.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#00BCD4',
-                cancelButtonColor: '#e5e2e2',
-                confirmButtonText: '삭제',
-                cancelButtonText: '취소',
-                width: '400px'
-            }).then((result) => {
-                if (result.value) {
-                    $.ajax({
-                        url: `/delete/hospital_alarm/${id}/`,
-                        type: 'DELETE',
-                        headers: {
-                            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
-                        },
-                        success: function (response) {
-                            Swal.fire('삭제되었습니다!', '', 'success').then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
-                        }
-                    });
-                }
-            });
-        }
-
-
         function deleteAlarm(id) {
             Swal.fire({
                 title: '<p style="margin: 0; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
@@ -162,24 +129,45 @@
                 cancelButtonText: '취소',
                 width: '400px'
             }).then((result) => {
-                if (result.value) {
-                    $.ajax({
-                        url: `/delete/pill_alarm/${id}/`,
-                        type: 'DELETE',
-                        headers: {
-                            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
-                        },
-                        success: function (response) {
-                            Swal.fire('삭제되었습니다!', '', 'success').then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function (xhr, status, error) {
-                            Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
-                        }
+                if(result.value) {
+                    // DELETE request to delete/pill_alarm/id
+                    fetch(`/delete/pill_alarm/${id}/`, {
+                            method: "DELETE",
+                            headers: {
+                                "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
+                             },
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                        Swal.fire('삭제되었습니다!', '', 'success').then(() => {
+                            location.reload();
+                        });
+                    }).catch(error => {
+                        Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
                     });
                 }
             });
+        }
+
+        function deleteHospitalAlarm(id) {
+            if (confirm("정말 삭제하시겠습니까?")) {
+                // DELETE request to delete/hospital_alarm/id
+                fetch(`/delete/hospital_alarm/${id}/`, {
+                    method: "DELETE",
+                    headers: {
+                        "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
+                    },
+                }).then((response) => {
+                    if (response.ok) {
+                        window.location.reload();
+                    }
+                });
+            }
         }
 
     </script>

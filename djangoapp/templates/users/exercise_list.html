@@ -20,7 +20,7 @@
                         <li onclick="location.href='{% url 'exercise_form' ex.id %}'">
                             {# you can ignore the warning here #}
                             <p class="ex_name">{{ ex.name }}</p>
-                            <p class="ex_type">유산소</p>
+                            <p class="ex_type">{{ ex.exercise_category }}</p>
                         </li>
                     </ul>
                 </div>

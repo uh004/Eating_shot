@@ -42,7 +42,11 @@ if os.environ.get("DJANGO_ENV") == "production":
     ]
 else:
     DEBUG = True
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["localhost", "dekaram.tail25a21e.ts.net"]
+    CSRF_TRUSTED_ORIGINS = [
+        "http://localhost:8000",
+        "https://dekaram.tail25a21e.ts.net",
+    ]
 
 
 if DEBUG:
@@ -74,6 +78,7 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "django_celery_results",
     "django_resized",
+    "pwa",
     "users.apps.UsersConfig",
     "ai_workload.apps.AiWorkloadConfig",
     "webapp.apps.WebappConfig",
@@ -145,6 +150,49 @@ TEMPLATES = [
         },
     },
 ]
+
+# django-pwa settings
+
+# PWA_APP_DEBUG_MODE = False
+
+PWA_APP_NAME = "EatingShot"
+PWA_APP_DESCRIPTION = "EatingShot is a web application for food recognition."
+PWA_APP_THEME_COLOR = "#0A0302"
+PWA_APP_BACKGROUND_COLOR = "#ffffff"
+PWA_APP_DISPLAY = "standalone"
+PWA_APP_SCOPE = "/"
+PWA_APP_ORIENTATION = "any"
+PWA_APP_START_URL = "/"
+PWA_APP_STATUS_BAR_COLOR = "default"
+PWA_SERVICE_WORKER_PATH = os.path.join(BASE_DIR, "static/js", "serviceworker.js")
+PWA_APP_ICONS = [{"src": "/static/img/icons/icon-384x384.png", "sizes": "384x384"}]
+PWA_APP_ICONS_APPLE = [
+    {"src": "/static/img/icons/icon-384x384.png", "sizes": "384x384"}
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        "src": "/static/img/icons/icon-384x384.png",
+        "media": "(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)",
+    }
+]
+PWA_APP_DIR = "webapp"
+PWA_APP_LANG = "ko-KR"
+# PWA_APP_SHORTCUTS = [
+#     {
+#         "name": "Shortcut",
+#         "url": "/target",
+#         "description": "Shortcut to a page in my application",
+#     }
+# ]
+PWA_APP_SCREENSHOTS = [
+    {
+        "src": "/static/img/icons/icon-384x384.png",
+        # "sizes": "750x1334",
+        "sizes": "384x384",
+        "type": "image/png",
+    }
+]
+
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -240,11 +288,6 @@ else:
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "loggers": {
-        "asyncio": {
-            "level": "WARNING",
-        },
-    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
@@ -253,6 +296,13 @@ LOGGING = {
     "root": {
         "handlers": ["console"],
         "level": "INFO",
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,  # Prevent propagation to avoid double logging
+        },
     },
 }
 # LOGGING = {

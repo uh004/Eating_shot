@@ -113,33 +113,18 @@ class Diet(models.Model):
 class ExerciseType(models.Model):
     name = models.CharField(max_length=50)
     calories_per_hour = models.IntegerField()
+    exercise_category = models.CharField(
+        max_length=10,
+        choices=[("aerobic", "유산소"), ("anaerobic", "무산소")],
+        null=True,
+    )
 
     def __str__(self):
         return self.name
 
 
 class Exercise(models.Model):
-    # exercise_types = [
-    #     ("tennis_duals", 330, "테니스(복식)"),
-    #     ("water_skiiing", 440, "수상스키"),
-    #     ("general_stretching", 180, "체조"),
-    #     ("walking5point6kmh", 270, "걷기(5.6km/h)"),
-    #     ("general_aerobics", 330, "에어로빅"),
-    #     ("tennis_singles", 440, "테니스(단식)"),
-    #     ("swimming", 720, "수영"),
-    #     ("golf", 270, "골프"),
-    #     ("skiiing", 540, "스키"),
-    #     ("hiking", 780, "등산"),
-    #     ("bicycling9point7kmh", 270, "자전거(9.7km/h)"),
-    #     ("skating6point4kmh", 390, "스케이팅(6.4km/h)"),
-    #     ("bowling", 270, "볼링"),
-    #     ("bicycling16kmh", 390, "자전거(16km/h)"),
-    #     ("running9kmh", 630, "달리기(9km/h)"),
-    #     ("table_tennis", 330, "탁구"),
-    #     ("taking_steps", 310, "계단 오르내리기"),
-    #     ("badminton", 330, "배드민턴"),
-    #     ("volleyball", 330, "배구"),
-    # ]
+    # look at the migration file to see the exercise types
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     exercise_time = models.IntegerField()
@@ -168,6 +153,9 @@ class FoodCalories(models.Model):
     protein_g = models.FloatField()
     fat_g = models.FloatField()
     diabetes_risk_classification = models.IntegerField()
+    is_meat = models.FloatField()
+    is_veg = models.FloatField()
+    is_seafood = models.FloatField()
 
     def __str__(self):
         return self.food_name

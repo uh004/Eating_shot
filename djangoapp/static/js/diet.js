@@ -56,7 +56,7 @@ function deleteBoard(mealId) {
             fetch(`/delete/meal/${mealId}/`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+                    'X-CSRFToken': document.querySelector('[name=csrf-token]').content,
                 }
             })
                 .then(response => {
@@ -97,7 +97,7 @@ function deleteMealName2(mealId, nutrientName) {
             fetch(`/mod/${mealId}/${nutrientName}/`, {
                 method: 'DELETE',
                 headers: {
-                    'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+                    'X-CSRFToken': document.querySelector('[name=csrf-token]').content,
                 },
                 body: JSON.stringify({name: nutrientName})
             })
@@ -140,7 +140,7 @@ function modifyMealName2(mealId, nutrientName) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+            'X-CSRFToken': document.querySelector('[name=csrf-token]').content,
         },
         body: JSON.stringify({name: newNutrientName})
     })
@@ -220,7 +220,7 @@ function modifyMealName3(mealId) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+            'X-CSRFToken': document.querySelector('[name=csrf-token]').content,
         },
         body: JSON.stringify({name: newNutrientName})
     })

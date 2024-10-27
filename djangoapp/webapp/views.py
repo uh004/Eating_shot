@@ -1,14 +1,26 @@
 import json
 
+import httpx
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
 from django.http import JsonResponse
 
+from .utils import (
+    handle_form,
+    prepare_meal_context,
+    prepare_exercise_context,
+    prepare_blood_context,
+    prepare_mypage_context,
+    prepare_meal_data,
+    prepare_exercise_data,
+    prepare_blood_data,
+)
+
+
 # from ai_workload.kafka.producer import send_inference_task
 from ai_workload.tasks import process_inference_task
-
 from ai_workload.models import InferenceTask, InferenceResult
 from users.models import (
     Exercise,
@@ -34,7 +46,9 @@ from .forms import (
     PillAlarmForm,
     HospitalAlarmForm,
 )
-from datetime import datetime, timedelta
+from datetime import datetime
+
+timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
 
 
 @login_required
@@ -118,313 +132,20 @@ def load_content(request, menu):
 
     context = {}
 
-    # TODO: reducing duplicate code
     match menu:
         case "report":
-            meals = Diet.objects.filter(user=request.user).prefetch_related("result")
-            exercises = Exercise.objects.filter(user=request.user)
-            blood_sugar = BloodSugar.objects.filter(user=request.user)
-            blood_pressure = BloodPressure.objects.filter(user=request.user)
-            hba1c = HbA1c.objects.filter(user=request.user)
-
-            context["max_calories"] = 0
-            # not used
-            context["max_carbohydrates"] = 0
-            context["max_protein"] = 0
-            context["max_fat"] = 0
-
-            context["total_calories"] = 0
-            context["total_carbohydrates"] = 0
-            context["total_protein"] = 0
-            context["total_fat"] = 0
-
-            context["total_calories_week"] = 0
-            context["total_carbohydrates_week"] = 0
-            context["total_protein_week"] = 0
-            context["total_fat_week"] = 0
-
-            context["total_exercise_calories"] = 0
-            context["total_exercise_time"] = 0
-
-            context["total_exercise_calories_week"] = 0
-            context["total_exercise_time_week"] = 0
-
-            context["mean_blood_sugar"] = 0
-            context["max_blood_sugar"] = 0
-            context["min_blood_sugar"] = 0
-
-            if len(meals) > 0:
-                # meal data
-                context["meals"] = meals
-
-                max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
-                context["max_calories"] = max_calories
-                context["max_carbohydrates"] = 100  # fixed value
-                context["max_protein"] = int(
-                    CustomUser.objects.get(id=request.user.id).weight
-                    * 0.8  # for proteins, 0.8g per kg
-                )
-                context["max_fat"] = 50  # fixed value
-
-                # {
-                # "predictions": [
-                # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
-                # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
-                # ],
-                # "food_info": [
-                # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
-                # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
-                # ]
-                # }
-
-                total_calories = 0
-                total_carbohydrates = 0
-                total_protein = 0
-                total_fat = 0
-
-                meal_calories = {}
-
-                for meal in meals:
-                    food_info = meal.result.result_data["food_info"]
-                    meal_total_calories = sum(
-                        int(food["energy_kcal"]) for food in food_info
-                    )
-                    meal_calories[meal.id] = meal_total_calories
-                    total_calories += sum(
-                        int(food["energy_kcal"]) for food in food_info
-                    )
-                    total_carbohydrates += sum(
-                        int(food["carbohydrates_g"]) for food in food_info
-                    )
-                    total_protein += sum(int(food["protein_g"]) for food in food_info)
-                    total_fat += sum(int(food["fat_g"]) for food in food_info)
-
-                context["total_calories"] = total_calories
-                context["total_carbohydrates"] = total_carbohydrates
-                context["total_protein"] = total_protein
-                context["total_fat"] = total_fat
-                context["meal_calories"] = meal_calories
-
-                # weekly data
-                total_calories_week = 0
-                total_carbohydrates_week = 0
-                total_protein_week = 0
-                total_fat_week = 0
-
-                meals_last_week = Diet.objects.filter(
-                    user=request.user, date__gte=datetime.now() - timedelta(days=7)
-                ).prefetch_related("result")
-
-                for meal in meals_last_week:
-                    food_info = meal.result.result_data["food_info"]
-                    total_calories_week += sum(
-                        int(food["energy_kcal"]) for food in food_info
-                    )
-                    total_carbohydrates_week += sum(
-                        int(food["carbohydrates_g"]) for food in food_info
-                    )
-                    total_protein_week += sum(
-                        int(food["protein_g"]) for food in food_info
-                    )
-                    total_fat_week += sum(int(food["fat_g"]) for food in food_info)
-
-                context["total_calories_week"] = total_calories_week
-                context["total_carbohydrates_week"] = total_carbohydrates_week
-                context["total_protein_week"] = total_protein_week
-                context["total_fat_week"] = total_fat_week
-
-            if len(exercises) > 0:
-                # exercise data
-                context["total_exercise_calories"] = sum(
-                    [
-                        exercise.exercise_calories
-                        for exercise in Exercise.objects.filter(user=request.user)
-                    ]
-                )
-                context["total_exercise_time"] = sum(
-                    [
-                        exercise.exercise_time
-                        for exercise in Exercise.objects.filter(user=request.user)
-                    ]
-                )
-
-                # weekly exercise data
-                context["total_exercise_calories_week"] = sum(
-                    [
-                        exercise.exercise_calories
-                        for exercise in Exercise.objects.filter(
-                            user=request.user,
-                            date__gte=datetime.now() - timedelta(days=7),
-                        )
-                    ]
-                )
-                context["total_exercise_time_week"] = sum(
-                    [
-                        exercise.exercise_time
-                        for exercise in Exercise.objects.filter(
-                            user=request.user,
-                            date__gte=datetime.now() - timedelta(days=7),
-                        )
-                    ]
-                )
-
-            if len(blood_sugar) > 0:
-                # blood data for today(under 24 hours)
-                blood_sugar = BloodSugar.objects.filter(
-                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
-                )
-                blood_pressure = BloodPressure.objects.filter(
-                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
-                )
-                hba1c = HbA1c.objects.filter(
-                    user=request.user, date__gte=datetime.now() - timedelta(days=1)
-                )
-
-                mean_blood_sugar = sum(
-                    [data.blood_sugar for data in blood_sugar]
-                ) / len(blood_sugar)
-                max_blood_sugar = max([data.blood_sugar for data in blood_sugar])
-                min_blood_sugar = min([data.blood_sugar for data in blood_sugar])
-
-                context["mean_blood_sugar"] = int(mean_blood_sugar)
-                context["max_blood_sugar"] = max_blood_sugar
-                context["min_blood_sugar"] = min_blood_sugar
-
-            if len(blood_pressure) > 0:
-                # mean_blood_pressure: blood pressure instances which
-                mean_blood_pressure_systolic = sum(
-                    [data.systolic for data in blood_pressure]
-                ) / len(blood_pressure)
-                mean_blood_pressure_diastolic = sum(
-                    [data.diastolic for data in blood_pressure]
-                ) / len(blood_pressure)
-                max_blood_pressure_systolic = max(
-                    [data.systolic for data in blood_pressure]
-                )
-                max_blood_pressure_diastolic = max(
-                    [data.diastolic for data in blood_pressure]
-                )
-                min_blood_pressure_systolic = min(
-                    [data.systolic for data in blood_pressure]
-                )
-                min_blood_pressure_diastolic = min(
-                    [data.diastolic for data in blood_pressure]
-                )
-                context["mean_blood_pressure_systolic"] = int(
-                    mean_blood_pressure_systolic
-                )
-                context["mean_blood_pressure_diastolic"] = int(
-                    mean_blood_pressure_diastolic
-                )
-                context["max_blood_pressure_systolic"] = max_blood_pressure_systolic
-                context["max_blood_pressure_diastolic"] = max_blood_pressure_diastolic
-                context["min_blood_pressure_systolic"] = min_blood_pressure_systolic
-                context["min_blood_pressure_diastolic"] = min_blood_pressure_diastolic
-
-            if len(hba1c) > 0:
-                context["hb1ac"] = hba1c[0].hba1c  # only one data per day
+            context.update(prepare_meal_data(request))
+            context.update(prepare_exercise_data(request))
+            context.update(prepare_blood_data(request))
 
         case "diet":
-            meals = Diet.objects.filter(user=request.user).prefetch_related("result")
-            context["meals"] = meals
-
-            max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
-            context["max_calories"] = max_calories
-            context["max_carbohydrates"] = 100  # fixed value
-            context["max_protein"] = int(
-                CustomUser.objects.get(id=request.user.id).weight
-                * 0.8  # for proteins, 0.8g per kg
-            )
-            context["max_fat"] = 50  # fixed value
-
-            # {
-            # "predictions": [
-            # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
-            # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
-            # ],
-            # "food_info": [
-            # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
-            # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
-            # ]
-            # }
-
-            total_calories = 0
-            total_carbohydrates = 0
-            total_protein = 0
-            total_fat = 0
-
-            meal_calories = {}
-
-            for meal in meals:
-                food_info = meal.result.result_data["food_info"]
-                meal_total_calories = sum(
-                    int(food["energy_kcal"]) for food in food_info
-                )
-                meal_calories[meal.id] = meal_total_calories
-                total_calories += sum(int(food["energy_kcal"]) for food in food_info)
-                total_carbohydrates += sum(
-                    int(food["carbohydrates_g"]) for food in food_info
-                )
-                total_protein += sum(int(food["protein_g"]) for food in food_info)
-                total_fat += sum(int(food["fat_g"]) for food in food_info)
-
-            context["total_calories"] = total_calories
-            context["total_carbohydrates"] = total_carbohydrates
-            context["total_protein"] = total_protein
-            context["total_fat"] = total_fat
-            context["meal_calories"] = meal_calories
+            context.update(prepare_meal_context(request))
         case "exercise":
-            context["exercises"] = Exercise.objects.filter(user=request.user)
-            context["total_calories"] = sum(
-                [
-                    exercise.exercise_calories
-                    for exercise in Exercise.objects.filter(user=request.user)
-                ]
-            )
+            context.update(prepare_exercise_context(request))
         case "blood":
-            # get all blood related data(blood sugar, blood pressure, hba1c) and align all in one list
-
-            blood_sugar = BloodSugar.objects.filter(user=request.user)
-            blood_pressure = BloodPressure.objects.filter(user=request.user)
-            hba1c = HbA1c.objects.filter(user=request.user)
-
-            context["blood1_data"] = blood_sugar
-            context["blood2_data"] = blood_pressure
-            context["blood3_data"] = hba1c
+            context.update(prepare_blood_context(request))
         case "mypage":
-            user_info = request.user
-            context["user_info"] = user_info
-            conversion_table = {
-                "type1": "1형 당뇨",
-                "type2": "2형 당뇨",
-                "gestational": "임신성 당뇨",
-                "prediabetes": "내당증",
-                "high": "고혈압",
-                "low": "저혈압",
-                "hyperlipidemia": "고지혈증",
-                "obesity": "비만",
-            }
-            health_conditions = user_info.health_conditions.split(",")
-            context["health_conditions"] = [
-                conversion_table[condition] for condition in health_conditions
-            ]
-            weekday_conversion_table = {
-                "mon": "월",
-                "tue": "화",
-                "wed": "수",
-                "thu": "목",
-                "fri": "금",
-                "sat": "토",
-                "sun": "일",
-            }
-            alarm_object = PillAlarm.objects.filter(user=request.user)
-            for alarm in alarm_object:
-                alarm.weekday = [
-                    weekday_conversion_table[day] for day in alarm.weekday.split(",")
-                ]
-            context["pill_alarm"] = alarm_object
-            context["hospital_alarm"] = HospitalAlarm.objects.filter(user=request.user)
-            context["weekdays"] = ["월", "화", "수", "목", "금", "토", "일"]
+            context.update(prepare_mypage_context(request))
         case _:
             pass
 
@@ -509,7 +230,7 @@ def update_meal(request, meal_id, existing_food_name):
 
     :param request:
     :param meal_id: target meal id
-    :param nutrient_name: target nutrient name
+    :param existing_food_name: target nutrient name
     :return:
     """
     try:
@@ -593,60 +314,34 @@ def update_meal(request, meal_id, existing_food_name):
 
 
 @login_required
-def blood_1(request, id=None):
-    if id:
-        blood_sugar = BloodSugar.objects.get(id=id, user=request.user)
-    else:
-        blood_sugar = BloodSugar(user=request.user)
+def blood_data_view(request, data_type, id=None):
+    model_map = {
+        "blood_sugar": BloodSugar,
+        "blood_pressure": BloodPressure,
+        "hba1c": HbA1c,
+    }
+    form_map = {
+        "blood_sugar": BloodSugarForm,
+        "blood_pressure": BloodPressureForm,
+        "hba1c": HbA1cForm,
+    }
+    template_map = {
+        "blood_sugar": "users/blood_form1.html",
+        "blood_pressure": "users/blood_form2.html",
+        "hba1c": "users/blood_form3.html",
+    }
 
-    if request.method == "POST":
-        form = BloodSugarForm(request.POST, instance=blood_sugar)
-        if form.is_valid():
-            blood_sugar = form.save(commit=False)
-            blood_sugar.user = request.user
-            blood_sugar.save()
-            return redirect("index")
-    else:
-        form = BloodSugarForm(instance=blood_sugar)
-    return render(request, "users/blood_form1.html", {"form": form})
+    model = model_map.get(data_type)
+    form_class = form_map.get(data_type)
+    template_name = template_map.get(data_type)
 
+    if not model or not form_class or not template_name:
+        return redirect("index")
 
-@login_required
-def blood_2(request, id=None):
-    if id:
-        blood_pressure = BloodPressure.objects.get(id=id, user=request.user)
-    else:
-        blood_pressure = BloodPressure(user=request.user)
-
-    if request.method == "POST":
-        form = BloodPressureForm(request.POST, instance=blood_pressure)
-        if form.is_valid():
-            blood_pressure = form.save(commit=False)
-            blood_pressure.user = request.user
-            blood_pressure.save()
-            return redirect("index")
-    else:
-        form = BloodPressureForm(instance=blood_pressure)
-    return render(request, "users/blood_form2.html", {"form": form})
-
-
-@login_required
-def blood_3(request, id=None):
-    if id:
-        hba1c = HbA1c.objects.get(id=id, user=request.user)
-    else:
-        hba1c = HbA1c(user=request.user)
-
-    if request.method == "POST":
-        form = HbA1cForm(request.POST, instance=hba1c)
-        if form.is_valid():
-            hba1c = form.save(commit=False)
-            hba1c.user = request.user
-            hba1c.save()
-            return redirect("index")
-    else:
-        form = HbA1cForm(instance=hba1c)
-    return render(request, "users/blood_form3.html", {"form": form})
+    instance = (
+        model.objects.get(id=id, user=request.user) if id else model(user=request.user)
+    )
+    return handle_form(request, form_class, template_name, "index", instance=instance)
 
 
 @login_required

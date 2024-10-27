@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<meta name="csrf-token" content="{{ csrf_token }}">
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/diet.css' %}">
@@ -7,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
 
-{% csrf_token %}
 <div class="main_container2">
     <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'index' %}'" alt="" class="back">
     <div class="meal_info2">
@@ -18,7 +18,7 @@
             <button type="button" onclick="deleteBoard({{ meal.id }})">삭제</button>
         </div>
 
-        <img src="{% static 'img/sigpan.jpg' %}" alt="">
+        <img src="/photos/{{ meal.image.name }}" alt="" class="meal_img">
         <p class="topic">식단 영양소 정보</p>
         <hr>
 
@@ -86,9 +86,7 @@
 </div>
 
 {% block script %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{% static 'js/diet.js' %}"></script>
 {% endblock %}

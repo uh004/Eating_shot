@@ -4,259 +4,259 @@
     <link rel="stylesheet" href="{% static 'css/report.css' %}">
 {% endblock %}
 <!-- 보고서 -->
-   
-    <div class="tabcontent">
-        <input type="radio" name="tab" id="tabmenu01" checked>
-        <label for="tabmenu01">일일보고서</label>
-        <input type="radio" name="tab" id="tabmenu02">
-        <label for="tabmenu02">주간보고서</label>
 
-        <div id="tab01" class="contents">
-            <div class="diet_report">
+<div class="tabcontent">
+    <input type="radio" name="tab" id="tabmenu01" checked>
+    <label for="tabmenu01">일일보고서</label>
+    <input type="radio" name="tab" id="tabmenu02">
+    <label for="tabmenu02">주간보고서</label>
 
-                <p class="main_info">총 섭취 <span>{{ total_calories }} </span>kcal</p>
+    <div id="tab01" class="contents">
+        <div class="diet_report">
 
-                <div class="nutrient">
-                    <p><span style="background-color: #F2F597;">탄</span> {{ total_carbohydrates }}g</p>
-                    <p><span>단</span> {{ total_protein }}g</p>
-                    <p><span style="background-color: #AAD9BB;">지</span> {{ total_fat }}g</p>
-                </div>
+            <p class="main_info">총 섭취 <span>{{ total_calories }} </span>kcal</p>
 
-                <div class="food_type_count">
-                    <ul>
-                        <li>
-                            <img src="{% static 'img/meat.png' %}">
-                            <p>고기</p>
-                            <p class="count">3번</p>
-                        </li>
+            <div class="nutrient">
+                <p><span style="background-color: #F2F597;">탄</span> {{ total_carbohydrates }}g</p>
+                <p><span>단</span> {{ total_protein }}g</p>
+                <p><span style="background-color: #AAD9BB;">지</span> {{ total_fat }}g</p>
+            </div>
 
-                        <li>
-                            <img src="{% static 'img/vegetable.png' %}">
-                            <p>채소</p>
-                            <p class="count">2번</p>
-                        </li>
+            <div class="food_type_count">
+                <ul>
+                    <li>
+                        <img src="{% static 'img/meat.png' %}">
+                        <p>고기</p>
+                        <p class="count">{{ meat_count }}번</p>
+                    </li>
 
-                        <li>
-                            <img src="{% static 'img/seafood.png' %}">
-                            <p>해산물</p>
-                            <p class="count">2번</p>
-                        </li>
-                    </ul>
-                </div>
+                    <li>
+                        <img src="{% static 'img/vegetable.png' %}">
+                        <p>채소</p>
+                        <p class="count">{{ veg_count }}번</p>
+                    </li>
 
-                <div class="report_img">
-                    <img src="{% static 'img/report_diet.png' %}">
-                </div>
+                    <li>
+                        <img src="{% static 'img/seafood.png' %}">
+                        <p>해산물</p>
+                        <p class="count">{{ seafood_count }}번</p>
+                    </li>
+                </ul>
+            </div>
 
-                {% if total_calories > max_calories %}
-                    <p class="report_review">너무 많이 먹었어요!</p>
-                {% else %}
-                    <p class="report_review">아직<span style="color: white;">
+            <div class="report_img">
+                <img src="{% static 'img/report_diet.png' %}">
+            </div>
+
+            {% if total_calories > max_calories %}
+                <p class="report_review">너무 많이 먹었어요!</p>
+            {% else %}
+                <p class="report_review">아직<span style="color: white;">
                         {{ max_calories|subtract:total_calories }}
                     </span>kcal 더 먹을 수 있어요!</p>
+            {% endif %}
+            <p class="report_review">고기를 제일 많이 드셨네요!</p>
+
+        </div>
+
+        <div class="exercise_report">
+
+            <p class="main_info">총 소모 칼로리 <span>{{ total_exercise_calories }} </span>kcal</p>
+            <p class="main_info">총 운동 시간 <span>{{ total_exercise_time }} </span>분</p>
+
+            <div class="ex_type_count">
+                <ul>
+                    <li>
+                        <img src="{% static 'img/cardio.png' %}">
+                        <p>유산소</p>
+                        <p class="count">{{ count_exercise_cardio }}번</p>
+                    </li>
+
+                    <li>
+                        <img src="{% static 'img/weight.png' %}">
+                        <p>무산소</p>
+                        <p class="count">{{ count_exercise_weights }}번</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="report_img2">
+                <img src="{% static 'img/report_ex.png' %}">
+            </div>
+
+            <p class="report_review">현재 당신의 운동량은</p>
+            <p class="report_review">전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
+            <p class="report_review">유산소 운동을 제일 많이 하셨네요!</p>
+        </div>
+
+        <div class="blood_report1">
+            <br>
+            <div class="mini_title">
+                {% if max_blood_sugar >= 126 %}
+                    <p>혈당 <span class="status">위험</span></p>
+                {% elif max_blood_sugar >= 100 %}
+                    <p>혈당 <span class="status2">주의</span></p>
+                {% else %}
+                    <p>혈당 <span class="status3">정상</span></p>
                 {% endif %}
-                <p class="report_review">고기를 제일 많이 드셨네요!</p>
-
             </div>
 
-            <div class="exercise_report">
-                
-                <p class="main_info">총 소모 칼로리 <span>{{ total_exercise_calories }} </span>kcal</p>
-                <p class="main_info">총 운동 시간 <span>{{ total_exercise_time }} </span>분</p>
+            <ul class="blood_result">
+                <li>
+                    <p class="time">최저</p>
+                    <p><span>{{ min_blood_sugar }}</span>mg / dL</p>
+                </li>
+                <li>
+                    <p class="time">최고</p>
+                    <p><span>{{ max_blood_sugar }}</span>mg / dL</p>
+                </li>
+                <li style="border: none;">
+                    <p class="time">평균</p>
+                    <p><span>{{ mean_blood_sugar }}</span>mg / dL</p>
+                </li>
+            </ul>
 
-                <div class="ex_type_count">
-                    <ul>
-                        <li>
-                            <img src="{% static 'img/cardio.png' %}">
-                            <p>유산소</p>
-                            <p class="count">3번</p>
-                        </li>
-
-                        <li>
-                            <img src="{% static 'img/weight.png' %}">
-                            <p>무산소</p>
-                            <p class="count">2번</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="report_img2">
-                    <img src="{% static 'img/report_ex.png' %}">
-                </div>
-
-                <p class="report_review">현재 당신의 운동량은</p>
-                <p class="report_review">전체 유저의 <span style="color: #F2F597;">상위 30%</span>입니다</p>
-                <p class="report_review">유산소 운동을 제일 많이 하셨네요!</p>
+            <div class="mini_title">
+                {# max 기준 #}
+                {% if max_blood_pressure_systolic >= 140 or max_blood_pressure_diastolic >= 90 %}
+                    <p>혈압 <span class="status">위험</span></p>
+                {% elif max_blood_pressure_systolic >= 120 or max_blood_pressure_diastolic >= 80 %}
+                    <p>혈압 <span class="status2">주의</span></p>
+                {% else %}
+                    <p>혈압 <span class="status3">정상</span></p>
+                {% endif %}
             </div>
 
-            <div class="blood_report1">
-                <br>
-                <div class="mini_title">
-                    {% if max_blood_sugar >= 126 %}
-                        <p>혈당 <span class="status">위험</span></p>
-                    {% elif max_blood_sugar >= 100 %}
-                        <p>혈당 <span class="status2">주의</span></p>
-                    {% else %}
-                        <p>혈당 <span class="status3">정상</span></p>
-                    {% endif %}
-                </div>
+            <ul class="blood_result">
+                <li>
+                    <p class="time">최저</p>
+                    <p><span>{{ min_blood_pressure_systolic }}-{{ min_blood_pressure_diastolic }}</span> mmHg</p>
+                </li>
+                <li>
+                    <p class="time">최고</p>
+                    <p><span>{{ max_blood_pressure_systolic }}-{{ max_blood_pressure_diastolic }}</span> mmHg</p>
+                </li>
+                <li style="border: none;">
+                    <p class="time">평균</p>
+                    <p><span>{{ mean_blood_pressure_systolic }}-{{ mean_blood_pressure_diastolic }}</span> mmHg</p>
+                </li>
+            </ul>
 
-                <ul class="blood_result">
-                    <li>
-                        <p class="time">최저</p>
-                        <p><span>{{ min_blood_sugar }}</span>mg / dL</p>
-                    </li>
-                    <li>
-                        <p class="time">최고</p>
-                        <p><span>{{ max_blood_sugar }}</span>mg / dL</p>
-                    </li>
-                    <li style="border: none;">
-                        <p class="time">평균</p>
-                        <p><span>{{ mean_blood_sugar }}</span>mg / dL</p>
-                    </li>
-                </ul>
-
-                <div class="mini_title">
-                    {# max 기준 #}
-                    {% if max_blood_pressure_systolic >= 140 or max_blood_pressure_diastolic >= 90 %}
-                        <p>혈압 <span class="status">위험</span></p>
-                    {% elif max_blood_pressure_systolic >= 120 or max_blood_pressure_diastolic >= 80 %}
-                        <p>혈압 <span class="status2">주의</span></p>
-                    {% else %}
-                        <p>혈압 <span class="status3">정상</span></p>
-                    {% endif %}
-                </div>
-
-                <ul class="blood_result">
-                    <li>
-                        <p class="time">최저</p>
-                        <p><span>{{ min_blood_pressure_systolic }}-{{ min_blood_pressure_diastolic }}</span> mmHg</p>
-                    </li>
-                    <li>
-                        <p class="time">최고</p>
-                        <p><span>{{ max_blood_pressure_systolic }}-{{ max_blood_pressure_diastolic }}</span> mmHg</p>
-                    </li>
-                    <li style="border: none;">
-                        <p class="time">평균</p>
-                        <p><span>{{ mean_blood_pressure_systolic }}-{{ mean_blood_pressure_diastolic }}</span> mmHg</p>
-                    </li>
-                </ul>
-
-                <div class="mini_title">
-                    {% if hb1ac >= 7 %}
-                        <p>당화혈색소 <span class="status">위험</span></p>
-                    {% elif hb1ac >= 6.5 %}
-                        <p>당화혈색소 <span class="status2">주의</span></p>
-                    {% else %}
-                        <p>당화혈색소 <span class="status3">정상</span></p>
-                    {% endif %}
-                </div>
-                <p class="sakso"><span>{{ hb1ac }}</span>%</p>
-
-
+            <div class="mini_title">
+                {% if hb1ac >= 7 %}
+                    <p>당화혈색소 <span class="status">위험</span></p>
+                {% elif hb1ac >= 6.5 %}
+                    <p>당화혈색소 <span class="status2">주의</span></p>
+                {% else %}
+                    <p>당화혈색소 <span class="status3">정상</span></p>
+                {% endif %}
             </div>
+            <p class="sakso"><span>{{ hb1ac }}</span>%</p>
+
+
         </div>
-
-        <div id="tab02" class="contents">
-            <div class="diet_report">
-
-                <p class="main_info">총 섭취 <span>{{ total_calories_week }} </span>kcal</p>
-
-                <div class="nutrient">
-                    <p><span style="background-color: #F2F597;">탄</span> {{ total_carbohydrates_week }}g</p>
-                    <p><span>단</span> {{ total_protein_week }}g</p>
-                    <p><span style="background-color: #AAD9BB;">지</span> {{ total_fat_week }}g</p>
-                </div>
-
-                <div class="food_type_count">
-                    <ul>
-                        <li>
-                            <img src="{% static 'img/meat.png' %}">
-                            <p>고기</p>
-                            <p class="count">24번</p>
-                        </li>
-
-                        <li>
-                            <img src="{% static 'img/vegetable.png' %}">
-                            <p>채소</p>
-                            <p class="count">5번</p>
-                        </li>
-
-                        <li>
-                            <img src="{% static 'img/seafood.png' %}">
-                            <p>해산물</p>
-                            <p class="count">3번</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="report_img">
-                    <img src="{% static 'img/report_diet.png' %}" alt="">
-                </div>
-
-                <p class="report_review"><span>고기</span>를 제일 많이 섭취하셨네요!</p>
-                <p class="report_review">채소 섭취량을 늘려야해요!</p>
-
-            </div>
-
-            <div class="exercise_report">
-                
-                <p class="main_info">총 소모 칼로리 <span>{{ total_exercise_calories_week }} </span>kcal</p>
-                <p class="main_info">총 운동 시간 <span>{{ total_exercise_time_week }} </span>분</p>
-                <p class="main_info">하루 평균 <span>30</span>분 동안 <span>130</span>kcal 소모</p>
-
-                <div class="ex_type_count">
-                    <ul>
-                        <li>
-                            <img src="{% static 'img/cardio.png' %}">
-                            <p>유산소</p>
-                            <p class="count">6번</p>
-                        </li>
-
-                        <li>
-                            <img src="{% static 'img/weight.png' %}">
-                            <p>무산소</p>
-                            <p class="count">2번</p>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="report_img2">
-                    <img src="{% static 'img/report_ex.png' %}">
-                </div>
-
-                <p class="report_review">전반적으로 운동량이 부족해요!</p>
-                <p class="report_review">조금 더 분발하셔야겠어요!</p>
-
-            </div>
-
-            <div class="blood_report2">
-                <select id="options" onchange="showButton()">
-                    <option name="options" value="option1">혈당</option>
-                    <option name="options" value="option2">혈압</option>
-                    <option name="options" value="option3">당화혈색소</option>
-                </select>
-
-                <select class="blood_detail" id="blood1_check" onchange="showButton()">
-                    <option value="morning_before">아침 식전</option>
-                    <option value="lunch_before">점심 식전</option>
-                    <option value="dinner_before">저녁 식전</option>
-                    <option value="morning_after">아침 식후</option>
-                    <option value="lunch_after">점심 식후</option>
-                    <option value="dinner_after">저녁 식후</option>
-                    <option value="vacant">공복</option>
-                </select>
-
-                <select class="blood_detail" id="blood2_check" onchange="showButton()">
-                    <option value="systolic">수축기</option>
-                    <option value="diastolic">이완기</option>
-                </select>
-
-                <div class="for_canvas">
-                    <canvas id="canvas" width="400px" height="30px"></canvas>
-                </div>
-
-            </div>
-        </div>
-        
     </div>
+
+    <div id="tab02" class="contents">
+        <div class="diet_report">
+
+            <p class="main_info">총 섭취 <span>{{ total_calories_week }} </span>kcal</p>
+
+            <div class="nutrient">
+                <p><span style="background-color: #F2F597;">탄</span> {{ total_carbohydrates_week }}g</p>
+                <p><span>단</span> {{ total_protein_week }}g</p>
+                <p><span style="background-color: #AAD9BB;">지</span> {{ total_fat_week }}g</p>
+            </div>
+
+            <div class="food_type_count">
+                <ul>
+                    <li>
+                        <img src="{% static 'img/meat.png' %}">
+                        <p>고기</p>
+                        <p class="count">{{ meat_count_week }}번</p>
+                    </li>
+
+                    <li>
+                        <img src="{% static 'img/vegetable.png' %}">
+                        <p>채소</p>
+                        <p class="count">{{ veg_count_week }}번</p>
+                    </li>
+
+                    <li>
+                        <img src="{% static 'img/seafood.png' %}">
+                        <p>해산물</p>
+                        <p class="count">{{ seafood_count_week }}번</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="report_img">
+                <img src="{% static 'img/report_diet.png' %}" alt="">
+            </div>
+
+            <p class="report_review"><span>고기</span>를 제일 많이 섭취하셨네요!</p>
+            <p class="report_review">채소 섭취량을 늘려야해요!</p>
+
+        </div>
+
+        <div class="exercise_report">
+
+            <p class="main_info">총 소모 칼로리 <span>{{ total_exercise_calories_week }} </span>kcal</p>
+            <p class="main_info">총 운동 시간 <span>{{ total_exercise_time_week }} </span>분</p>
+            <p class="main_info">하루 평균 <span>30</span>분 동안 <span>130</span>kcal 소모</p>
+
+            <div class="ex_type_count">
+                <ul>
+                    <li>
+                        <img src="{% static 'img/cardio.png' %}">
+                        <p>유산소</p>
+                        <p class="count">{{ count_exercise_cardio_week }}번</p>
+                    </li>
+
+                    <li>
+                        <img src="{% static 'img/weight.png' %}">
+                        <p>무산소</p>
+                        <p class="count">{{ count_exercise_weights_week }}번</p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="report_img2">
+                <img src="{% static 'img/report_ex.png' %}">
+            </div>
+
+            <p class="report_review">전반적으로 운동량이 부족해요!</p>
+            <p class="report_review">조금 더 분발하셔야겠어요!</p>
+
+        </div>
+
+        <div class="blood_report2">
+            <select id="options" onchange="showButton()">
+                <option name="options" value="option1">혈당</option>
+                <option name="options" value="option2">혈압</option>
+                <option name="options" value="option3">당화혈색소</option>
+            </select>
+
+            <select class="blood_detail" id="blood1_check" onchange="showButton()">
+                <option value="morning_before">아침 식전</option>
+                <option value="lunch_before">점심 식전</option>
+                <option value="dinner_before">저녁 식전</option>
+                <option value="morning_after">아침 식후</option>
+                <option value="lunch_after">점심 식후</option>
+                <option value="dinner_after">저녁 식후</option>
+                <option value="vacant">공복</option>
+            </select>
+
+            <select class="blood_detail" id="blood2_check" onchange="showButton()">
+                <option value="systolic">수축기</option>
+                <option value="diastolic">이완기</option>
+            </select>
+
+            <div class="for_canvas">
+                <canvas id="canvas" width="400px" height="30px"></canvas>
+            </div>
+
+        </div>
+    </div>
+
+</div>

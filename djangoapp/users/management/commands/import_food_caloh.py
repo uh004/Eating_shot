@@ -18,13 +18,18 @@ class Command(BaseCommand):
                 FoodCalories.objects.update_or_create(
                     food_name=item["음 식 명"],
                     defaults={
-                        "energy_kcal": int(item["에너지(kcal)"]),
-                        "weight_g": int(item["중량(g)"]),
+                        "energy_kcal": int(float(item["에너지(kcal)"])),
+                        "weight_g": int(float(item["중량(g)"]))
+                        if item["중량(g)"]
+                        else 0,  # TODO: fill in the missing values in the csv later
                         "carbohydrates_g": float(item["탄수화물(g)"]),
                         "protein_g": float(item["단백질(g)"]),
                         "fat_g": float(item["지방(g)"]),
                         "diabetes_risk_classification": int(item["당뇨 위험 분류"]),
                         # "label": int(item["레이블"]),
+                        "is_meat": int(float(item["고기"])),
+                        "is_veg": int(float(item["채소"])),
+                        "is_seafood": int(float(item["해산물"])),
                     },
                 )
             self.stdout.write(

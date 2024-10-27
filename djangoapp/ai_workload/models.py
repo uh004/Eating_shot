@@ -79,6 +79,10 @@ class InferenceResult(models.Model):
             "carbohydrates_g": 0,
             "protein_g": 0,
             "fat_g": 0,
+            # "diabetes_risk_classification": 0,
+            "is_meat": 0,
+            "is_veg": 0,
+            "is_seafood": 0,
         }
 
         temp = [

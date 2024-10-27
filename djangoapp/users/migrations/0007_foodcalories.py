@@ -28,6 +28,9 @@ class Migration(migrations.Migration):
                 ("protein_g", models.FloatField()),
                 ("fat_g", models.FloatField()),
                 ("diabetes_risk_classification", models.IntegerField()),
+                ("is_meat", models.FloatField()),
+                ("is_veg", models.FloatField()),
+                ("is_seafood", models.FloatField()),
             ],
         ),
     ]

@@ -6,34 +6,37 @@ from django.db import migrations
 def populate_exercise_types(apps, schema_editor):
     ExerciseType = apps.get_model("users", "ExerciseType")
     exercise_types = [
-        ("tennis_duals", 330, "테니스(복식)","유산소"),
-        ("water_skiiing", 440, "수상스키","유산소"),
-        ("general_stretching", 180, "체조","무산소"),
-        ("walking5point6kmh", 270, "걷기(5.6km/h)","유산소"),
-        ("general_aerobics", 330, "에어로빅","유산소"),
-        ("tennis_singles", 440, "테니스(단식)","유산소"),
-        ("swimming", 720, "수영","유산소"),
-        ("golf", 270, "골프","유산소"),
-        ("skiiing", 540, "스키","유산소"),
-        ("hiking", 780, "등산","유산소"),
-        ("bicycling9point7kmh", 270, "자전거(9.7km/h)","유산소"),
-        ("skating6point4kmh", 390, "스케이팅(6.4km/h)","유산소"),
-        ("bowling", 270, "볼링","유산소"),
-        ("bicycling16kmh", 390, "자전거(16km/h)","유산소"),
-        ("running9kmh", 630, "달리기(9km/h)","유산소"),
-        ("table_tennis", 330, "탁구","유산소"),
+        ("tennis_duals", 330, "테니스(복식)", "유산소"),
+        ("water_skiiing", 440, "수상스키", "유산소"),
+        ("general_stretching", 180, "체조", "무산소"),
+        ("walking5point6kmh", 270, "걷기(5.6km/h)", "유산소"),
+        ("general_aerobics", 330, "에어로빅", "유산소"),
+        ("tennis_singles", 440, "테니스(단식)", "유산소"),
+        ("swimming", 720, "수영", "유산소"),
+        ("golf", 270, "골프", "유산소"),
+        ("skiiing", 540, "스키", "유산소"),
+        ("hiking", 780, "등산", "유산소"),
+        ("bicycling9point7kmh", 270, "자전거(9.7km/h)", "유산소"),
+        ("skating6point4kmh", 390, "스케이팅(6.4km/h)", "유산소"),
+        ("bowling", 270, "볼링", "유산소"),
+        ("bicycling16kmh", 390, "자전거(16km/h)", "유산소"),
+        ("running9kmh", 630, "달리기(9km/h)", "유산소"),
+        ("table_tennis", 330, "탁구", "유산소"),
         ("taking_steps", 310, "계단 오르내리기", "무산소"),
-        ("badminton", 330, "배드민턴","유산소"),
-        ("volleyball", 330, "배구","유산소"),
-        ("weight_training", 440, "웨이트 트레이닝","무산소"),
-        ("squat", 420, "스쿼트","무산소"),
-        ("sit_ups", 600, "윗몸일으키기","무산소"),
-        ("pushup", 300, "팔굽혀펴기","무산소"),
+        ("badminton", 330, "배드민턴", "유산소"),
+        ("volleyball", 330, "배구", "유산소"),
+        ("weight_training", 440, "웨이트 트레이닝", "무산소"),
+        ("squat", 420, "스쿼트", "무산소"),
+        ("sit_ups", 600, "윗몸일으키기", "무산소"),
+        ("pushup", 300, "팔굽혀펴기", "무산소"),
     ]
+    # currently only korean exercise names are added to the database
 
-    for exercise_type in exercise_types:
+    for data in exercise_types:
         ExerciseType.objects.create(
-            name=exercise_type[2], calories_per_hour=exercise_type[1]
+            name=data[2],
+            calories_per_hour=data[1],
+            exercise_category=data[3],
         )
 
 
