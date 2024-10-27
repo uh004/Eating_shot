@@ -16,7 +16,7 @@ class Command(BaseCommand):
 
             for item in nutrition_data:
                 FoodCalories.objects.update_or_create(
-                    food_name=item["음 식 명"],
+                    food_name=item["음식명"],
                     defaults={
                         "energy_kcal": int(float(item["에너지(kcal)"])),
                         "weight_g": int(float(item["중량(g)"]))

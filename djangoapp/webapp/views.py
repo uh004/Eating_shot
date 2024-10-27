@@ -186,15 +186,6 @@ def diet_form(request, id=None):
             # send_inference_task(inference_task.id) # Kafka
             process_inference_task.delay(inference_task.id)  # Celery
 
-            # Wait for the inference result to be ready
-            inference_task.refresh_from_db()
-            while inference_task.status != "COMPLETED":
-                inference_task.refresh_from_db()
-                if inference_task.status == "FAILED":
-                    return JsonResponse({"error": "Inference task failed"}, status=500)
-                else:
-                    pass
-
             return redirect("index")
     else:
         form = DietForm(instance=diet)

@@ -54,12 +54,19 @@ def save_annotated_image(image, result, path, pred_result):
         with open("food_calories.csv", encoding="utf-8") as file:
             csv.reader(file)
             next(file)
-            conversion_list = {i: row[0] for i, row in enumerate(file)}
+            # conversion_list = {i: row.split(",")[0] for i, row in enumerate(file)}
+            existing_labels = [row.split(",")[0] for row in file]
+            # print(conversion_list)
+            # above conversion list not used
 
-        pred_result = conversion_list[int(label[i])]
+        # pred_result = conversion_list[label[i]]
+        # TODO: 나중에 학습되면 정렬을 양쪽 파일에서 맟추든가 아니면 이름 기반으로 찾아서 뽑아내든가
+        # 이름 기반으로 찾아서 뽑아내는게 더 좋을듯  [result.names[i]]
+
+        name = [pred["name"] for pred in pred_result][i]
 
         overlay = image.copy()
-        left, top, right, bottom = font.getbbox(pred_result)
+        left, top, right, bottom = font.getbbox(name)
         width = right - left
         height = bottom - top
         text_size = [width, height]  # 텍스트 가로, 세로 길이
@@ -80,7 +87,7 @@ def save_annotated_image(image, result, path, pred_result):
         draw = ImageDraw.Draw(img_pil)
         draw.text(
             (x - (text_size[0] // 2), y - (text_size[1] // 2)),
-            pred_result,
+            name,
             font=font,
             fill=(255, 255, 255),
         )  # 한글 텍스트
@@ -270,7 +277,8 @@ def food_recommendation(user_input):
             total_protein += food_protein
             total_fat += food_fat
 
-    return [selected_foods[0]]  # return the first food item added to the list
+    # return the first food item added to the list
+    return [selected_foods[0]] if selected_foods else ["No food found"]
 
 
 @app.get("/")
@@ -411,6 +419,7 @@ async def predict(file: UploadFile = File(...), path: str = Form(...)):
     predictions = [r.summary() for r in results]
     # for pred in predictions[0]:
     #     pred["name"] = conv_table.get(pred["name"], "아무렴뭐어때")
+    # Ensure predictions[0] is a list of dictionaries
     save_annotated_image(image, results[0], filepath, predictions[0])
 
     food_info = [get_food_info(pred["name"]) for pred in predictions[0]]

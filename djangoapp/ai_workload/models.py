@@ -91,7 +91,7 @@ class InferenceResult(models.Model):
 
         for food_item in temp:
             for key in nutrition_totals.keys():
-                nutrition_totals[key] += int(food_item.get(key, 0))
+                nutrition_totals[key] += int(float(food_item.get(key, 0)))
 
         temp.append(
             {"food_name": "TOTAL", **{k: str(v) for k, v in nutrition_totals.items()}}

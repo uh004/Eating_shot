@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 
 from django.db.models import Count, Q
 import httpx
-
 from core.settings import INFERENCE_SERVER_URL
 
 from users.models import (
@@ -54,6 +53,8 @@ def calculate_totals(meals):
         total_protein += sum(int(food["protein_g"]) for food in food_info)
         total_fat += sum(int(food["fat_g"]) for food in food_info)
 
+    print(total_calories, total_carbohydrates, total_protein, total_fat, meal_calories)
+
     return total_calories, total_carbohydrates, total_protein, total_fat, meal_calories
 
 
@@ -101,75 +102,85 @@ def count_food_types(meals):
 def prepare_meal_context(request):
     context = {}
     meals = Diet.objects.filter(user=request.user).prefetch_related("result")
-    context["meals"] = meals
+    if meals.exists():
+        context["meals"] = meals
 
-    max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
-    max_carbohydrates = (
-        max_calories / 8
-    )  # fixed value -> /= 8 of today's eaten calories
-    max_protein = int(CustomUser.objects.get(id=request.user.id).weight * 0.8)
-    max_fat = 50
+        max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
+        max_carbohydrates = (
+            max_calories / 8
+        )  # fixed value -> /= 8 of today's eaten calories
+        max_protein = int(CustomUser.objects.get(id=request.user.id).weight * 0.8)
+        max_fat = 50
 
-    context["max_calories"] = max_calories
-    context["max_carbohydrates"] = max_carbohydrates
-    context["max_protein"] = max_protein
-    context["max_fat"] = max_fat
+        context["max_calories"] = max_calories
+        context["max_carbohydrates"] = max_carbohydrates
+        context["max_protein"] = max_protein
+        context["max_fat"] = max_fat
 
-    # {
-    # "predictions": [
-    # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
-    # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
-    # ],
-    # "food_info": [
-    # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
-    # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
-    # ]
-    # }
+        # {
+        # "predictions": [
+        # {"name": "\uc54c\ubc25", "class": 0, "confidence": 0.79386, "box": {"x1": 0.0, "y1": 15.278, "x2": 1435.80652, "y2": 1041.46191}},
+        # {"name": "\uc794\uce58\uad6d\uc218", "class": 20, "confidence": 0.6759, "box": {"x1": 0.0, "y1": 15.12831, "x2": 1406.91821, "y2": 1046.10669}}
+        # ],
+        # "food_info": [
+        # {"food_name": "\uc54c\ubc25", "energy_kcal": "607", "weight_g": "400", "carbohydrates_g": "92", "protein_g": "15", "fat_g": "3", "diabetes_risk_classification": "0"},
+        # {"food_name": "\uc794\uce58\uad6d\uc218", "energy_kcal": "484", "weight_g": "600", "carbohydrates_g": "90", "protein_g": "17", "fat_g": "5", "diabetes_risk_classification": "0"}
+        # ]
+        # }
 
-    total_calories, total_carbohydrates, total_protein, total_fat, meal_calories = (
-        calculate_totals(meals)
-    )
-
-    context["total_calories"] = total_calories
-    context["total_carbohydrates"] = total_carbohydrates
-    context["total_protein"] = total_protein
-    context["total_fat"] = total_fat
-    context["meal_calories"] = meal_calories
-
-    # TODO: fix possible bugs
-    # {
-    #     "remaining_calories": 520,
-    #     "remaining_carbs": 50,
-    #     "remaining_protein": 20,
-    #     "remaining_fat": 15,
-    #     "고기_count": 2,
-    #     "채소_count": 1,
-    #     "해산물_count": 0
-    # }
-    remaining_calories = max_calories - total_calories
-    remaining_carbs = max_carbohydrates - total_carbohydrates
-    remaining_protein = max_protein - total_protein
-    remaining_fat = max_fat - total_fat
-
-    meat_count, veg_count, seafood_count = count_food_types(meals)
-
-    data = {
-        "remaining_calories": remaining_calories,
-        "remaining_carbs": remaining_carbs,
-        "remaining_protein": remaining_protein,
-        "remaining_fat": remaining_fat,
-        "meat_count": meat_count,
-        "veg_count": veg_count,
-        "seafood_count": seafood_count,
-    }
-    print(data)
-    with httpx.Client() as client:
-        response = client.post(
-            f"{INFERENCE_SERVER_URL}/recommendation_score_foods",
-            json=data,
-            timeout=timeout,
+        total_calories, total_carbohydrates, total_protein, total_fat, meal_calories = (
+            calculate_totals(meals)
         )
-    context["recommendation_foods"] = response.json()  # python list of foods
+
+        context["total_calories"] = total_calories
+        context["total_carbohydrates"] = total_carbohydrates
+        context["total_protein"] = total_protein
+        context["total_fat"] = total_fat
+        context["meal_calories"] = meal_calories
+
+        # {
+        #     "remaining_calories": 520,
+        #     "remaining_carbs": 50,
+        #     "remaining_protein": 20,
+        #     "remaining_fat": 15,
+        #     "고기_count": 2,
+        #     "채소_count": 1,
+        #     "해산물_count": 0
+        # }
+        remaining_calories = max_calories - total_calories
+        remaining_carbs = max_carbohydrates - total_carbohydrates
+        remaining_protein = max_protein - total_protein
+        remaining_fat = max_fat - total_fat
+
+        if remaining_calories <= 0:
+            remaining_calories = 1
+        if remaining_carbs <= 0:
+            remaining_carbs = 1
+        if remaining_protein <= 0:
+            remaining_protein = 1
+        if remaining_fat <= 0:
+            remaining_fat = 1
+
+        meat_count, veg_count, seafood_count = count_food_types(meals)
+
+        data = {
+            "remaining_calories": remaining_calories,
+            "remaining_carbs": remaining_carbs,
+            "remaining_protein": remaining_protein,
+            "remaining_fat": remaining_fat,
+            "meat_count": meat_count,
+            "veg_count": veg_count,
+            "seafood_count": seafood_count,
+        }
+        print(data)
+        with httpx.Client() as client:
+            response = client.post(
+                f"{INFERENCE_SERVER_URL}/recommendation_score_foods",
+                json=data,
+                timeout=timeout,
+            )
+        context["recommendation_foods"] = response.json()  # python list of foods
+        # context["recommendation_foods"] = ["ㅁㅁㄴㅇㄹ"]
 
     return context
 
@@ -242,10 +253,33 @@ def prepare_mypage_context(request):
     return context
 
 
+# for report
 def prepare_meal_data(request):
     context = {}
     meals = Diet.objects.filter(user=request.user).prefetch_related("result")
-    if meals:
+
+    context["meals"] = meals
+    context["total_calories"] = 0
+    context["total_carbohydrates"] = 0
+    context["total_protein"] = 0
+    context["total_fat"] = 0
+    context["meal_calories"] = {}
+    context["total_calories_week"] = 0
+    context["total_carbohydrates_week"] = 0
+    context["total_protein_week"] = 0
+    context["total_fat_week"] = 0
+    context["meat_count"] = 0
+    context["veg_count"] = 0
+    context["seafood_count"] = 0
+    context["meat_count_week"] = 0
+    context["veg_count_week"] = 0
+    context["seafood_count_week"] = 0
+    context["max_calories"] = 0
+    context["max_carbohydrates"] = 0
+    context["max_protein"] = 0
+    context["max_fat"] = 0
+
+    if meals.exists():
         max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
         context["max_calories"] = max_calories
         context["max_carbohydrates"] = max_calories / 8

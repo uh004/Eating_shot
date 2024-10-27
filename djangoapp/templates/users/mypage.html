@@ -129,14 +129,14 @@
                 cancelButtonText: '취소',
                 width: '400px'
             }).then((result) => {
-                if(result.value) {
+                if (result.value) {
                     // DELETE request to delete/pill_alarm/id
                     fetch(`/delete/pill_alarm/${id}/`, {
-                            method: "DELETE",
-                            headers: {
-                                "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
-                             },
-                        })
+                        method: "DELETE",
+                        headers: {
+                            "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
+                        },
+                    })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error('Network response was not ok');
@@ -144,10 +144,10 @@
                             return response.json();
                         })
                         .then(data => {
-                        Swal.fire('삭제되었습니다!', '', 'success').then(() => {
-                            location.reload();
-                        });
-                    }).catch(error => {
+                            Swal.fire('삭제되었습니다!', '', 'success').then(() => {
+                                location.reload();
+                            });
+                        }).catch(error => {
                         Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
                     });
                 }
