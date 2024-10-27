@@ -21,7 +21,7 @@
 
                         <div>
                             <button type="button" onclick="window.location.href =
-                                    '{% url 'blood1_edit' data.id %}'">수정
+                                    '{% url 'blood_form' 'blood_pressure' data.id %}'">수정
                             </button>
                             <button type="button" onclick="deleteBoard(1, {{ data.id }})">삭제</button>
                         </div>
@@ -45,7 +45,8 @@
                                 style="color: red;">{{ data.diastolic }}</span>mmHg</p>
 
                         <div>
-                            <button type="button" onclick="window.location.href = '{% url 'blood2_edit' data.id %}'">수정
+                            <button type="button" onclick="window.location.href = '
+                                    {% url 'blood_form' 'blood_pressure' data.id %}'">수정
                             </button>
                             <button type="button" onclick="deleteBoard(2, {{ data.id }})">삭제</button>
                         </div>
@@ -68,7 +69,8 @@
                             <span style="color: red;">{{ data.hba1c }}</span>%</p>
 
                         <div>
-                            <button type="button" onclick="window.location.href = '{% url 'blood3_edit' data.id %}'">수정
+                            <button type="button" onclick="window.location.href = '
+                                    {% url 'blood_form' 'hba1c' data.id %}'">수정
                             </button>
                             <button type="button" onclick="deleteBoard(3, {{ data.id }})">삭제</button>
                         </div>
@@ -84,14 +86,14 @@
         <div id="popup3" class="popup-overlay3">
             <div class="popup-content3">
                 <ul>
-                    <li style="display: flex;" onclick="window.location.href = {% url 'blood1' %}"><img
-                            src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈당
+                    <li style="display: flex;" onclick="window.location.href ='{% url 'blood_form' 'blood_sugar' %}'">
+                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈당
                     </li>
-                    <li style="display: flex;" onclick="window.location.href = {% url 'blood2' %}"><img
-                            src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈압
+                    <li style="display: flex;" onclick="window.location.href ='{% url 'blood_form' 'blood_pressure' %}">
+                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈압
                     </li>
-                    <li style="display: flex;" onclick="window.location.href = {% url 'blood3' %}"><img
-                            src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">당화혈색소
+                    <li style="display: flex;" onclick="window.location.href ='{% url 'blood_form' 'hba1c' %}'">
+                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">당화혈색소
                     </li>
                 </ul>
             </div>

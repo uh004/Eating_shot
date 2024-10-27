@@ -12,12 +12,11 @@ urlpatterns = [
     path("change_password/", views.change_password, name="change_password"),
     path("post-enrollment/", views.info_view, name="info"),
     path("load_content/<str:menu>/", views.load_content, name="load_content"),
-    path("blood1/", views.blood_1, name="blood1"),
-    path("blood1/<int:id>/", views.blood_1, name="blood1_edit"),
-    path("blood2/", views.blood_2, name="blood2"),
-    path("blood2/<int:id>/", views.blood_2, name="blood2_edit"),
-    path("blood3/", views.blood_3, name="blood3"),
-    path("blood3/<int:id>/", views.blood_3, name="blood3_edit"),
+    # path("blood1/", views.blood_data_view, name="blood1"),
+    path(
+        "blood_form/<str:data_type>/<int:id>/", views.blood_data_view, name="blood_form"
+    ),
+    path("blood_form/<str:data_type>/", views.blood_data_view, name="blood_form"),
     path("diet-form/", views.diet_form, name="diet_form"),
     path("diet-form/<int:id>/", views.diet_form, name="diet_form_edit"),
     re_path(
