@@ -7,6 +7,18 @@
 
         <div class="slide" id="exercise_info">
 
+            <button class="ex_recommend">
+                <img src="{% static 'img/check_circle.png' %}">
+                <p>운동 추천 서비스</p>
+            </button>
+            <div class="recommend_result">
+                <p>당신을 위한 오늘의 추천 운동은</p>
+                
+                <p class="reco_ex">"숨쉬기"</p>
+                
+                <img src="{% static 'img/reco_ex.png' %}" class="reco_ex_img">
+            </div>
+
             <div class="cal_info">
                 {% if total_calories == 0 %}
                     <p>운동이 필요해요! 운동을 추가하세요.</p>

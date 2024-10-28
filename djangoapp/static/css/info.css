@@ -127,14 +127,22 @@ html, body {
 
     #form3 {
         text-align: center;
-        padding-top: 5%;
+        align-content: center;
     }
 
+    .form3_img {
+        width: 30%;
+    }
 }
 
 /* 스마트폰 기준  */
 
 @media all and (max-width: 479px) {
+
+    .form3_img {
+        width: 35%;
+    }
+
     .slide {
         width: 29.5%;
         padding: 0 2%;
@@ -244,7 +252,7 @@ html, body {
 
     #form3 {
         text-align: center;
-        padding-top: 10%;
+        align-content: center;
     }
 }
 

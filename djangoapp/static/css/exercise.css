@@ -27,7 +27,7 @@ html, body {
         padding: 4%;
         border-radius: 10px;
         box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
-        margin-bottom: 2%;
+        margin: 2% 0;
         text-align: center;
     }
 
@@ -47,12 +47,12 @@ html, body {
 
     .cal_info p {
         margin: 0;
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     
     .cal_info span {
         color: #00bcd4;
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     
     .cal_info img {
@@ -225,9 +225,103 @@ html, body {
         float: right;
     }
 
+
+    .ex_recommend {
+        width: 100%;
+        height: 10%;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
+        color: white;
+        display: flex;
+        border: none;
+        align-content: center;
+        padding: 2%;
+    }
+
+    .ex_recommend img {
+        width: 9%;
+        margin: 1%;
+    }
+
+    .ex_recommend p {
+        font-size: 1rem;
+        margin: auto 1%;
+    }
+
+    .recommend_result {
+        background-color: white;
+        border-radius: 10px;
+        height: 30%;
+        padding: 4%;
+        display: none;
+        text-align: center;
+        align-content: center;
+    }
+    
+    .recommend_result p {
+        margin: 0 0 2% 0;
+    }
+
+    .reco_ex_img {
+        width: 20%;    
+    }
+    
+    .recommend_result .reco_ex {
+        color: #00BCD4;
+        font-size: 1.3rem;
+    }
+
 }
 
 @media (min-width: 768px) {
+
+    .reco_ex_img {
+        width: 20%;    
+    }
+    
+    .recommend_result .reco_ex {
+        color: #00BCD4;
+        font-size: 2.2rem;
+    }
+
+    .ex_recommend {
+        width: 100%;
+        height: 10%;
+        background-color: #00BCD4;
+        border-radius: 10px;
+        box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
+        color: white;
+        display: flex;
+        border: none;
+        align-content: center;
+        padding: 2%;
+    }
+
+    .ex_recommend img {
+        width: 5%;
+        margin: 1.5% 1%;
+    }
+
+    .ex_recommend p {
+        font-size: 2rem;
+        margin: auto 1%;
+    }
+
+    .recommend_result {
+        background-color: white;
+        border-radius: 10px;
+        height: 30%;
+        padding: 4%;
+        display: none;
+        text-align: center;
+        align-content: center;
+    }
+    
+    .recommend_result p {
+        margin: 0 0 2% 0;
+        font-size: 1.8rem;
+    }
 
     .plus img {
         width: 23%;
@@ -314,7 +408,7 @@ html, body {
         padding: 2%;
         border-radius: 10px;
         box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.2);
-        margin-bottom: 2%;
+        margin: 2% 0%;
         text-align: center;
     }
 
