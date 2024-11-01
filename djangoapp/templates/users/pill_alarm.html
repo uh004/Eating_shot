@@ -4,98 +4,111 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
-
 <div class="main_container" id="main">
     <div class="deco">
-        <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
+        <img src="{% static 'img/back2.png' %}"
+             onclick="window.location = '{% url 'index' %}'"
+             class="back">
         <p class="form_title">약 알람 설정하기</p>
     </div>
-    
     <form method="post" action="">
         {% csrf_token %}
-
         <label for="pill_name">약 이름</label>
         {{ form.pill_name }}
-
         <label for="pill_alarm_time">약 알람 시간</label>
         {{ form.time }}
-
         <label for="check_disease">요일</label>
         <div class="check_disease">
             <ul class="list">
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="w1" value="mon" name="weekday"
+                    <input type="checkbox"
+                           class="hidden-box"
+                           id="w1"
+                           value="mon"
+                           name="weekday"
                            {% if "mon" in form.weekday.value %}checked{% endif %}>
                     <label for="w1" class="check--label">
                         <span class="check--label-box"></span>
                         <span class="check--label-text">월</span>
                     </label>
                 </li>
-
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="w3" value="wed" name="weekday"
+                    <input type="checkbox"
+                           class="hidden-box"
+                           id="w3"
+                           value="wed"
+                           name="weekday"
                            {% if "wed" in form.weekday.value %}checked{% endif %}>
                     <label for="w3" class="check--label">
                         <span class="check--label-box"></span>
                         <span class="check--label-text">수</span>
                     </label>
                 </li>
-
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="w5" value="fri" name="weekday"
+                    <input type="checkbox"
+                           class="hidden-box"
+                           id="w5"
+                           value="fri"
+                           name="weekday"
                            {% if "fri" in form.weekday.value %}checked{% endif %}>
                     <label for="w5" class="check--label">
                         <span class="check--label-box"></span>
                         <span class="check--label-text">금</span>
                     </label>
                 </li>
-
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="w7" value="sun" name="weekday"
+                    <input type="checkbox"
+                           class="hidden-box"
+                           id="w7"
+                           value="sun"
+                           name="weekday"
                            {% if "일" in form.weekday.value %}checked{% endif %}>
                     <label for="w7" class="check--label">
                         <span class="check--label-box"></span>
                         <span class="check--label-text">일</span>
                     </label>
                 </li>
-
             </ul>
-
             <ul class="list">
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="w2" value="tue" name="weekday"
+                    <input type="checkbox"
+                           class="hidden-box"
+                           id="w2"
+                           value="tue"
+                           name="weekday"
                            {% if "tue" in form.weekday.value %}checked{% endif %}>
                     <label for="w2" class="check--label">
                         <span class="check--label-box"></span>
                         <span class="check--label-text">화</span>
                     </label>
                 </li>
-
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="w4" value="thu" name="weekday"
+                    <input type="checkbox"
+                           class="hidden-box"
+                           id="w4"
+                           value="thu"
+                           name="weekday"
                            {% if "thu" in form.weekday.value %}checked{% endif %}>
                     <label for="w4" class="check--label">
                         <span class="check--label-box"></span>
                         <span class="check--label-text">목</span>
                     </label>
                 </li>
-
                 <li class="list-item">
-                    <input type="checkbox" class="hidden-box" id="w6" value="sat" name="weekday"
+                    <input type="checkbox"
+                           class="hidden-box"
+                           id="w6"
+                           value="sat"
+                           name="weekday"
                            {% if "sat" in form.weekday.value %}checked{% endif %}>
                     <label for="w6" class="check--label">
                         <span class="check--label-box"></span>
                         <span class="check--label-text">토</span>
                     </label>
                 </li>
-
             </ul>
         </div>
-
-        {% if form.pill_alarm.errors %}
-            <div class="error-message">{{ form.errors }}</div>
-        {% endif %}
-
+        {% if form.pill_alarm.errors %}<div class="error-message">{{ form.errors }}</div>{% endif %}
         <input type="submit" value="추가하기" id="form_submit">
     </form>
 </div>

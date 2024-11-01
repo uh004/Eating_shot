@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import InferenceTask, InferenceResult
+
+from .models import InferenceResult, InferenceTask
 
 
 class InferenceResultSerializer(serializers.ModelSerializer):

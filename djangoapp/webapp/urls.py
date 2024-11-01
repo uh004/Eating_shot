@@ -1,6 +1,7 @@
-from django.conf.urls.static import static
-from django.urls import path, re_path, include
 from core import settings
+from django.conf.urls.static import static
+from django.urls import include, path, re_path
+
 from . import views
 
 urlpatterns = [

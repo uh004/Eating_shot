@@ -1,7 +1,8 @@
 # events/test_async.py
-from django.test import TestCase
 from unittest.mock import patch
+
 from ai_workload.tasks import process_inference_task
+from django.test import TestCase
 
 
 class AsyncTaskTest(TestCase):

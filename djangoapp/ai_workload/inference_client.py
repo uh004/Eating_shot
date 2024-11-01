@@ -1,10 +1,8 @@
-import httpx
-
 # import requests
 import logging
 
+import httpx
 from core.settings import INFERENCE_SERVER_URL
-
 
 timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
 

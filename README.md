@@ -34,7 +34,7 @@ POSTGRES_DB=
 POSTGRES_USER=
 POSTGRES_PASSWORD=
 
-# Set to 'basic' or 'trial' to automatically start the 30-day trial  
+# Set to 'basic' or 'trial' to automatically start the 30-day trial
 LICENSE=basic
 #LICENSE=trial
 
@@ -75,5 +75,3 @@ done
 - `http://localhost:8000/schema` : schema 파일
 
 - `https://localhost:5601` : kibana
-
-

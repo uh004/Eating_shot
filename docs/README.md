@@ -235,7 +235,7 @@ elasticsearch 컨테이너로 가서 `bin/elasticsearch-reset-password auto [-u 
 ## ~~reset kafka topic~~
 
 ```shell
-docker-compose exec kafka kafka-topics --delete --topic inference_tasks --bootstrap-server localhost:9092 #(or 
+docker-compose exec kafka kafka-topics --delete --topic inference_tasks --bootstrap-server localhost:9092 #(or
 kafka:9092)
 ```
 

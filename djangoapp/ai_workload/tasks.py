@@ -1,9 +1,11 @@
-from users.models import Diet
-from .models import InferenceTask, InferenceResult
-from .inference_client import run_inference
+import logging
+
 from celery import shared_task
 from django.db import connection, transaction
-import logging
+from users.models import Diet
+
+from .inference_client import run_inference
+from .models import InferenceResult, InferenceTask
 
 logger = logging.getLogger(__name__)
 

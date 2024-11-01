@@ -109,5 +109,3 @@
     // Expose functions to the global scope
     window.showButton = showButton;
 })();
-
-

@@ -1,9 +1,10 @@
 # NO LONGER USED BUT LEFT FOR REFERENCE
 # NO LONGER USED BUT LEFT FOR REFERENCE
 
-import os
-import django
 import logging
+import os
+
+import django
 
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("kafka").setLevel(logging.WARNING)

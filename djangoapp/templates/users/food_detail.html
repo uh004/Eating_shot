@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <meta name="csrf-token" content="{{ csrf_token }}">
 {% load static %}
 {% block extra_css %}
@@ -7,84 +5,77 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
-
 <div class="main_container2">
-    <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'index' %}'" alt="" class="back">
+    <img src="{% static 'img/back.png' %}"
+         onclick="window.location = '{% url 'index' %}'"
+         alt=""
+         class="back">
     <div class="meal_info2">
         <p class="eat_time">아침</p>
         <div class="meal_revise">
-            <button type="button" onclick="window.location.href = '{% url 'diet_form_edit' meal.id %}'">수정
-            </button>
+            <button type="button"
+                    onclick="window.location.href = '{% url 'diet_form_edit' meal.id %}'">수정</button>
             <button type="button" onclick="deleteBoard({{ meal.id }})">삭제</button>
         </div>
-
         <img src="/photos/{{ meal.image.name }}" alt="" class="meal_img">
         <p class="topic">식단 영양소 정보</p>
         <hr>
-
         <ul class="tdj">
             <li>
                 <p class="tandanji">탄수화물</p>
                 <p class="gram">{{ meal.total_carbohydrates }}g</p>
             </li>
-
             <li>
                 <p class="tandanji">단백질</p>
                 <p class="gram">{{ meal.total_protein }}g</p>
             </li>
-
             <li>
                 <p class="tandanji">지방</p>
                 <p class="gram">{{ meal.total_fat }}g</p>
             </li>
         </ul>
-
         <hr>
-
         <p class="topic">식단 목록</p>
-
         <ul class="nutrient_info">
             {% for nutrient in meal.result_names_list %}
                 <li>
                     <div>
                         <p class="meal_name">{{ nutrient }}</p>
-                        <input type="text" id="toModifyNutrientName" placeholder="음식명"
+                        <input type="text"
+                               id="toModifyNutrientName"
+                               placeholder="음식명"
                                class="modify_meal_name">
-                        <input type="number" id="toModifyKcal" placeholder="kcal"
+                        <input type="number"
+                               id="toModifyKcal"
+                               placeholder="kcal"
                                class="modify_meal_kcal">
                     </div>
-
                     <div class="btns">
                         <button type="button" class="modify_meal">수정</button>
-                        <button type="button" class="delete_meal" onclick="deleteMealName2({{ meal.id }},
-                                '{{ nutrient }}')">
-                            삭제
-                        </button>
-                        <button type="button" class="confirm_meal" onclick="modifyMealName2(
-                                {{ meal.id }}, '{{ nutrient }}')
-                                ">확인
-                        </button>
+                        <button type="button"
+                                class="delete_meal"
+                                onclick="deleteMealName2({{ meal.id }}, '{{ nutrient }}')">삭제</button>
+                        <button type="button"
+                                class="confirm_meal"
+                                onclick="modifyMealName2( {{ meal.id }}, '{{ nutrient }}') ">확인</button>
                     </div>
                 </li>
             {% endfor %}
         </ul>
-
         <button type="button" id="add_meal">추가하기</button>
-
         <div class="add_meal_form">
             <p>음식 추가</p>
-
             <div class="inputs">
                 <input type="text" placeholder="음식명" id="newNutrientName">
                 <input type="number" placeholder="kcal" id="newKcal">
-                <input type="submit" value="확인" class="color_btn"
+                <input type="submit"
+                       value="확인"
+                       class="color_btn"
                        onclick="modifyMealName3({{ meal.id }})">
             </div>
-
         </div>
     </div>
 </div>
-
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>

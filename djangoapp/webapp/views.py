@@ -1,52 +1,51 @@
 import json
+from datetime import datetime
 
 import httpx
-from django.contrib.auth.decorators import login_required
-from django.db.models import Count
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login, logout
-from django.http import JsonResponse
-
-from .utils import (
-    handle_form,
-    prepare_meal_context,
-    prepare_exercise_context,
-    prepare_blood_context,
-    prepare_mypage_context,
-    prepare_meal_data,
-    prepare_exercise_data,
-    prepare_blood_data,
-)
-
+from ai_workload.models import InferenceResult, InferenceTask
 
 # from ai_workload.kafka.producer import send_inference_task
 from ai_workload.tasks import process_inference_task
-from ai_workload.models import InferenceTask, InferenceResult
+from django.contrib.auth import login, logout
+from django.contrib.auth.decorators import login_required
+from django.db.models import Count
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from events.models import HospitalAlarm, PillAlarm
 from users.models import (
-    Exercise,
-    Diet,
-    ExerciseType,
-    BloodSugar,
     BloodPressure,
-    HbA1c,
+    BloodSugar,
     CustomUser,
+    Diet,
+    Exercise,
+    ExerciseType,
     FoodCalories,
+    HbA1c,
 )
-from events.models import PillAlarm, HospitalAlarm
+
 from .forms import (
-    CustomUserCreationForm,
-    CustomAuthenticationForm,
-    HealthInfoForm,
-    BloodSugarForm,
     BloodPressureForm,
-    HbA1cForm,
-    ExerciseForm,
+    BloodSugarForm,
+    CustomAuthenticationForm,
+    CustomUserCreationForm,
     DietForm,
+    ExerciseForm,
+    HbA1cForm,
+    HealthInfoForm,
+    HospitalAlarmForm,
     MyPageReviseForm,
     PillAlarmForm,
-    HospitalAlarmForm,
 )
-from datetime import datetime
+from .utils import (
+    handle_form,
+    prepare_blood_context,
+    prepare_blood_data,
+    prepare_exercise_context,
+    prepare_exercise_data,
+    prepare_meal_context,
+    prepare_meal_data,
+    prepare_mypage_context,
+)
 
 timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
 
@@ -127,7 +126,7 @@ def change_password(request):
 
 #
 def load_content(request, menu):
-    pages = ["diet", "exercise", "blood", "report", "mypage"]
+    # pages = ["diet", "exercise", "blood", "report", "mypage"]
     template_name = f"users/{menu}.html"
 
     context = {}
@@ -488,34 +487,6 @@ def food_detail(request, id):
     meal = get_object_or_404(Diet, pk=id)
     meal.image.name = meal.image.name.split(".")[0] + "_anno.jpg"
     meal.result_names_list = meal.result.result_names_comma_separated.split(",")
-    a = [
-        {
-            "food_name": "\uc54c\ubc25",
-            "energy_kcal": "607",
-            "weight_g": "400",
-            "carbohydrates_g": "92",
-            "protein_g": "15",
-            "fat_g": "3",
-            "diabetes_risk_classification": "0",
-        },
-        {
-            "food_name": "\uc794\uce58\uad6d\uc218",
-            "energy_kcal": "484",
-            "weight_g": "600",
-            "carbohydrates_g": "90",
-            "protein_g": "17",
-            "fat_g": "5",
-            "diabetes_risk_classification": "0",
-        },
-        {
-            "food_name": "TOTAL",
-            "energy_kcal": "1091",
-            "weight_g": "1000",
-            "carbohydrates_g": "182",
-            "protein_g": "32",
-            "fat_g": "8",
-        },
-    ]
     food_info = meal.result.result_changeable_food_info[-1]
     meal.total_carbohydrates = int(food_info["carbohydrates_g"])
     meal.total_protein = int(food_info["protein_g"])

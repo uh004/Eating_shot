@@ -1,6 +1,5 @@
 {% extends "users/base.html" %}
 {% load static %}
-
 {% block title %}회원가입 페이지{% endblock %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/forms.css' %}">
@@ -9,7 +8,9 @@
     <div class="main_container">
         <div class="banner">
             <div class="register_form">
-                <img src="{% static 'img/back.png' %}" onclick="window.location.href = {% url 'login' %}" class="back">
+                <img src="{% static 'img/back.png' %}"
+                     onclick="window.location.href = {% url 'login' %}"
+                     class="back">
                 <img src="{% static 'img/register_form.png' %}" class="register_img">
                 <p class="register_title">회원가입</p>
                 <form id="registerForm" action="{% url 'register' %}" method="POST">
@@ -20,13 +21,11 @@
                     <!-- Username Field -->
                     <p>{{ form.username.label }}</p>
                     {{ form.username }}
-
                     <!-- Password Field -->
                     <p>{{ form.password1.label }}</p>
                     {{ form.password1 }}
                     <p>{{ form.password2.label }}</p>
                     {{ form.password2 }}
-
                     <input type="submit" value="회원가입">
                 </form>
             </div>

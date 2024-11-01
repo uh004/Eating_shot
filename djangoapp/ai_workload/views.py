@@ -1,6 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+
 from .models import InferenceTask
 from .serializers import InferenceTaskSerializer, PhotoUploadSerializer
 

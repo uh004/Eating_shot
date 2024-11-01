@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('ai_workload', '0002_initial'),
+        ("ai_workload", "0002_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='inferenceresult',
-            name='modified_at',
+            model_name="inferenceresult",
+            name="modified_at",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='inferenceresult',
-            name='result_names_comma_separated',
+            model_name="inferenceresult",
+            name="result_names_comma_separated",
             field=models.TextField(blank=True, max_length=100),
         ),
     ]

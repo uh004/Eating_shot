@@ -1,20 +1,19 @@
 # utils.py
-from django.shortcuts import render, redirect
+from datetime import datetime, timedelta
 
-from django.db.models import Count, Q
 import httpx
 from core.settings import INFERENCE_SERVER_URL
-
+from django.db.models import Count, Q
+from django.shortcuts import redirect, render
+from events.models import HospitalAlarm, PillAlarm
 from users.models import (
-    Exercise,
-    Diet,
-    BloodSugar,
     BloodPressure,
-    HbA1c,
+    BloodSugar,
     CustomUser,
+    Diet,
+    Exercise,
+    HbA1c,
 )
-from events.models import PillAlarm, HospitalAlarm
-from datetime import datetime, timedelta
 
 timeout = httpx.Timeout(connect=30.0, read=30.0, write=30.0, pool=30.0)
 

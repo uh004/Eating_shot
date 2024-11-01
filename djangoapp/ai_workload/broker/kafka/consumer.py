@@ -1,7 +1,8 @@
-from kafka import KafkaConsumer
 import json
 
 from core import settings
+from kafka import KafkaConsumer
+
 from ..tasks import process_inference_task
 
 consumer = KafkaConsumer(

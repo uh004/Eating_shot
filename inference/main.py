@@ -1,23 +1,19 @@
-import io
-
-from fastapi import FastAPI, File, UploadFile, Form, Query
-from fastapi.responses import UJSONResponse
-
 # TODO: if we were hosting this on a separate server from django...
-
 import csv
+import io
 import logging
-import logstash
-import joblib
-from sklearn.preprocessing import StandardScaler
-
-import ultralytics
-from ultralytics import YOLO
-from PIL import ImageDraw, Image, ImageFont
 
 import cv2
+import joblib
+import logstash
 import numpy as np
 import pandas as pd
+import ultralytics
+from fastapi import FastAPI, File, Form, Query, UploadFile
+from fastapi.responses import UJSONResponse
+from PIL import Image, ImageDraw, ImageFont
+from sklearn.preprocessing import StandardScaler
+from ultralytics import YOLO
 
 ultralytics.checks()
 
@@ -39,7 +35,7 @@ logging.info("Loaded the model.")
 
 def save_annotated_image(image, result, path, pred_result):
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-    label = result.boxes.cls  # 모델이 예측한 레이블 결과 ex) 30, 11, 2, 15
+    # label = result.boxes.cls  # 모델이 예측한 레이블 결과 ex) 30, 11, 2, 15
     fontpath = "models/Pretendard-Bold.ttf"
     font = ImageFont.truetype(fontpath, 25)
 
@@ -55,7 +51,7 @@ def save_annotated_image(image, result, path, pred_result):
             csv.reader(file)
             next(file)
             # conversion_list = {i: row.split(",")[0] for i, row in enumerate(file)}
-            existing_labels = [row.split(",")[0] for row in file]
+            # existing_labels = [row.split(",")[0] for row in file] # unused
             # print(conversion_list)
             # above conversion list not used
 
@@ -240,7 +236,7 @@ def food_recommendation(user_input):
 
     df["Recommendation_Score"] = df.apply(calculate_score, axis=1)
 
-    recommended_foods = df.sort_values(by="Recommendation_Score", ascending=False)
+    # recommended_foods = df.sort_values(by="Recommendation_Score", ascending=False)
 
     remaining_calories = user_input["remaining_calories"]
     remaining_carbs = user_input["remaining_carbs"]
@@ -395,7 +391,7 @@ def get_nutrition_data():
 
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...), path: str = Form(...)):
+async def predict(file: UploadFile = File, path: str = Form):
     logger.info("Received inference request at /predict")
     filepath = "/".join(path.split("/")[-3:])
     print(filepath)

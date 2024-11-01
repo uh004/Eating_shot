@@ -1,12 +1,13 @@
-from celery import shared_task
+import logging
+
+from celery import current_app, shared_task
+from celery.contrib.abortable import AbortableTask
+from celery.result import AsyncResult
 from django.core.management import call_command
 from django.db import connection
-import logging
 from django_eventstream import send_event
-from .models import PillAlarm, HospitalAlarm
-from celery import current_app
-from celery.result import AsyncResult
-from celery.contrib.abortable import AbortableTask
+
+from .models import HospitalAlarm, PillAlarm
 
 logger = logging.getLogger(__name__)
 
@@ -79,8 +80,8 @@ def alarm_callback_task(result, user_id, alarm_type, alarm_id):
                 del task_ids[weekday]
                 print(f"Task {task_id} completed successfully")
 
-        if not task_ids:
-            alarm.delete()
+        # if not task_ids:
+        #     alarm.delete()
         else:
             alarm.task_ids = task_ids
             alarm.save()

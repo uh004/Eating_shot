@@ -1,6 +1,6 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django_eventstream import send_event
-from django.contrib.auth.decorators import login_required
 
 
 @login_required
