@@ -41,7 +41,7 @@ def process_inference_task(task_id):
             logger.info("InferenceResult created successfully")
 
             diet = Diet.objects.get(image=task.photo)
-            diet.result_id = task_id
+            diet.result_id = result.id
             diet.save()
             logger.info("Diet updated successfully")
 
