@@ -171,8 +171,7 @@
             }
 
             function clearScripts() {
-                $('script[src*="{% static '
-                    js / ' %}"]').remove(); // Remove previously loaded scripts
+                $("script[src*='{% static 'js / ' %}']").remove(); // Remove previously loaded scripts
             }
 
             loadContent(now);
