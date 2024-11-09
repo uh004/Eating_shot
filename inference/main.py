@@ -193,6 +193,9 @@ def food_recommendation(user_input):
                 (preferred portion) * category_weight
         (you can adjust the weights based on the importance of nutritional fit vs. category preference)
 
+
+        !! ADDED: diabetes friendliness as a factor
+
         :param row:
         :return: the recommendation score for the food item
         """
@@ -391,7 +394,7 @@ def get_nutrition_data():
 
 
 @app.post("/predict")
-async def predict(file: UploadFile = File, path: str = Form):
+async def predict(file: UploadFile = File, path: str = Form(...)):
     logger.info("Received inference request at /predict")
     filepath = "/".join(path.split("/")[-3:])
     print(filepath)
