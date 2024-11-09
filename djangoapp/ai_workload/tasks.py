@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 # TODO: stress test on this?
 
 
+# unused. for experimental purpose
 def decrease_auto_increment(model):
     with connection.cursor() as cursor:
         table_name = model._meta.db_table
