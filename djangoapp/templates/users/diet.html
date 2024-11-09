@@ -10,10 +10,14 @@
     </button>
     <div class="recommend_result">
         <p>당신을 위한 오늘의 추천 식단은</p>
-        {% for meal in recommendation_foods %}<p class="reco_food">"{{ meal }}"</p>{% endfor %}
-        {% if recommendation_foods.meal %}
-            <img src="{% static 'img/reco_food.png' %}" class="reco_food_img">
-        {% endif %}
+        {% for meal in recommendation_foods %}
+            {% if meal == "No food found" %}
+                <p class="reco_food">"식단을 추천받지 못했어요. 식단을 추가해주세요."</p>
+            {% else %}
+                <p class="reco_food">"{{ meal }}"</p>
+                <img src="{% static 'img/reco_food.png' %}" class="reco_food_img">
+            {% endif %}
+        {% endfor %}
     </div>
     <div class="all_kcal">
         <p class="sum_kcal">
