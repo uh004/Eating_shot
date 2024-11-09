@@ -1,7 +1,10 @@
 # utils.py
+import random
 from datetime import datetime, timedelta
 
 import httpx
+import numpy as np
+import pandas as pd
 from core.settings import INFERENCE_SERVER_URL
 from django.db.models import Count, Q
 from django.shortcuts import redirect, render
@@ -12,6 +15,7 @@ from users.models import (
     CustomUser,
     Diet,
     Exercise,
+    ExerciseType,
     HbA1c,
 )
 
@@ -185,7 +189,84 @@ def prepare_meal_context(request):
 
 
 def prepare_exercise_context(request):
+    predifined_indoor_exercises = [
+        "체조",
+        "에어로빅",
+        "수영",
+        "스케이팅",
+        "볼링",
+        "탁구",
+        "계단오르내리기",
+        "배드민턴",
+        "배구",
+        "웨이트 트레이닝",
+        "스쿼트",
+        "윗몸 일으키기",
+        "팔굽혀펴기",
+    ]  # hardcoded values of indoor exercises
+    # TODO: check here for gomins
+    # apply this to the database?
+    # or make a django custom command for importing these values to the database
+    current_all_exercise_types = ExerciseType.objects.values_list(
+        "name", "exercise_category"
+    )
+    df = pd.DataFrame(
+        list(current_all_exercise_types), columns=["운동 종류", "운동 분류"]
+    )
+
+    df["location"] = np.where(df["운동 종류"].isin(predifined_indoor_exercises), 1, 0)
+    df["type"] = np.where(df["운동 분류"] == "유산소", 1, 0)
+
+    def exercise_recommend(user_input):
+        more_ex = (
+            user_input[2:].index(min(user_input[2:]))
+            if abs(user_input[2] - user_input[3]) >= 1
+            else 0
+        )
+
+        if user_input[1] >= 18 or user_input[1] <= 5:
+            recommend_list = df[
+                df["운동 종류"].isin(df[df["location"] == 1]["운동 종류"])
+            ]
+        else:
+            recommend_list = df[df["type"] == abs(1 - more_ex)]
+
+        # similarity_scores = cosine_similarity(
+        # recommend_list[recommend_list.columns[1:3]], [user_input[1:3]]
+        # )
+        # defined but not actually used in the function
+        # commented out because of missing import
+
+        return recommend_list["운동 종류"][:5].iloc[random.randint(0, 4)]
+
+    max_calories = 1000
+    remaining_calories = max_calories - sum(
+        exercise.exercise_calories
+        for exercise in Exercise.objects.filter(user=request.user)
+    )  # defined but not actually used in the function
+
+    count_exercise_cardio = sum(
+        item["count"]
+        for item in Exercise.objects.values("exercise_type__exercise_category")
+        .annotate(count=Count("id"))
+        .filter(Q(exercise_type__exercise_category="유산소"))
+    )
+    count_exercise_weights = sum(
+        item["count"]
+        for item in Exercise.objects.values("exercise_type__exercise_category")
+        .annotate(count=Count("id"))
+        .filter(Q(exercise_type__exercise_category="무산소"))
+    )
+
     context = {
+        "exercise_recommendation": exercise_recommend(
+            [
+                remaining_calories,
+                datetime.now().hour,
+                count_exercise_cardio,
+                count_exercise_weights,
+            ]
+        ),
         "exercises": Exercise.objects.filter(user=request.user),
         "total_calories": sum(
             [
@@ -327,6 +408,7 @@ def prepare_meal_data(request):
 
 def prepare_exercise_data(request):
     context = {}
+
     exercises = Exercise.objects.filter(user=request.user)
     if exercises:
         context["total_exercise_calories"] = sum(
