@@ -42,8 +42,9 @@ if os.environ.get("DJANGO_ENV") == "production":
     ]
 else:
     DEBUG = True
-    ALLOWED_HOSTS = ["localhost", "dekaram.tail25a21e.ts.net"]
+    ALLOWED_HOSTS = ["127.0.0.1","localhost", "dekaram.tail25a21e.ts.net"]
     CSRF_TRUSTED_ORIGINS = [
+        "http://127.0.0.1:8000",
         "http://localhost:8000",
         "https://dekaram.tail25a21e.ts.net",
     ]

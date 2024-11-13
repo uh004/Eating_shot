@@ -264,7 +264,7 @@ html, body {
     }
 
     .reco_ex_img {
-        width: 20%;    
+        width: 30%;    
     }
     
     .recommend_result .reco_ex {
@@ -277,7 +277,7 @@ html, body {
 @media (min-width: 768px) {
 
     .reco_ex_img {
-        width: 20%;    
+        width: 30%;    
     }
     
     .recommend_result .reco_ex {
