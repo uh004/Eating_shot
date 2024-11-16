@@ -9,6 +9,7 @@ from .serializers import InferenceTaskSerializer, PhotoUploadSerializer
 from .tasks import process_inference_task
 
 
+# UNCOMPLETED
 class PhotoUploadView(generics.CreateAPIView):
     serializer_class = PhotoUploadSerializer
     parser_classes = [MultiPartParser]

@@ -1,6 +1,5 @@
 # TODO: if we were hosting this on a separate server from django...
 import csv
-import io
 import logging
 
 import cv2
@@ -29,7 +28,7 @@ logger.addHandler(logstash.TCPLogstashHandler(host, 5000, version=1))
 
 
 ## model loading
-model = YOLO("models/best.pt")
+model = YOLO("models/model_last.pt")
 logging.info("Loaded the model.")
 
 
@@ -37,7 +36,7 @@ def save_annotated_image(image, result, path, pred_result):
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
     # label = result.boxes.cls  # 모델이 예측한 레이블 결과 ex) 30, 11, 2, 15
     fontpath = "models/Pretendard-Bold.ttf"
-    font = ImageFont.truetype(fontpath, 25)
+    font = ImageFont.truetype(fontpath, 25)  # 폰트 크기 설정
 
     for i in range(len(result.boxes.xyxy)):
         x = int(
@@ -56,8 +55,8 @@ def save_annotated_image(image, result, path, pred_result):
             # above conversion list not used
 
         # pred_result = conversion_list[label[i]]
-        # TODO: 나중에 학습되면 정렬을 양쪽 파일에서 맟추든가 아니면 이름 기반으로 찾아서 뽑아내든가
-        # 이름 기반으로 찾아서 뽑아내는게 더 좋을듯  [result.names[i]]
+        # 나중에 학습되면 정렬을 양쪽 파일에서 맟추든가 아니면 이름 기반으로 찾아서 뽑아내든가
+        # 아니다 이름 기반으로 찾아서 뽑아내는게 더 좋을듯  [result.names[i]]
 
         name = [pred["name"] for pred in pred_result][i]
 
@@ -81,13 +80,21 @@ def save_annotated_image(image, result, path, pred_result):
             cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         )  # OpenCV 이미지를 PIL 이미지로 변환
         draw = ImageDraw.Draw(img_pil)
-        draw.text(
-            (x - (text_size[0] // 2), y - (text_size[1] // 2)),
-            name,
-            font=font,
-            fill=(255, 255, 255),
-        )  # 한글 텍스트
-        # 한글 텍스트 표시
+        if get_food_info(name)["diabetes_risk_classification"] == "1":
+            draw.text(
+                (x - (text_size[0] // 2), y - (text_size[1] // 2)),
+                name,
+                font=font,
+                fill=(255, 0, 0),
+            )  # 한글 텍스트
+            # 한글 텍스트 표시
+        else:
+            draw.text(
+                (x - (text_size[0] // 2), y - (text_size[1] // 2)),
+                name,
+                font=font,
+                fill=(255, 255, 255),
+            )  # 한글 텍스트
 
         # PIL 이미지를 다시 OpenCV 이미지로 변환
         image = cv2.cvtColor(np.array(img_pil), cv2.COLOR_RGB2BGR)
@@ -406,9 +413,10 @@ async def predict(file: UploadFile = File, path: str = Form(...)):
     #     # ...
     # }
 
-    image_data = await file.read()
-    image = Image.open(io.BytesIO(image_data))
+    # image_data = await file.read()
 
+    # image = Image.open(io.BytesIO(image_data))
+    image = Image.open(file.file).resize((640, 640))
     results = model.predict(source=image)
     # [
     # {"name": "\ub5a1\uac08\ube44", "class": 2, "confidence": 0.62822, "box": {"x1": 555.51776, "y1": 53.29996, "x2": 911.6275, "y2": 480.85587}},

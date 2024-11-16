@@ -8,7 +8,6 @@ from django.db import models
 # def diet_image_path(instance, filename):
 #     # file will be uploaded to MEDIA_ROOT/<id>/<filename>
 #     return os.path.join(instance.id, filename)
-# TODO: upload path for this situation
 
 
 class InferenceTask(models.Model):

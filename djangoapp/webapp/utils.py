@@ -204,9 +204,7 @@ def prepare_exercise_context(request):
         "윗몸 일으키기",
         "팔굽혀펴기",
     ]  # hardcoded values of indoor exercises
-    # TODO: check here for gomins
-    # apply this to the database?
-    # or make a django custom command for importing these values to the database
+    # what would be better? make a django custom command for importing these values to the database?
     current_all_exercise_types = ExerciseType.objects.values_list(
         "name", "exercise_category"
     )
@@ -217,6 +215,7 @@ def prepare_exercise_context(request):
     df["location"] = np.where(df["운동 종류"].isin(predifined_indoor_exercises), 1, 0)
     df["type"] = np.where(df["운동 분류"] == "유산소", 1, 0)
 
+    # currently just randomly selecting an exercise
     def exercise_recommend(user_input):
         more_ex = (
             user_input[2:].index(min(user_input[2:]))
