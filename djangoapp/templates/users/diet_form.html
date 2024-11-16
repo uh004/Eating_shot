@@ -4,67 +4,71 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
-
 <div class="main_container" id="main">
     <div class="deco">
-        <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
+        <img src="{% static 'img/back.png' %}"
+             onclick="window.location = '{% url 'index' %}'"
+             class="back">
         {% if form.instance.pk %}
             <p class="form_title">식단 기록 수정하기</p>
         {% else %}
             <p class="form_title">식단 기록하기</p>
         {% endif %}
-
         <img src="{% static 'img/diet_form.png' %}" class="deco_chara">
     </div>
-    
     <form method="post" enctype="multipart/form-data" action="">
         {% csrf_token %}
-
-        {% if form.meal_type.errors %}
-            <div class="error-message">이 필드는 필수 항목입니다.</div>
-        {% endif %}
+        {% if form.meal_type.errors %}<div class="error-message">이 필드는 필수 항목입니다.</div>{% endif %}
         {#        {{ form.meal_type }}#}
         <div class="mealtimes">
             <p>먹은 시간</p>
-
             <div class="check_meal_time">
-
                 {% for value, label in form.meal_type.field.choices %}
                     <div style="display: flex;" class="">
-                        <input id="mealtime{{ forloop.counter }}" type="radio" name="{{ form.meal_type.name }}"
-                               value="{{ value }}" {% if form.meal_type.value == value %}checked{% endif %}>
+                        <input id="mealtime{{ forloop.counter }}"
+                               type="radio"
+                               name="{{ form.meal_type.name }}"
+                               value="{{ value }}"
+                               {% if form.meal_type.value == value %}checked{% endif %}>
                         <label for="mealtime{{ forloop.counter }}" class="for_meal_time">{{ label }}</label>
                     </div>
                 {% endfor %}
             </div>
         </div>
-
-        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
-
-        <div class="upload-box" onclick="document.getElementById('chooseFile').click();">
+        <input id="date_input"
+               type="date"
+               name="{{ form.date.name }}"
+               value="{{ form.date.value }}">
+        <div class="upload-box"
+             onclick="document.getElementById('chooseFile').click();">
             <div id="drop-file" class="drag-file">
                 <img src="{% static 'img/salad.png' %}" class="photo_input_img">
-                <label class="file-label" for="chooseFile" style="margin-top: 0;"
+                <label class="file-label"
+                       for="chooseFile"
+                       style="margin-top: 0"
                        {% if form.image.errors %}class="error-message"{% endif %}>식단 사진을 업로드해주세요.</label>
                 <img src="" alt="미리보기 이미지" class="preview" id="image_preview">
             </div>
-            <input class="file" id="chooseFile" type="file" name="{{ form.image.name }}" accept="image/*">
+            <input class="file"
+                   id="chooseFile"
+                   type="file"
+                   name="{{ form.image.name }}"
+                   accept="image/*">
         </div>
-
-        <input type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}"/>
+        <input type="submit"
+               value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}" />
     </form>
 </div>
 {% block script %}
     <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
 
 
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
         });
 
-        document.getElementById('chooseFile').addEventListener('change', function (event) {
+        document.getElementById('chooseFile').addEventListener('change', function(event) {
             const input = event.target;
             const label = document.querySelector('.file-label');
             const imgPreview = document.getElementById('image_preview');
@@ -72,7 +76,7 @@
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
 
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     imgPreview.src = e.target.result;
                     imgPreview.style.display = 'block';
                     label.style.display = 'none';

@@ -4,15 +4,14 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
 {% endblock %}
-
 {% block content %}
     <div class="main_container" id="main">
         <div class="for_list">
-            <img src="{% static 'img/back.png' %}" class="back_img"
+            <img src="{% static 'img/back.png' %}"
+                 class="back_img"
                  onclick="window.location = '{% url 'index' %}'">
             <p>운동 목록</p>
         </div>
-        
         <div class="exercise_list">
             {% for ex in exercises_by_type %}
                 <div class="list">

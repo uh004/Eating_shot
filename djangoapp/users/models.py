@@ -1,11 +1,10 @@
 # users/models.py
 import os
+from datetime import date
 
 from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-from datetime import date
-
 from django_resized import ResizedImageField
 
 

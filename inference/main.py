@@ -1,23 +1,18 @@
-import io
-
-from fastapi import FastAPI, File, UploadFile, Form, Query
-from fastapi.responses import UJSONResponse
-
 # TODO: if we were hosting this on a separate server from django...
-
 import csv
 import logging
-import logstash
-import joblib
-from sklearn.preprocessing import StandardScaler
-
-import ultralytics
-from ultralytics import YOLO
-from PIL import ImageDraw, Image, ImageFont
 
 import cv2
+import joblib
+import logstash
 import numpy as np
 import pandas as pd
+import ultralytics
+from fastapi import FastAPI, File, Form, Query, UploadFile
+from fastapi.responses import UJSONResponse
+from PIL import Image, ImageDraw, ImageFont
+from sklearn.preprocessing import StandardScaler
+from ultralytics import YOLO
 
 ultralytics.checks()
 
@@ -33,15 +28,15 @@ logger.addHandler(logstash.TCPLogstashHandler(host, 5000, version=1))
 
 
 ## model loading
-model = YOLO("models/best.pt")
+model = YOLO("models/model_last.pt")
 logging.info("Loaded the model.")
 
 
 def save_annotated_image(image, result, path, pred_result):
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-    label = result.boxes.cls  # 모델이 예측한 레이블 결과 ex) 30, 11, 2, 15
+    # label = result.boxes.cls  # 모델이 예측한 레이블 결과 ex) 30, 11, 2, 15
     fontpath = "models/Pretendard-Bold.ttf"
-    font = ImageFont.truetype(fontpath, 25)
+    font = ImageFont.truetype(fontpath, 25)  # 폰트 크기 설정
 
     for i in range(len(result.boxes.xyxy)):
         x = int(
@@ -54,12 +49,19 @@ def save_annotated_image(image, result, path, pred_result):
         with open("food_calories.csv", encoding="utf-8") as file:
             csv.reader(file)
             next(file)
-            conversion_list = {i: row[0] for i, row in enumerate(file)}
+            # conversion_list = {i: row.split(",")[0] for i, row in enumerate(file)}
+            # existing_labels = [row.split(",")[0] for row in file] # unused
+            # print(conversion_list)
+            # above conversion list not used
 
-        pred_result = conversion_list[int(label[i])]
+        # pred_result = conversion_list[label[i]]
+        # 나중에 학습되면 정렬을 양쪽 파일에서 맟추든가 아니면 이름 기반으로 찾아서 뽑아내든가
+        # 아니다 이름 기반으로 찾아서 뽑아내는게 더 좋을듯  [result.names[i]]
+
+        name = [pred["name"] for pred in pred_result][i]
 
         overlay = image.copy()
-        left, top, right, bottom = font.getbbox(pred_result)
+        left, top, right, bottom = font.getbbox(name)
         width = right - left
         height = bottom - top
         text_size = [width, height]  # 텍스트 가로, 세로 길이
@@ -78,13 +80,21 @@ def save_annotated_image(image, result, path, pred_result):
             cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         )  # OpenCV 이미지를 PIL 이미지로 변환
         draw = ImageDraw.Draw(img_pil)
-        draw.text(
-            (x - (text_size[0] // 2), y - (text_size[1] // 2)),
-            pred_result,
-            font=font,
-            fill=(255, 255, 255),
-        )  # 한글 텍스트
-        # 한글 텍스트 표시
+        if get_food_info(name)["diabetes_risk_classification"] == "1":
+            draw.text(
+                (x - (text_size[0] // 2), y - (text_size[1] // 2)),
+                name,
+                font=font,
+                fill=(255, 0, 0),
+            )  # 한글 텍스트
+            # 한글 텍스트 표시
+        else:
+            draw.text(
+                (x - (text_size[0] // 2), y - (text_size[1] // 2)),
+                name,
+                font=font,
+                fill=(255, 255, 255),
+            )  # 한글 텍스트
 
         # PIL 이미지를 다시 OpenCV 이미지로 변환
         image = cv2.cvtColor(np.array(img_pil), cv2.COLOR_RGB2BGR)
@@ -101,11 +111,11 @@ def get_food_info(label):
             if row[0] == label:  # food_name
                 return {
                     "food_name": row[0],
-                    "energy_kcal": row[1],
-                    "weight_g": row[2],
-                    "carbohydrates_g": row[3],
-                    "protein_g": row[4],
-                    "fat_g": row[5],
+                    "energy_kcal": int(float(row[1])),
+                    "weight_g": int(float(row[2])),
+                    "carbohydrates_g": int(float(row[3])),
+                    "protein_g": int(float(row[4])),
+                    "fat_g": int(float(row[5])),
                     "diabetes_risk_classification": row[6],
                     # "label": row[7],
                     "is_meat": row[8],
@@ -190,6 +200,9 @@ def food_recommendation(user_input):
                 (preferred portion) * category_weight
         (you can adjust the weights based on the importance of nutritional fit vs. category preference)
 
+
+        !! ADDED: diabetes friendliness as a factor
+
         :param row:
         :return: the recommendation score for the food item
         """
@@ -233,7 +246,7 @@ def food_recommendation(user_input):
 
     df["Recommendation_Score"] = df.apply(calculate_score, axis=1)
 
-    recommended_foods = df.sort_values(by="Recommendation_Score", ascending=False)
+    # recommended_foods = df.sort_values(by="Recommendation_Score", ascending=False)
 
     remaining_calories = user_input["remaining_calories"]
     remaining_carbs = user_input["remaining_carbs"]
@@ -270,7 +283,8 @@ def food_recommendation(user_input):
             total_protein += food_protein
             total_fat += food_fat
 
-    return [selected_foods[0]]  # return the first food item added to the list
+    # return the first food item added to the list
+    return [selected_foods[0]] if selected_foods else ["No food found"]
 
 
 @app.get("/")
@@ -382,12 +396,12 @@ def get_nutrition_data():
     with open("food_calories.csv", "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
-            nutrition_data.append(row)
+            nutrition_data.append(row)  # this doesnt remove the decimal point
     return nutrition_data
 
 
 @app.post("/predict")
-async def predict(file: UploadFile = File(...), path: str = Form(...)):
+async def predict(file: UploadFile = File, path: str = Form(...)):
     logger.info("Received inference request at /predict")
     filepath = "/".join(path.split("/")[-3:])
     print(filepath)
@@ -399,9 +413,10 @@ async def predict(file: UploadFile = File(...), path: str = Form(...)):
     #     # ...
     # }
 
-    image_data = await file.read()
-    image = Image.open(io.BytesIO(image_data))
+    # image_data = await file.read()
 
+    # image = Image.open(io.BytesIO(image_data))
+    image = Image.open(file.file).resize((640, 640))
     results = model.predict(source=image)
     # [
     # {"name": "\ub5a1\uac08\ube44", "class": 2, "confidence": 0.62822, "box": {"x1": 555.51776, "y1": 53.29996, "x2": 911.6275, "y2": 480.85587}},
@@ -411,6 +426,7 @@ async def predict(file: UploadFile = File(...), path: str = Form(...)):
     predictions = [r.summary() for r in results]
     # for pred in predictions[0]:
     #     pred["name"] = conv_table.get(pred["name"], "아무렴뭐어때")
+    # Ensure predictions[0] is a list of dictionaries
     save_annotated_image(image, results[0], filepath, predictions[0])
 
     food_info = [get_food_info(pred["name"]) for pred in predictions[0]]

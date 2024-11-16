@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0003_remove_pillalarm_task_id_pillalarm_task_ids'),
+        ("events", "0003_remove_pillalarm_task_id_pillalarm_task_ids"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='pillalarm',
-            name='reschedule_task_id',
+            model_name="pillalarm",
+            name="reschedule_task_id",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

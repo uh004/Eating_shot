@@ -1,5 +1,6 @@
-from django.urls import path, include
 import django_eventstream
+from django.urls import include, path
+
 from . import views
 
 urlpatterns = [

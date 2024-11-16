@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from events.models import PillAlarm, HospitalAlarm
 
+from events.models import HospitalAlarm, PillAlarm
 from events.tasks import clean_disassociated_tasks
 
 

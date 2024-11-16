@@ -15,7 +15,7 @@ function deleteBoard(id) {
                 url: `/delete/exercise/${id}/`,
                 type: 'DELETE',
                 headers: {
-                    'X-CSRFToken': document.cookie.match(/csrftoken=([^;]+)/)[1],
+                    'X-CSRFToken': document.querySelector('[name=csrf-token]').content
                 },
                 success: function (response) {
                     Swal.fire('삭제되었습니다!', '', 'success').then(() => {

@@ -49,12 +49,12 @@ html, body {
         margin: 0;
         font-size: 1rem;
     }
-    
+
     .cal_info span {
         color: #00bcd4;
         font-size: 1rem;
     }
-    
+
     .cal_info img {
         width: 20%;
         margin: 2%;
@@ -92,17 +92,17 @@ html, body {
         text-align: center;
         align-content: center;
     }
-    
+
     .for_list p {
         width: 80%;
     }
 
     .ex_name {
-        font-size: 1rem; 
+        font-size: 1rem;
         color: #89909C;
         margin: 0 0 1% 0;
     }
-    
+
     .ex_type {
         margin: 0 0 1% 0;
         font-size: 0.9rem;
@@ -115,7 +115,7 @@ html, body {
         padding: 4%;
         margin-bottom: 0px;
     }
-    
+
     form {
         padding: 4%;
         margin: 0;
@@ -133,7 +133,7 @@ html, body {
         margin: 0;
         text-align: center;
     }
-    
+
     .ex_type2 {
         margin: 2%;
         text-align: center;
@@ -150,9 +150,9 @@ html, body {
         font-size: 16px;
         margin-bottom: 30px;
     }
-    
+
     .strengths p {
-        margin: 15px 1px; 
+        margin: 15px 1px;
         color: #979CA9;
     }
 
@@ -166,14 +166,14 @@ html, body {
         margin-bottom: 20px;
         padding: 10px;
     }
-    
+
     .date_input {
         width: 94%;
         margin-bottom: 20px;
     }
 
     .strengths p {
-        margin: 15px 1px; 
+        margin: 15px 1px;
         color: #979CA9;
     }
 
@@ -191,20 +191,20 @@ html, body {
     }
 
     .check_strength {
-        display: flex; 
-        justify-content: space-between; 
+        display: flex;
+        justify-content: space-between;
         width: 70%;
     }
 
     #calories_pred {
-        font-size: 20px; 
+        font-size: 20px;
         padding: 8% 0;
         text-align: center;
     }
-    
+
     #calories_pred span {
-        color: #00A1B8; 
-        font-size: 20px; 
+        color: #00A1B8;
+        font-size: 20px;
     }
 
     #form_submit {
@@ -258,15 +258,15 @@ html, body {
         text-align: center;
         align-content: center;
     }
-    
+
     .recommend_result p {
         margin: 0 0 2% 0;
     }
 
     .reco_ex_img {
-        width: 30%;    
+        width: 30%;
     }
-    
+
     .recommend_result .reco_ex {
         color: #00BCD4;
         font-size: 1.3rem;
@@ -277,9 +277,9 @@ html, body {
 @media (min-width: 768px) {
 
     .reco_ex_img {
-        width: 30%;    
+        width: 30%;
     }
-    
+
     .recommend_result .reco_ex {
         color: #00BCD4;
         font-size: 2.2rem;
@@ -317,7 +317,7 @@ html, body {
         text-align: center;
         align-content: center;
     }
-    
+
     .recommend_result p {
         margin: 0 0 2% 0;
         font-size: 1.8rem;
@@ -342,24 +342,24 @@ html, body {
     }
 
     #calories_pred {
-        font-size: 2rem; 
+        font-size: 2rem;
         padding: 8% 0;
         text-align: center;
     }
-    
+
     #calories_pred span {
-        color: #00A1B8; 
+        color: #00A1B8;
         font-size: 2rem;
     }
 
     .check_strength {
-        display: flex; 
-        justify-content: space-between; 
+        display: flex;
+        justify-content: space-between;
         width: 56%;
     }
 
     .strengths p {
-        margin: auto 1px; 
+        margin: auto 1px;
         color: #979CA9;
         font-size: 2rem;
     }
@@ -374,7 +374,7 @@ html, body {
         margin-bottom: 20px;
         padding: 10px;
     }
-    
+
     .date_input {
         width: 94%;
         height: 8%;
@@ -430,12 +430,12 @@ html, body {
         margin: 0;
         font-size: 2rem;
     }
-    
+
     .cal_info span {
         color: #00bcd4;
         font-size: 2rem;
     }
-    
+
     .cal_info img {
         width: 15%;
         margin: 2%;
@@ -482,7 +482,7 @@ html, body {
         text-align: center;
         align-content: center;
     }
-    
+
     .for_list p {
         width: 88%;
         font-size: 2rem;
@@ -490,7 +490,7 @@ html, body {
     }
 
     .ex_name {
-        font-size: 1.5rem; 
+        font-size: 1.5rem;
         color: #89909C;
         margin: 0 0 1% 0;
     }
@@ -507,7 +507,7 @@ html, body {
         padding: 2%;
         margin-bottom: 0px;
     }
-    
+
     .deco .deco_chara {
         bottom: 0;
         width: 30%;
@@ -520,12 +520,12 @@ html, body {
         margin: 0;
         text-align: center;
     }
-    
+
     .ex_type2 {
         margin: 2%;
         text-align: center;
         font-size: 1.4rem;
-    }    
+    }
 
     form {
         padding: 4% 15%;
@@ -592,7 +592,7 @@ html, body {
 .deco_chara {
     bottom: 0;
     width: 40%;
-    display: block; 
+    display: block;
     margin: 0 auto;
 }
 
@@ -606,9 +606,9 @@ html, body {
 
 .exercise_times {
     width: 100%;
-    display: flex; 
-    background-color: #F2F4F5; 
-    height: 60px; 
+    display: flex;
+    background-color: #F2F4F5;
+    height: 60px;
     border-radius: 15px;
     margin-bottom: 20px;
 }
@@ -618,7 +618,7 @@ html, body {
 }
 
 .for_ex {
-    justify-content: space-between; 
+    justify-content: space-between;
     display: flex;
 }
 

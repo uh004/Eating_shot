@@ -7,7 +7,7 @@ from users.models import BloodSugar
 class PerformanceTest(TestCase):
     def test_blood_sugar_creation_performance(self):
         start_time = timezone.now()
-        for i in range(1000):
+        for _ in range(1000):
             BloodSugar.objects.create(
                 user_id=1, time="morning", date="2023-01-01", blood_sugar=120
             )

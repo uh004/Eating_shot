@@ -1,73 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
-{#{% block title %}운동 기록하기{% endblock %}#}
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{% endblock %}
-
-<div class="main_container" id="main">
-    <div class="deco">
-        <img src="{% static 'img/back.png' %}" onclick="window.location = '{% url 'exercise_list' %}'" class="back">
-        <p class="ex_title">{{ exercise_name }}</p>
-        <p class="ex_type2">유산소</p>
-        <img src="{% static 'img/exercise_form.png' %}" class="deco_chara">
-    </div>
-    
-    <form method="post" action="">
-        {% csrf_token %}
-        <!-- <div class="exercise_times"> -->
-            {{ form.exercise_time }}
-        <!-- </div> -->
-        
-        <input class="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
-        
-        <div class="strengths" style="display: flex; justify-content: space-between;">
-            <p>운동 강도</p>
-            
-            <div class="check_strength">
-                {% for value, label in form.intensity.field.choices %}
-                    <div style="display: flex;" class="strength">
-                        <input id="strength{{ forloop.counter }}" type="radio" name="{{ form.intensity.name }}"
-                               value="{{ value }}" {% if form.intensity.value == value %}checked{% endif %}>
-                        <label for="strength{{ forloop.counter }}" class="for_strength">{{ label }}</label>
-                    </div>
-                {% endfor %}
-            </div>
+    {% load static %}
+    {#{% block title %}운동 기록하기{% endblock %}#}
+    {% block extra_css %}
+        <link rel="stylesheet" href="{% static 'css/exercise.css' %}">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
+    <div class="main_container" id="main">
+        <div class="deco">
+            <img src="{% static 'img/back.png' %}"
+                 onclick="window.location = '{% url 'exercise_list' %}'"
+                 class="back">
+            <p class="ex_title">{{ exercise_name }}</p>
+            <p class="ex_type2">유산소</p>
+            <img src="{% static 'img/exercise_form.png' %}" class="deco_chara">
         </div>
+        <form method="post" action="">
+            {% csrf_token %}
+            <!-- <div class="exercise_times"> -->
+            {{ form.exercise_time }}
+            <!-- </div> -->
+            <input class="date_input"
+                   type="date"
+                   name="{{ form.date.name }}"
+                   value="{{ form.date.value }}">
+            <div class="strengths"
+                 style="display: flex;
+                        justify-content: space-between">
+                <p>운동 강도</p>
+                <div class="check_strength">
+                    {% for value, label in form.intensity.field.choices %}
+                        <div style="display: flex;" class="strength">
+                            <input id="strength{{ forloop.counter }}"
+                                   type="radio"
+                                   name="{{ form.intensity.name }}"
+                                   value="{{ value }}"
+                                   {% if form.intensity.value == value %}checked{% endif %}>
+                            <label for="strength{{ forloop.counter }}" class="for_strength">{{ label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% if form.errors %}
+                <div class="error-message">{{ form.exercise_time.errors }}</div>
+                <div class="error-message">{{ form.intensity.errors }}</div>
+            {% endif %}
+            <p id="calories_pred">
+                예상 소모 칼로리는 <span id="calories">0kcal</span>입니다.
+            </p>
+            <input id="form_submit"
+                   type="submit"
+                   value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}">
+        </form>
+    </div>
+    {% block script %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const dateInput = document.getElementsByClassName('date_input')[0];
+                dateInput.value = new Date().toISOString().split('T')[0];
 
-        {% if form.errors %}
-            <div class="error-message">{{ form.exercise_time.errors }}</div>
-            <div class="error-message">{{ form.intensity.errors }}</div>
-        {% endif %}
-        
-        <p id="calories_pred">예상 소모 칼로리는 <span id="calories">0kcal</span>입니다. </p>
-        <input id="form_submit" type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}">
-    </form>
-</div>
+                calculateCalories();
+            });
 
-{% block script %}
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const dateInput = document.getElementsByClassName('date_input')[0];
-            dateInput.value = new Date().toISOString().split('T')[0];
+            document.querySelector('form').addEventListener('change', function(event) {
+                event.preventDefault();
+                calculateCalories();
+            });
 
-            calculateCalories();
-        });
+            function calculateCalories() {
+                const exerciseTime = document.querySelector('input[name="exercise_time"]').value;
+                const caloriesPerHour = {
+                    {
+                        calories_per_hour
+                    }
+                }
+                / 60;
+                const calories = Math.round(caloriesPerHour * exerciseTime);
 
-        document.querySelector('form').addEventListener('change', function (event) {
-            event.preventDefault();
-            calculateCalories();
-        });
-
-        function calculateCalories() {
-            const exerciseTime = document.querySelector('input[name="exercise_time"]').value;
-            const caloriesPerHour = {{ calories_per_hour }} / 60;
-            const calories = Math.round(caloriesPerHour * exerciseTime);
-
-            document.getElementById('calories').textContent = `${calories}kcal`;
-        }
-    </script>
-{% endblock %}
+                document.getElementById('calories').textContent = `${calories}kcal`;
+            }
+        </script>
+    {% endblock %}

@@ -1,7 +1,8 @@
 # management/commands/import_food_calories.py
 import requests
-from django.core.management.base import BaseCommand
 from django.conf import settings
+from django.core.management.base import BaseCommand
+
 from users.models import FoodCalories
 
 
@@ -16,7 +17,7 @@ class Command(BaseCommand):
 
             for item in nutrition_data:
                 FoodCalories.objects.update_or_create(
-                    food_name=item["음 식 명"],
+                    food_name=item["음식명"],
                     defaults={
                         "energy_kcal": int(float(item["에너지(kcal)"])),
                         "weight_g": int(float(item["중량(g)"]))

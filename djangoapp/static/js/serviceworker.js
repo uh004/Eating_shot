@@ -62,17 +62,3 @@ self.addEventListener('activate', event => {
 //             })
 //     )
 // });
-
-// Handle push notifications
-// // TODO: check this again
-// self.addEventListener('push', event => {
-//     const data = event.data.json();
-//     const options = {
-//         body: data.message,
-//         icon: '/static/img/icons/icon-128x128.png',
-//         badge: '/static/img/icons/icon-128x128.png'
-//     };
-//     event.waitUntil(
-//         self.registration.showNotification(data.title, options)
-//     );
-// });

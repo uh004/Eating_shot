@@ -1,16 +1,17 @@
 from datetime import timedelta
+from unittest.mock import patch
+
+from django.db.models.signals import post_save
 from django.test import TestCase
 from django.utils import timezone
-from unittest.mock import patch
-from events.models import PillAlarm, HospitalAlarm
+from events.models import HospitalAlarm, PillAlarm
 from events.signals import (
-    pill_alarm_post_save,
     hospital_alarm_post_save,
-    schedule_pill_alarm,
+    pill_alarm_post_save,
     schedule_hospital_alarm,
+    schedule_pill_alarm,
 )
 from users.models import CustomUser
-from django.db.models.signals import post_save
 
 
 class AlarmSignalTests(TestCase):

@@ -51,7 +51,7 @@ body {
     }
 }
 
-@media all and (max-width: 479px) { 
+@media all and (max-width: 479px) {
     .menu li img {
         display: flex;
         margin: auto;

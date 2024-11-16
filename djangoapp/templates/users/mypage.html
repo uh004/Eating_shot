@@ -1,24 +1,20 @@
 {% load custom_tags %}
-
 {% load static %}
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
 {% endblock %}
-
 <div class="banner" id="mypage">
-
     <div class="profile">
         <img src="{% static 'img/profile.png' %}" alt="">
         <div class="profile_detail">
             <p class="nickname">{{ user_info.username }}</p>
             <div style="display: flex;">
-                <p id="modify_myinfo" onclick="window.location.href = {% url 'mypage_revise_form' %}">내 정보 수정하기</p>
+                <p id="modify_myinfo"
+                   onclick="window.location.href = {% url 'mypage_revise_form' %}">내 정보 수정하기</p>
                 <p id="logout" onclick="window.location.href = {% url 'logout' %}">로그아웃</p>
             </div>
-
         </div>
     </div>
-
     <div id="for_personal_info">
         <ul class="personal_info">
             <p class="myinfo">내 정보</p>
@@ -27,48 +23,42 @@
                 <p>이메일</p>
                 <p>{{ user_info.email }}</p>
             </li>
-
             <li>
                 <p>키</p>
                 <p>{{ user_info.height }}cm</p>
             </li>
-
             <li>
                 <p>몸무게</p>
                 <p>{{ user_info.weight }}kg</p>
             </li>
-
             <li>
                 <p>질병</p>
                 <div id="disease">
-                    {% for item in health_conditions %}
-                        <p>{{ item }}</p>
-                    {% endfor %}
+                    {% for item in health_conditions %}<p>{{ item }}</p>{% endfor %}
                 </div>
             </li>
         </ul>
-
         <button type="button" id="for_pill_alarm" class="alarm">
             <div class="alarm_title">
                 <img src="{% static 'img/pill.png' %}" alt="">
                 <p>약 알리미</p>
             </div>
-            <img src="{% static 'img/alarm_add.png' %}" onclick="window.location.href = {% url 'pill_alarm' %}">
+            <img src="{% static 'img/alarm_add.png' %}"
+                 onclick="window.location.href = {% url 'pill_alarm' %}">
         </button>
-
         <div class="pill_alarm">
             <ul>
-
                 {% for item in pill_alarm %}
                     <li>
-                        <p class="time"><span>{{ item.time }}</span></p>
+                        <p class="time">
+                            <span>{{ item.time }}</span>
+                        </p>
                         <div class="day_check">
                             <div class="weekday">
                                 {% for day in weekdays %}
                                     <p style="color: {% if day in item.weekday %}#00BCD4{% else %}#000{% endif %}">{{ day }}</p>
                                 {% endfor %}
                             </div>
-
                             <div class="revise_alarm">
                                 <button onclick="window.location = '{% url 'pill_alarm' item.id %}'">수정</button>
                                 <button onclick="deleteAlarm({{ item.id }})">삭제</button>
@@ -77,98 +67,30 @@
                     </li>
                 {% endfor %}
             </ul>
-
         </div>
-
         <button type="button" class="alarm" id="for_hospital_alarm">
             <div class="alarm_title">
                 <img src="{% static 'img/hospital.png' %}" alt="">
                 <p>병원 알리미</p>
             </div>
-            <img src="{% static 'img/alarm_add.png' %}" onclick="window.location.href = {% url 'hospital_alarm' %}">
+            <img src="{% static 'img/alarm_add.png' %}"
+                 onclick="window.location.href = {% url 'hospital_alarm' %}">
         </button>
-
         <div class="hospital_alarm">
             <ul>
-
                 {% for item in hospital_alarm %}
                     <li>
                         <div class="hospital_info">
                             <p>{{ item.hospital_date }} {{ item.hospital_time }}</p>
-
                             <div class="revise_alarm2">
                                 <button onclick="window.location = '{% url 'hospital_alarm' item.id %}'">수정</button>
                                 <button onclick="deleteHospitalAlarm({{ item.id }})">삭제</button>
                             </div>
                         </div>
-
                         <p class="hospital">{{ item.hospital_name }}</p>
-
-
                     </li>
                 {% endfor %}
             </ul>
-
         </div>
-
     </div>
-
 </div>
-{% block script %}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script>
-        function deleteAlarm(id) {
-            Swal.fire({
-                title: '<p style="margin: 0; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
-                text: "삭제하시면 다시 복구시킬 수 없습니다.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#00BCD4',
-                cancelButtonColor: '#e5e2e2',
-                confirmButtonText: '삭제',
-                cancelButtonText: '취소',
-                width: '400px'
-            }).then((result) => {
-                if(result.value) {
-                    // DELETE request to delete/pill_alarm/id
-                    fetch(`/delete/pill_alarm/${id}/`, {
-                            method: "DELETE",
-                            headers: {
-                                "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
-                             },
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                        Swal.fire('삭제되었습니다!', '', 'success').then(() => {
-                            location.reload();
-                        });
-                    }).catch(error => {
-                        Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
-                    });
-                }
-            });
-        }
-
-        function deleteHospitalAlarm(id) {
-            if (confirm("정말 삭제하시겠습니까?")) {
-                // DELETE request to delete/hospital_alarm/id
-                fetch(`/delete/hospital_alarm/${id}/`, {
-                    method: "DELETE",
-                    headers: {
-                        "X-CSRFToken": document.cookie.match(/csrftoken=([^;]+)/)[1],
-                    },
-                }).then((response) => {
-                    if (response.ok) {
-                        window.location.reload();
-                    }
-                });
-            }
-        }
-
-    </script>
-{% endblock %}

@@ -1,3 +1,50 @@
+[tool.ruff]
+# Reglas a habilitar
+lint.select = [
+    "E", # pycodestyle errors
+    "W", # pycodestyle warnings
+    "F", # pyflakes
+    "I", # isort
+    "C", # flake8-comprehensions
+    "B", # flake8-bugbear
+]
+
+# Reglas a ignorar
+lint.ignore = [
+    "E501", # line too long
+    "E402", # module level import not at top of file
+]
+
+# Permitir autofix para las reglas seleccionadas
+fix = true
+
+# Excluir archivos o directorios
+exclude = [
+    ".git",
+    ".venv",
+    "migrations",
+    "__pycache__",
+]
+
+# Longitud máxima de línea
+line-length = 88
+
+# Extensiones de Python a incluir
+include = ["*.py", "*.pyi", "**/pyproject.toml"]
+
+# Versión de Python objetivo
+target-version = "py39"
+
+[tool.ruff.lint.isort]
+known-first-party = ["myapp", "config"]
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "double"
+
+[tool.djlint]
+format_css = true
+format_js = true
+
 [tool.poetry]
 name = "deejeiango"
 version = "0.1.0"
@@ -27,7 +74,7 @@ ultralytics = "^8.2.91"
 python-multipart = "^0.0.9"
 psycopg2-binary = "^2.9.9"
 ujson = "^5.10.0"
-django-eventstream = {extras = ["drf"], version = "^5.3.1"}
+django-eventstream = { extras = ["drf"], version = "^5.3.1" }
 daphne = "^4.1.2"
 channels = "^4.1.0"
 redis = "^5.1.1"
@@ -40,6 +87,8 @@ django-resized = "^1.0.3"
 django-pwa = "^2.0.1"
 joblib = "^1.4.2"
 scikit-learn = "^1.5.2"
+djlint = "^1.35.4"
+pre-commit = "^4.0.1"
 
 
 [build-system]

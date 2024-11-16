@@ -2,75 +2,68 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/blood.css' %}">
 {% endblock %}
-
-
 <div id="blood">
     <div class="slide" id="indicator">
-
         <button type="button" class="blood_btn" id="blood_btn1">
             <img src="{% static 'img/check_circle.png' %}">
             <p>혈당</p>
         </button>
-
         <div class="for_indicator">
             {% for data in blood1_data %}
                 <div class="slide2">
                     <div class="blood">
-                        <p style="margin: 14px 0;"> {{ data.time }} |
-                            <span style="color: red;">{{ data.blood_sugar }}</span>mg/DL</p>
-
+                        <p style="margin: 14px 0;">
+                            {{ data.time }} |
+                            <span style="color: red;">{{ data.blood_sugar }}</span>mg/DL
+                        </p>
                         <div>
-                            <button type="button" onclick="window.location.href =
-                                    '{% url 'blood_form' 'blood_pressure' data.id %}'">수정
+                            <button type="button"
+                                    onclick="window.location.href = '{% url 'blood_form' 'blood_sugar' data.id %}'">
+                                수정
                             </button>
                             <button type="button" onclick="deleteBoard(1, {{ data.id }})">삭제</button>
                         </div>
                     </div>
-
                 </div>
             {% endfor %}
         </div>
-        
         <button type="button" class="blood_btn" id="blood_btn2">
             <img src="{% static 'img/check_circle.png' %}">
             <p>혈압</p>
         </button>
-
         <div class="for_indicator">
             {% for data in blood2_data %}
                 <div class="slide2">
                     <div class="blood" style="display: flex; justify-content: space-between;">
                         <p style="margin: 14px 0;">
-                            <span style="color: red;">{{ data.systolic }}</span>/<span
-                                style="color: red;">{{ data.diastolic }}</span>mmHg</p>
-
+                            <span style="color: red;">{{ data.systolic }}</span>/<span style="color: red;">{{ data.diastolic }}</span>mmHg
+                        </p>
                         <div>
-                            <button type="button" onclick="window.location.href = '
-                                    {% url 'blood_form' 'blood_pressure' data.id %}'">수정
+                            <button type="button"
+                                    onclick="window.location.href = '{% url 'blood_form' 'blood_pressure' data.id %}'">
+                                수정
                             </button>
                             <button type="button" onclick="deleteBoard(2, {{ data.id }})">삭제</button>
                         </div>
-
                     </div>
                 </div>
             {% endfor %}
         </div>
-        
         <button type="button" class="blood_btn" id="blood_btn3">
             <img src="{% static 'img/check_circle.png' %}">
             <p>당화혈색소</p>
         </button>
-
         <div class="for_indicator">
             {% for data in blood3_data %}
                 <div class="slide2">
                     <div class="blood" style="display: flex; justify-content: space-between;">
                         <p style="margin: 14px 0;">
-                            <span style="color: red;">{{ data.hba1c }}</span>%</p>
-
+                            <span style="color: red;">{{ data.hba1c }}</span>%
+                        </p>
                         <div>
-                            <button type="button" onclick="window.location.href = '
-                                    {% url 'blood_form' 'hba1c' data.id %}'">수정
+                            <button type="button"
+                                    onclick="window.location.href = '{% url 'blood_form' 'hba1c' data.id %}'">
+                                수정
                             </button>
                             <button type="button" onclick="deleteBoard(3, {{ data.id }})">삭제</button>
                         </div>
@@ -78,27 +71,31 @@
                 </div>
             {% endfor %}
         </div>
-
         <button type="button" class="plus">
-            <img src="{% static 'img/plus-sign.png' %}" alt="" id="target_popup_button">
+            <img src="{% static 'img/plus-sign.png' %}"
+                 alt=""
+                 id="target_popup_button">
         </button>
-
         <div id="popup3" class="popup-overlay3">
             <div class="popup-content3">
                 <ul>
-                    <li style="display: flex;" onclick="window.location.href ='{% url 'blood_form' 'blood_sugar' %}'">
-                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈당
+                    <li style="display: flex"
+                        onclick="window.location.href ='{% url 'blood_form' 'blood_sugar' %}'">
+                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">
+                        혈당
                     </li>
-                    <li style="display: flex;" onclick="window.location.href ='{% url 'blood_form' 'blood_pressure' %}">
-                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">혈압
+                    <li style="display: flex"
+                        onclick="window.location.href ='{% url 'blood_form' 'blood_pressure' %}'">
+                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">
+                        혈압
                     </li>
-                    <li style="display: flex;" onclick="window.location.href ='{% url 'blood_form' 'hba1c' %}'">
-                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">당화혈색소
+                    <li style="display: flex"
+                        onclick="window.location.href ='{% url 'blood_form' 'hba1c' %}'">
+                        <img src="{% static 'img/blood2.png' %}" width="25px" height="25px" alt="">
+                        당화혈색소
                     </li>
                 </ul>
             </div>
         </div>
-
     </div>
-
 </div>

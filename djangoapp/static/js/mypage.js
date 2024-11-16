@@ -15,3 +15,56 @@ $(document).ready(function () {
     });
 
 });
+
+function deleteAlarm(id) {
+    Swal.fire({
+        title: '<p style="margin: 0; font-size: 20px;">해당 항목을 삭제하시겠습니까?</p>',
+        text: "삭제하시면 다시 복구시킬 수 없습니다.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00BCD4',
+        cancelButtonColor: '#e5e2e2',
+        confirmButtonText: '삭제',
+        cancelButtonText: '취소',
+        width: '400px'
+    }).then((result) => {
+        if (result.value) {
+            // DELETE request to delete/pill_alarm/id
+            fetch(`/delete/pill_alarm/${id}/`, {
+                method: "DELETE",
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrf-token]').content
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    Swal.fire('삭제되었습니다!', '', 'success').then(() => {
+                        location.reload();
+                    });
+                }).catch(error => {
+                Swal.fire('삭제 실패!', '다시 시도해주세요.', 'error');
+            });
+        }
+    });
+}
+
+function deleteHospitalAlarm(id) {
+    if (confirm("정말 삭제하시겠습니까?")) {
+        // DELETE request to delete/hospital_alarm/id
+        fetch(`/delete/hospital_alarm/${id}/`, {
+            method: "DELETE",
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrf-token]').content
+            },
+        }).then((response) => {
+            if (response.ok) {
+                window.location.reload();
+            }
+        });
+    }
+}

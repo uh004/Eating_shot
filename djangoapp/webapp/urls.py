@@ -1,6 +1,7 @@
-from django.conf.urls.static import static
-from django.urls import path, re_path, include
 from core import settings
+from django.conf.urls.static import static
+from django.urls import include, path, re_path
+
 from . import views
 
 urlpatterns = [
@@ -12,7 +13,6 @@ urlpatterns = [
     path("change_password/", views.change_password, name="change_password"),
     path("post-enrollment/", views.info_view, name="info"),
     path("load_content/<str:menu>/", views.load_content, name="load_content"),
-    # path("blood1/", views.blood_data_view, name="blood1"),
     path(
         "blood_form/<str:data_type>/<int:id>/", views.blood_data_view, name="blood_form"
     ),

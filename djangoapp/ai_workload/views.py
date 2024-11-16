@@ -1,6 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
+
 from .models import InferenceTask
 from .serializers import InferenceTaskSerializer, PhotoUploadSerializer
 
@@ -8,6 +9,7 @@ from .serializers import InferenceTaskSerializer, PhotoUploadSerializer
 from .tasks import process_inference_task
 
 
+# UNCOMPLETED
 class PhotoUploadView(generics.CreateAPIView):
     serializer_class = PhotoUploadSerializer
     parser_classes = [MultiPartParser]

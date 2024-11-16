@@ -3,7 +3,6 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/diet.css' %}">
 {% endblock %}
-
 <div class="slide" id="food_detail">
     <button class="menu_recommend">
         <img src="{% static 'img/check_circle.png' %}">
@@ -11,47 +10,48 @@
     </button>
     <div class="recommend_result">
         <p>당신을 위한 오늘의 추천 식단은</p>
-        {% for meal in recommendation_foods %}
-            <p class="reco_food">"{{ meal }}"</p>
-        {% endfor %}
+        {% for meal in recommendation_foods %}<p class="reco_food">"{{ meal }}"</p>{% endfor %}
         <img src="{% static 'img/reco_food.jpg' %}" class="reco_food_img">
     </div>
-
     <div class="all_kcal">
-
-        <p class="sum_kcal">누적 칼로리 <span style="float: right;"><span style="color:#00BCD4;">
-                {{ total_calories }}</span> / {{ max_calories }} kcal</span>
+        <p class="sum_kcal">
+            누적 칼로리 <span style="float: right;"><span style="color:#00BCD4;">{{ total_calories }}</span> / {{ max_calories }} kcal</span>
         </p>
         <progress value="{{ total_calories }}" max="{{ max_calories }}"></progress>
-        <p class="nutrient_g">탄수화물 <span style="float: right;"><span
-                style="color: #00BCD4;">{{ total_carbohydrates }}</span> / {{ max_carbohydrates }} g</span></p>
-        <p class="nutrient_g">단백질 <span style="float: right;"><span
-                style="color: #00BCD4;">{{ total_protein }}</span> / {{ max_protein }}
-                g</span></p>
-        <p class="nutrient_g">지방 <span style="float: right;"><span style="color: #00BCD4;">
-                {{ total_fat }}</span> / {{ max_fat }} g</span>
+        <p class="nutrient_g">
+            탄수화물 <span style="float: right;"><span style="color: #00BCD4;">{{ total_carbohydrates }}</span> / {{ max_carbohydrates }} g</span>
         </p>
-    </div>
-
-    <div class="all_meal">
-        {% for meal in meals %}
-            <div class="meals">
-                <button type="button" style="display: flex;" class="meals_btn"
-                        onclick="window.location.href = '{% url 'food_detail' meal.id %}'">
-                    <img src="/photos/{{ meal.image.name }}" alt="">
-                    <div class="img_info">
-                        <p id="meal_type">{{ meal.meal_type }}
-                            (<span>{{ meal_calories|get_item:meal.id }}</span> kcal)</p>
-                        <p id="meal_detail">{{ meal.result.result_names_comma_separated }}</p>
-                    </div>
-                </button>
-            </div>
-        {% endfor %}
-    </div>
-
-    <button type="button" class="plus">
-        <img src="{% static 'img/plus-sign.png' %}" width="50px"
-             onclick="window.location.href = '{% url 'diet_form' %}'"
-             alt="">
-    </button>
+        <p class="nutrient_g">
+            단백질 <span style="float: right;"><span style="color: #00BCD4;">{{ total_protein }}</span> / {{ max_protein }}
+        g</span>
+    </p>
+    <p class="nutrient_g">
+        지방 <span style="float: right;"><span style="color: #00BCD4;">{{ total_fat }}</span> / {{ max_fat }} g</span>
+    </p>
+</div>
+<div class="all_meal">
+    {% for meal in meals %}
+        <div class="meals">
+            <button type="button"
+                    style="display: flex"
+                    class="meals_btn"
+                    onclick="window.location.href = '{% url 'food_detail' meal.id %}'">
+                <img src="/photos/{{ meal.image.name }}" alt="">
+                <div class="img_info">
+                    <p id="meal_type">
+                        {{ meal.meal_type }}
+                        (<span>{{ meal_calories|get_item:meal.id }}</span> kcal)
+                    </p>
+                    <p id="meal_detail">{{ meal.result.result_names_comma_separated }}</p>
+                </div>
+            </button>
+        </div>
+    {% endfor %}
+</div>
+<button type="button" class="plus">
+    <img src="{% static 'img/plus-sign.png' %}"
+         width="50px"
+         onclick="window.location.href = '{% url 'diet_form' %}'"
+         alt="">
+</button>
 </div>

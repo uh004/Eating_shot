@@ -4,108 +4,114 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 {% endblock %}
-
-        <div class="slide" id="exercise_info">
-
-            <button class="ex_recommend">
-                <img src="{% static 'img/check_circle.png' %}">
-                <p>운동 추천 서비스</p>
-            </button>
-            <div class="recommend_result">
-                <p>당신을 위한 오늘의 추천 운동은</p>
-                
-                <p class="reco_ex">"숨쉬기"</p>
-                
-                <img src="{% static 'img/reco_ex.jpg' %}" class="reco_ex_img">
-            </div>
-
-            <div class="cal_info">
-                {% if total_calories == 0 %}
-                    <p>운동이 필요해요! 운동을 추가하세요.</p>
-                {% elif total_calories < 100 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/apple.png' %}">
-                    <p class="cal_result"><span>사과 한 알</span>(약 100kcal)</p>
-                {% elif total_calories < 200 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/donut.png' %}">
-                    <p class="cal_result"><span>도넛 하나</span>(약 200kcal)</p>
-                {% elif total_calories < 300 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/rice_bowl.png' %}">
-                    <p class="cal_result"><span>쌀밥 한 그릇</span>(약 300kcal)</p>
-                {% elif total_calories < 400 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/soju.png' %}">
-                    <p class="cal_result"><span>소주 한 병</span>(약 400kcal)</p>
-                {% elif total_calories < 500 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/hamburger.png' %}">
-                    <p class="cal_result"><span>햄버거 하나</span>(약 500kcal)</p>
-                {% elif total_calories < 600 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/spaghetti.png' %}">
-                    <p class="cal_result"><span>스파게티 한 그릇</span>(약 600kcal)</p>
-                {% elif total_calories < 700 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/banana.png' %}">
-                    <p class="cal_result"><span>바나나 한 개</span>(약 700kcal)</p>
-                {% elif total_calories < 800 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/pizza.png' %}">
-                    <p class="cal_result"><span>피자 한 판</span>(약 800kcal)</p>
-                {% elif total_calories < 900 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/meat.png' %}">
-                    <p class="cal_result"><span>고기 한 점</span>(약 900kcal)</p>
-                {% elif total_calories < 1000 %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <img src="{% static 'img/chicken.png' %}">
-                    <p class="cal_result"><span>치킨 한 박스</span>(약 1000kcal)</p>
-                {% else %}
-                    <p>오늘 운동 칼로리 소모량은</p>
-                    <p>🤯</p>
-                    <p class="cal_result"><span>오 마이 갓</span>(약 1000kcal 이상)</p>
-                {% endif %}
-            </div>
-
-            <div class="ex_list">
-            {% for exercise in exercises %}
-                <div class="ex">
-
-                    <div class="for_ex">
-                        <img src="{% static 'img/exercise_logo.png' %}">
-                        <div style="display: flex;">
-                            <button type="button"
-                                    onclick="window.location.href='{% url 'exercise_form' exercise.exercise_type.id exercise.id %}'">
-                                수정
-                            </button>
-                            <button type="button" onclick="deleteBoard({{ exercise.id }})">삭제</button>
-                        </div>
+<div class="slide" id="exercise_info">
+    <button class="ex_recommend">
+        <img src="{% static 'img/check_circle.png' %}">
+        <p>운동 추천 서비스</p>
+    </button>
+    <div class="recommend_result">
+        <p>당신을 위한 오늘의 추천 운동은</p>
+        <p class="reco_ex">"{{ exercise_recommendation }}"</p>
+        <img src="{% static 'img/reco_ex.jpg' %}" class="reco_ex_img">
+    </div>
+    <div class="cal_info">
+        {% if total_calories == 0 %}
+            <p>운동이 필요해요! 운동을 추가하세요.</p>
+        {% elif total_calories < 100 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/apple.png' %}">
+            <p class="cal_result">
+                <span>사과 한 알</span>(약 100kcal)
+            </p>
+        {% elif total_calories < 200 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/donut.png' %}">
+            <p class="cal_result">
+                <span>도넛 하나</span>(약 200kcal)
+            </p>
+        {% elif total_calories < 300 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/rice_bowl.png' %}">
+            <p class="cal_result">
+                <span>쌀밥 한 그릇</span>(약 300kcal)
+            </p>
+        {% elif total_calories < 400 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/soju.png' %}">
+            <p class="cal_result">
+                <span>소주 한 병</span>(약 400kcal)
+            </p>
+        {% elif total_calories < 500 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/hamburger.png' %}">
+            <p class="cal_result">
+                <span>햄버거 하나</span>(약 500kcal)
+            </p>
+        {% elif total_calories < 600 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/spaghetti.png' %}">
+            <p class="cal_result">
+                <span>스파게티 한 그릇</span>(약 600kcal)
+            </p>
+        {% elif total_calories < 700 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/banana.png' %}">
+            <p class="cal_result">
+                <span>바나나 한 개</span>(약 700kcal)
+            </p>
+        {% elif total_calories < 800 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/pizza.png' %}">
+            <p class="cal_result">
+                <span>피자 한 판</span>(약 800kcal)
+            </p>
+        {% elif total_calories < 900 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/meat.png' %}">
+            <p class="cal_result">
+                <span>고기 한 점</span>(약 900kcal)
+            </p>
+        {% elif total_calories < 1000 %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <img src="{% static 'img/chicken.png' %}">
+            <p class="cal_result">
+                <span>치킨 한 박스</span>(약 1000kcal)
+            </p>
+        {% else %}
+            <p>오늘 운동 칼로리 소모량은</p>
+            <p>🤯</p>
+            <p class="cal_result">
+                <span>오 마이 갓</span>(약 1000kcal 이상)
+            </p>
+        {% endif %}
+    </div>
+    <div class="ex_list">
+        {% for exercise in exercises %}
+            <div class="ex">
+                <div class="for_ex">
+                    <img src="{% static 'img/exercise_logo.png' %}">
+                    <div style="display: flex;">
+                        <button type="button"
+                                onclick="window.location.href='{% url 'exercise_form' exercise.exercise_type.id exercise.id %}'">
+                            수정
+                        </button>
+                        <button type="button" onclick="deleteBoard({{ exercise.id }})">삭제</button>
                     </div>
-
-                    <div class="exercise_tt">
-
-                        <p>{{ exercise.exercise_type }}</p>
-                        <span>
-                        <span style="color: #00BCD4;">
-                            {{ exercise.exercise_calories }} 
-                        </span> 
+                </div>
+                <div class="exercise_tt">
+                    <p>{{ exercise.exercise_type }}</p>
+                    <span>
+                        <span style="color: #00BCD4;">{{ exercise.exercise_calories }}</span>
                         kcal / {{ exercise.exercise_time }}분
                     </span>
-
-                    </div>
-
                 </div>
-            
-
-            {% endfor %}
             </div>
-
-            <button type="button" class="plus">
-                <img src="{% static 'img/plus-sign.png' %}" width="50px"
-                     onclick="window.location.href = {% url 'exercise_list' %}" alt="">
-            </button>
-        </div>
-
-
+        {% endfor %}
+    </div>
+    <button type="button" class="plus">
+        <img src="{% static 'img/plus-sign.png' %}"
+             width="50px"
+             onclick="window.location.href = '{% url 'exercise_list' %}'"
+             alt="">
+    </button>
+</div>

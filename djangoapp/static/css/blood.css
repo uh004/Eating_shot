@@ -38,7 +38,7 @@ html, body {
     display: none;
 }
 
-@media all and (max-width: 479px) { 
+@media all and (max-width: 479px) {
 
     .blood_btn {
         width: 100%;
@@ -56,7 +56,7 @@ html, body {
         width: 10%;
         margin: 2.5% 2.5% 2.5% 1%;
     }
-    
+
     .blood_btn p {
         font-size: 16px;
         margin: 0px;
@@ -73,7 +73,7 @@ html, body {
         padding: 1% 4%;
         margin-bottom: 3%;
     }
-    
+
     .blood button {
         margin: 15px 0px;
         background:transparent;
@@ -122,15 +122,15 @@ html, body {
     .deco {
         background-color: #006D83;
         padding: 0 4%;
-    }    
-    
+    }
+
     .form_title {
         text-align: center;
         margin: 0 0 3% 0;
         font-size: 1.2rem;
         color: white;
     }
-    
+
     .back {
         width: 10%;
         padding: 10px 0px 8px 0px;
@@ -177,21 +177,21 @@ html, body {
         margin: 0 auto;
         padding: 0;
     }
-    
+
     input#blood_2 {
         width: 30%;
         font-size: 3rem;
         margin: 0 auto;
         padding: 0;
     }
-    
+
     input#blood_3 {
         width: 30%;
         font-size: 3rem;
         margin: 0 auto;
         padding: 0;
     }
-    
+
     .blood_sugar {
         display: flex;
         background-color: #F2F4F5;
@@ -210,7 +210,7 @@ html, body {
         margin: 0 auto;
         color: white;
     }
-    
+
     .blood_result {
         font-size: 1rem;
         padding: 8% 0;
@@ -218,7 +218,7 @@ html, body {
     }
 }
 
-@media (min-width: 768px) { 
+@media (min-width: 768px) {
 
     input#blood_1 {
         width: 30%;
@@ -226,21 +226,21 @@ html, body {
         margin: 0 auto;
         padding: 0;
     }
-    
+
     input#blood_2 {
         width: 30%;
         font-size: 5rem;
         margin: 0 auto;
         padding: 0;
     }
-    
+
     input#blood_3 {
         width: 30%;
         font-size: 5rem;
         margin: 0 auto;
         padding: 0;
     }
-    
+
     .blood_sugar {
         display: flex;
         background-color: #F2F4F5;
@@ -254,7 +254,7 @@ html, body {
         padding: 2%;
         margin: auto 0;
         color: #979CA9;
-    }    
+    }
 
     select {
         background-color: #F2F4F5;
@@ -285,13 +285,13 @@ html, body {
         background-color: #006D83;
         padding: 0 4%;
     }
-    
+
     .deco h2 {
         text-align: center;
         margin: 20px 0px;
         color: white;
     }
-    
+
     .back {
         width: 6%;
         padding: 2% 0px 2% 0px;
@@ -329,7 +329,7 @@ html, body {
         width: 5%;
         margin: 1.5% 1%;
     }
-    
+
     .blood_btn p {
         font-size: 2rem;
         margin: auto 1%;
@@ -345,7 +345,7 @@ html, body {
         margin-bottom: 3%;
         font-size: 1.8rem;
     }
-    
+
     .blood button {
         margin: 15px 0px;
         background:transparent;

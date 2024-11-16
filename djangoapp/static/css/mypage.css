@@ -48,7 +48,7 @@ html, body {
         text-align: left;
         height: 80%;
     }
-    
+
     .nickname {
         font-size: 2rem;
         margin: 0px 0px 7% 0px;
@@ -60,7 +60,7 @@ html, body {
         line-height: 1;
         font-size: 1.5rem;
     }
-    
+
     #logout {
         font-size: 1.5rem;
         margin: 0px;
@@ -75,14 +75,14 @@ html, body {
         margin-top: 3%;
         width: 90%;
     }
-    
+
     .personal_info li {
         list-style-type: none;
         display: flex;
         justify-content: space-between;
         font-size: 0.9rem;
     }
-    
+
     .personal_info li p {
         font-size: 1.7rem;
     }
@@ -109,7 +109,7 @@ html, body {
         font-size: 1.7rem;
         margin: 3%;
     }
-    
+
     .alarm img {
         width: 40px;
         margin: auto 0;
@@ -185,7 +185,7 @@ html, body {
         border-radius: 2px;
         cursor: pointer;
     }
-    
+
     .check--label-text {
         display: flex;
         align-self: center;
@@ -194,7 +194,7 @@ html, body {
         padding: 6%;
         font-size: 1.7rem;
     }
-    
+
     .hidden-box:checked + .check--label {
         .check--label-box {
             background-color: #3A6D8C;
@@ -356,7 +356,7 @@ html, body {
         margin-bottom: 30px;
         color: white;
     }
-    
+
     .check--label-box {
         display: flex;
         align-self: center;
@@ -368,7 +368,7 @@ html, body {
         border-radius: 2px;
         cursor: pointer;
     }
-    
+
     .check--label-text {
         display: flex;
         align-self: center;
@@ -376,7 +376,7 @@ html, body {
         cursor: pointer;
         padding: 10px;
     }
-    
+
     .hidden-box:checked + .check--label {
         .check--label-box {
             background-color: #3A6D8C;
@@ -455,13 +455,13 @@ html, body {
         margin-top: 15px;
         justify-content: space-between;
     }
-    
+
     .alarm p {
         color: white;
         font-size: 17px;
         margin: 10px 0px;
     }
-    
+
     .alarm img {
         width: 25px;
         height: 25px;
@@ -487,7 +487,7 @@ html, body {
         margin-top: 0px;
         width: 90%;
     }
-    
+
     .personal_info li {
         list-style-type: none;
         display: flex;
@@ -500,7 +500,7 @@ html, body {
         color: darkgray;
         line-height: 1;
     }
-    
+
     #logout {
         margin: 0px;
         color: darkgray;
@@ -511,7 +511,7 @@ html, body {
         margin: auto 5px;
         text-align: left;
     }
-    
+
     .nickname {
         font-size: 1.2rem;
         margin: 0px 0px 10px 0px;
@@ -664,7 +664,7 @@ input[type="checkbox"] {
 .list li {
     list-style-type: none;
 }
-  
+
 .hidden-box {
     appearance: none;
     position: absolute;

@@ -14,8 +14,8 @@ html, body {
     align-content: center;
 }
 
-#main_page { 
-    width: 100%; 
+#main_page {
+    width: 100%;
 }
 /* 맨 처음 잠깐 나오는 이미지 */
 
@@ -47,9 +47,9 @@ html, body {
 }
 
 #login_title {
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
     margin: 0px 0px 20px 0px;
-    text-align: center; 
+    text-align: center;
 }
 
 .banner form input[type="submit"],
@@ -101,7 +101,7 @@ html, body {
     .login_chara{
         width: 30%;
     } /* 로그인 캐릭터 */
-    
+
     .go_join {
         font-size: 1rem;
     }
@@ -115,7 +115,7 @@ html, body {
         padding: 10px;
         margin: 5px 0px 15px 0px;
     }
-    
+
 }
 
 .forms {

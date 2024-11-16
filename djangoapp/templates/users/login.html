@@ -8,7 +8,7 @@
     <div class="fade-out-box">
         <img src="{% static 'img/main_page.png' %}" id="main_page" alt="">
     </div>
-    <div class="main_container"> 
+    <div class="main_container">
         <div class="banner" id="forms">
             <div class="login_forms">
                 <img src="{% static 'img/chara1.png' %}" class="login_chara" alt="">
@@ -18,21 +18,16 @@
                     <!-- Username Field -->
                     <p>{{ form.username.label }}</p>
                     {{ form.username }}
-
                     <!-- Password Field -->
                     <p>{{ form.password.label }}</p>
                     {{ form.password }}
-
                     <!-- Submit Button -->
                     <input type="submit" value="로그인">
                 </form>
-                {% if error_messages %}
-                    <div class="error-message">
-                        {{ error_messages }}
-                    </div>
-                {% endif %}
+                {% if error_messages %}<div class="error-message">{{ error_messages }}</div>{% endif %}
             </div>
-            <p class="go_join">계정이 없다면 <a href="{% url 'register' %}"><span style="color: #00BCD4;">회원가입 하러가기</span></a>
+            <p class="go_join">
+                계정이 없다면 <a href="{% url 'register' %}"><span style="color: #00BCD4;">회원가입 하러가기</span></a>
             </p>
         </div>
     </div>

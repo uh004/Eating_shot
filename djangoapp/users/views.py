@@ -1,12 +1,13 @@
+from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import get_user_model
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .serializers import (
-    CustomUserSerializer,
     # ChangePasswordSerializer,
     CustomTokenObtainPairSerializer,
+    CustomUserSerializer,
 )
 
 CustomUser = get_user_model()

@@ -23,4 +23,3 @@ graph TD
     C -->|Store Result| E[Database]
     A -->|Check Result| E
 ```
-

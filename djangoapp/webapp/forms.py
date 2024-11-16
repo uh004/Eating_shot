@@ -1,19 +1,17 @@
 from django import forms
-from django.core.validators import MinValueValidator, MaxValueValidator
-
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
+from events.models import HospitalAlarm, PillAlarm
 from users.models import (
+    BloodPressure,
+    BloodSugar,
     CustomUser,
     Diet,
     Exercise,
-    BloodSugar,
-    BloodPressure,
     HbA1c,
 )
-from events.models import PillAlarm, HospitalAlarm
-
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -73,7 +71,6 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomAuthenticationForm(AuthenticationForm):
-
     class Meta:
         model = CustomUser
         fields = ["username", "password"]

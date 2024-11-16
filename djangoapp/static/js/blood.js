@@ -69,4 +69,3 @@ $(document).ready(function () {
         info.toggle(); // .meal_info의 보임/숨김 상태 전환
     });
 });
-

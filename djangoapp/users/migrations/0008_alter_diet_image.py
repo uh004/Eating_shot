@@ -6,15 +6,22 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('users', '0007_foodcalories'),
+        ("users", "0007_foodcalories"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='diet',
-            name='image',
-            field=django_resized.forms.ResizedImageField(crop=None, force_format=None, keep_meta=True, quality=-1, scale=None, size=[640, 640], upload_to=users.models.diet_image_path),
+            model_name="diet",
+            name="image",
+            field=django_resized.forms.ResizedImageField(
+                crop=None,
+                force_format=None,
+                keep_meta=True,
+                quality=-1,
+                scale=None,
+                size=[640, 640],
+                upload_to=users.models.diet_image_path,
+            ),
         ),
     ]

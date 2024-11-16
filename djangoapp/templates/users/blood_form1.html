@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
 <div class="banner2">
-    
     <div class="deco">
-        <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
+        <img src="{% static 'img/back2.png' %}"
+             onclick="window.location = '{% url 'index' %}'"
+             class="back">
         {% if form.instance.pk %}
             <p class="form_title">혈당 기록 수정하기</p>
         {% else %}
@@ -15,46 +16,49 @@
         {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
-    
     <form method="post" action="">
         {% csrf_token %}
-        
         <select name="{{ form.time.name }}" id="bloodSugar_time">
             {% for value, label in form.time.field.choices %}
-                <option value="{{ value }}" {% if form.time.value == value %}selected{% endif %}>{{ label }}</option>
+                <option value="{{ value }}"
+                        {% if form.time.value == value %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
         </select>
-        
-        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
-        
+        <input id="date_input"
+               type="date"
+               name="{{ form.date.name }}"
+               value="{{ form.date.value }}">
         <div class="blood_sugar">
             <p>{{ form.blood_sugar.label }}</p>
-            <input type="number" name="{{ form.blood_sugar.name }}" id="blood_1" placeholder="100"
+            <input type="number"
+                   name="{{ form.blood_sugar.name }}"
+                   id="blood_1"
+                   placeholder="100"
                    value="{{ form.blood_sugar.value }}"
                    {% if form.blood_sugar.errors %}class="general-error"{% endif %}>
             <p>mg / dL</p>
         </div>
-
         {% if form.errors %}
             <div class="error-message">{{ form.blood_sugar.errors }}</div>
             <div class="error-message">{{ form.time.errors }}</div>
         {% endif %}
-
-        <p class="blood_result">혈당 수치는 <span class="danger-message">정상</span>입니다.</p>
-        <input type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}"/>
+        <p class="blood_result">
+            혈당 수치는 <span class="danger-message">정상</span>입니다.
+        </p>
+        <input type="submit"
+               value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}" />
     </form>
-
 </div>
 {% block script %}
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
 
             calculateBloodSugar();
         });
 
-        document.querySelector('form').addEventListener('change', function (event) {
+        document.querySelector('form').addEventListener('change', function(event) {
             event.preventDefault(); // Prevent form submission
             calculateBloodSugar();
         });

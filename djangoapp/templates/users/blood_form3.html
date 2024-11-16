@@ -4,10 +4,11 @@
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 {% endblock %}
-
 <div class="banner2">
     <div class="deco">
-        <img src="{% static 'img/back2.png' %}" onclick="window.location = '{% url 'index' %}'" class="back">
+        <img src="{% static 'img/back2.png' %}"
+             onclick="window.location = '{% url 'index' %}'"
+             class="back">
         {% if form.instance.pk %}
             <p class="form_title">당화혈색소 기록 수정하기</p>
         {% else %}
@@ -15,39 +16,41 @@
         {% endif %}
         <img src="{% static 'img/blood_form.jpg' %}" class="deco_chara">
     </div>
-    
     <form method="post" action="">
         {% csrf_token %}
-        
-        <input id="date_input" type="date" name="{{ form.date.name }}" value="{{ form.date.value }}">
-        
+        <input id="date_input"
+               type="date"
+               name="{{ form.date.name }}"
+               value="{{ form.date.value }}">
         <div class="blood_sugar">
             <p>{{ form.hba1c.label }}</p>
-            <input type="number" name="{{ form.hba1c.name }}" id="blood_1" placeholder="6.5" value=
-                    "{{ form.hba1c.value }}" step="0.1" {% if form.hba1c.errors %}class="general-error"{% endif %}>
+            <input type="number"
+                   name="{{ form.hba1c.name }}"
+                   id="blood_1"
+                   placeholder="6.5"
+                   value="{{ form.hba1c.value }}"
+                   step="0.1"
+                   {% if form.hba1c.errors %}class="general-error"{% endif %}>
             <p>%</p>
         </div>
-
-        {% if form.errors %}
-            <div class="error-message">{{ form.hba1c.errors }}</div>
-        {% endif %}
-
-        <p class="blood_result">당화혈색소 수치는 <span
-                class="danger-message" style="color: green;">정상</span>입니다.</p>
-        
-        <input type="submit" value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}"/>
+        {% if form.errors %}<div class="error-message">{{ form.hba1c.errors }}</div>{% endif %}
+        <p class="blood_result">
+            당화혈색소 수치는 <span class="danger-message" style="color: green;">정상</span>입니다.
+        </p>
+        <input type="submit"
+               value="{% if form.instance.pk %}수정하기{% else %}기록하기{% endif %}" />
     </form>
 </div>
 {% block script %}
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             const dateInput = document.getElementById('date_input');
             dateInput.value = new Date().toISOString().split('T')[0];
 
             calculateHba1c();
         });
 
-        document.querySelector('form').addEventListener('change', function (event) {
+        document.querySelector('form').addEventListener('change', function(event) {
             event.preventDefault(); // Prevent form submission
 
             calculateHba1c();
