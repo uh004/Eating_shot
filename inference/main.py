@@ -111,11 +111,11 @@ def get_food_info(label):
             if row[0] == label:  # food_name
                 return {
                     "food_name": row[0],
-                    "energy_kcal": row[1],
-                    "weight_g": row[2],
-                    "carbohydrates_g": row[3],
-                    "protein_g": row[4],
-                    "fat_g": row[5],
+                    "energy_kcal": int(float(row[1])),
+                    "weight_g": int(float(row[2])),
+                    "carbohydrates_g": int(float(row[3])),
+                    "protein_g": int(float(row[4])),
+                    "fat_g": int(float(row[5])),
                     "diabetes_risk_classification": row[6],
                     # "label": row[7],
                     "is_meat": row[8],
@@ -396,7 +396,7 @@ def get_nutrition_data():
     with open("food_calories.csv", "r") as file:
         reader = csv.DictReader(file)
         for row in reader:
-            nutrition_data.append(row)
+            nutrition_data.append(row)  # this doesnt remove the decimal point
     return nutrition_data
 
 
