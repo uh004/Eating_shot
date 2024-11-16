@@ -48,13 +48,25 @@ def calculate_totals(meals):
     meal_calories = {}
 
     for meal in meals:
-        food_info = meal.result.result_data["food_info"]
-        meal_total_calories = sum(int(food["energy_kcal"]) for food in food_info)
+        # TODO: do this for other parts using meal.result.result_data!!!!
+        # food_info = meal.result.result_data["food_info"]
+        meal_total_calories = int(
+            meal.result.result_changeable_food_info[-1]["energy_kcal"]
+        )  # sum(int(food[
+        # "energy_kcal"]) for food in food_info)
         meal_calories[meal.id] = meal_total_calories
-        total_calories += meal_total_calories
-        total_carbohydrates += sum(int(food["carbohydrates_g"]) for food in food_info)
-        total_protein += sum(int(food["protein_g"]) for food in food_info)
-        total_fat += sum(int(food["fat_g"]) for food in food_info)
+        total_calories += meal_total_calories  # for future use
+        total_carbohydrates += int(
+            meal.result.result_changeable_food_info[-1]["carbohydrates_g"]
+        )  # sum(int(food[
+        # "carbohydrates_g"]) for food in food_info)
+        total_protein += int(
+            meal.result.result_changeable_food_info[-1]["protein_g"]
+        )  # sum(int(food["protein_g"]) for food
+        # in food_info)
+        total_fat += int(
+            meal.result.result_changeable_food_info[-1]["fat_g"]
+        )  # sum(int(food["fat_g"]) for food in food_info)
 
     print(total_calories, total_carbohydrates, total_protein, total_fat, meal_calories)
 
@@ -246,7 +258,9 @@ def prepare_exercise_context(request):
 
     count_exercise_cardio = sum(
         item["count"]
-        for item in Exercise.objects.values("exercise_type__exercise_category")
+        for item in Exercise.objects.values(
+            "exercise_type__exercise_category"
+        )  # needs to be changed to user's
         .annotate(count=Count("id"))
         .filter(Q(exercise_type__exercise_category="유산소"))
     )
