@@ -49,12 +49,12 @@ def calculate_totals(meals):
 
     for meal in meals:
         food_info = meal.result.result_data["food_info"]
-        meal_total_calories = sum(float(food["energy_kcal"]) for food in food_info)
+        meal_total_calories = sum(int(food["energy_kcal"]) for food in food_info)
         meal_calories[meal.id] = meal_total_calories
         total_calories += meal_total_calories
-        total_carbohydrates += sum(float(food["carbohydrates_g"]) for food in food_info)
-        total_protein += sum(float(food["protein_g"]) for food in food_info)
-        total_fat += sum(float(food["fat_g"]) for food in food_info)
+        total_carbohydrates += sum(int(food["carbohydrates_g"]) for food in food_info)
+        total_protein += sum(int(food["protein_g"]) for food in food_info)
+        total_fat += sum(int(food["fat_g"]) for food in food_info)
 
     print(total_calories, total_carbohydrates, total_protein, total_fat, meal_calories)
 
@@ -69,12 +69,12 @@ def calculate_weekly_totals(meals_last_week):
 
     for meal in meals_last_week:
         food_info = meal.result.result_data["food_info"]
-        total_calories_week += sum(float(food["energy_kcal"]) for food in food_info)
+        total_calories_week += sum(int(food["energy_kcal"]) for food in food_info)
         total_carbohydrates_week += sum(
-            float(food["carbohydrates_g"]) for food in food_info
+            int(food["carbohydrates_g"]) for food in food_info
         )
-        total_protein_week += sum(float(food["protein_g"]) for food in food_info)
-        total_fat_week += sum(float(food["fat_g"]) for food in food_info)
+        total_protein_week += sum(int(food["protein_g"]) for food in food_info)
+        total_fat_week += sum(int(food["fat_g"]) for food in food_info)
 
     return (
         total_calories_week,
