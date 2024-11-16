@@ -1,4 +1,4 @@
-# utils.py
+# utils.py (엉망진창..)
 import random
 from datetime import datetime, timedelta
 
@@ -49,12 +49,12 @@ def calculate_totals(meals):
 
     for meal in meals:
         food_info = meal.result.result_data["food_info"]
-        meal_total_calories = sum(int(food["energy_kcal"]) for food in food_info)
+        meal_total_calories = sum(float(food["energy_kcal"]) for food in food_info)
         meal_calories[meal.id] = meal_total_calories
         total_calories += meal_total_calories
-        total_carbohydrates += sum(int(food["carbohydrates_g"]) for food in food_info)
-        total_protein += sum(int(food["protein_g"]) for food in food_info)
-        total_fat += sum(int(food["fat_g"]) for food in food_info)
+        total_carbohydrates += sum(float(food["carbohydrates_g"]) for food in food_info)
+        total_protein += sum(float(food["protein_g"]) for food in food_info)
+        total_fat += sum(float(food["fat_g"]) for food in food_info)
 
     print(total_calories, total_carbohydrates, total_protein, total_fat, meal_calories)
 
@@ -69,12 +69,12 @@ def calculate_weekly_totals(meals_last_week):
 
     for meal in meals_last_week:
         food_info = meal.result.result_data["food_info"]
-        total_calories_week += sum(int(food["energy_kcal"]) for food in food_info)
+        total_calories_week += sum(float(food["energy_kcal"]) for food in food_info)
         total_carbohydrates_week += sum(
-            int(food["carbohydrates_g"]) for food in food_info
+            float(food["carbohydrates_g"]) for food in food_info
         )
-        total_protein_week += sum(int(food["protein_g"]) for food in food_info)
-        total_fat_week += sum(int(food["fat_g"]) for food in food_info)
+        total_protein_week += sum(float(food["protein_g"]) for food in food_info)
+        total_fat_week += sum(float(food["fat_g"]) for food in food_info)
 
     return (
         total_calories_week,
@@ -110,7 +110,7 @@ def prepare_meal_context(request):
 
         max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
         max_carbohydrates = (
-            max_calories / 8
+            max_calories // 8
         )  # fixed value -> /= 8 of today's eaten calories
         max_protein = int(CustomUser.objects.get(id=request.user.id).weight * 0.8)
         max_fat = 50
@@ -361,7 +361,7 @@ def prepare_meal_data(request):
     if meals.exists():
         max_calories = CustomUser.objects.get(id=request.user.id).weight * 35
         context["max_calories"] = max_calories
-        context["max_carbohydrates"] = max_calories / 8
+        context["max_carbohydrates"] = max_calories // 8
         context["max_protein"] = int(
             CustomUser.objects.get(id=request.user.id).weight * 0.8
         )
@@ -430,13 +430,15 @@ def prepare_exercise_data(request):
 
         context["count_exercise_cardio"] = sum(
             item["count"]
-            for item in Exercise.objects.values("exercise_type__exercise_category")
+            for item in Exercise.objects.filter(user=request.user)
+            .values("exercise_type__exercise_category")
             .annotate(count=Count("id"))
             .filter(Q(exercise_type__exercise_category="유산소"))
         )
         context["count_exercise_weights"] = sum(
             item["count"]
-            for item in Exercise.objects.values("exercise_type__exercise_category")
+            for item in Exercise.objects.filter(user=request.user)
+            .values("exercise_type__exercise_category")
             .annotate(count=Count("id"))
             .filter(Q(exercise_type__exercise_category="무산소"))
         )
