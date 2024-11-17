@@ -19,7 +19,12 @@
 
 > 실제 구현 이미지 & 프로젝트 구성도
 
-<img src="https://github.com/user-attachments/assets/97465d90-0a8c-464a-839a-9bb8daac97c4"  width="800" height="400"/>
-<img src="https://github.com/user-attachments/assets/90bf7f67-8cc6-457d-bd7f-d6c7de17f7fc"  width="800" height="500"/>
+<img src="https://github.com/user-attachments/assets/97465d90-0a8c-464a-839a-9bb8daac97c4"  width="600" height="300"/>
+<img src="https://github.com/user-attachments/assets/90bf7f67-8cc6-457d-bd7f-d6c7de17f7fc"  width="600" height="300"/>
+
+
 
 > 시연 영상
+
+https://github.com/user-attachments/assets/f672503b-93f4-4a5e-adf2-f41f492ec1f6
+
