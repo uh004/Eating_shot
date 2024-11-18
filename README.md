@@ -17,12 +17,25 @@
 - HTML, CSS, JavaScript를 활용한 웹페이지 구현
 <br>
 
-> 실제 구현 이미지 & 프로젝트 구성도
+
+> 실제 구현 이미지 & 프로젝트 구조도
+
+<details>
+    <summary>실제 구현 이미지</summary>
+
+<img src="https://github.com/user-attachments/assets/9cc049be-cb91-4582-a67e-7b14183b6408"  width="700" height="400"/>
+
+</details>
+
+
+<details>
+    <summary>프로젝트 구조도</summary>
 
 <img src="https://github.com/user-attachments/assets/97465d90-0a8c-464a-839a-9bb8daac97c4"  width="600" height="300"/>
-<img src="https://github.com/user-attachments/assets/90bf7f67-8cc6-457d-bd7f-d6c7de17f7fc"  width="600" height="300"/>
 
+</details>
 
+<br>
 
 > 시연 영상
 
